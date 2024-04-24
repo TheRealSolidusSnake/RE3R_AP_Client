@@ -1,0 +1,20 @@
+{
+    "allow_cutscene_chains": true,
+    "allow_performance_mode": false,
+    "alt_sound_seek": true,
+    "bg_resources": null,
+    "current_loaded_ids": null,
+    "customize_cached_banks": false,
+    "cutscene_viewer": true,
+    "detach_ani_viewer": false,
+    "detach_cs_viewer": false,
+    "frozen_fov": 68,
+    "hotkeys": true,
+    "load_json": true,
+    "seek_all": true,
+    "special_mode": 1,
+    "sync_face_mots": true,
+    "transparent_bg": true,
+    "use_frozen_fov": false,
+    "use_savedata": true
+}

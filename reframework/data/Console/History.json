@@ -1,0 +1,16 @@
+{
+    "current_history_idx": 5,
+    "first_history_idx": 4,
+    "history": {
+        "/": " ",
+        "/ItemBox": " ",
+        "/ItemLocker": " ",
+        "/herb": " "
+    },
+    "history_idx": [
+        "/herb",
+        "/",
+        "/ItemBox",
+        "/ItemLocker"
+    ]
+}
