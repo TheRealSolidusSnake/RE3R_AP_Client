@@ -302,7 +302,8 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
         local sentToBox = false
 
         if is_randomized > 0 then
-            if item_name == "Hip Pouch" then
+            -- max slots is 20, so only process a new hip pouch if it will result in no more than 20
+            if item_name == "Hip Pouch" and Inventory.GetMaxSlots() <= 18 then
                 Inventory.IncreaseMaxSlots(2) -- simulate receiving the hip pouch by increasing player inv slots by 2
                 GUI.AddReceivedItemText(item_name, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
 
