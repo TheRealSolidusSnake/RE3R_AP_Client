@@ -16,7 +16,7 @@ Archipelago randomizer client for Resident Evil 3 Remake, designed to work with 
     - Get the RE3_TDB67 zip.
 3. Extract the REFramework zip in your RE3 game folder (Steam or otherwise)
     - Once you've done this, you should have an reframework folder in your game folder, and it should've added a dinput8.dll to the game folder.
-4. Download the source for this client via the Releases page, extract that zip somewhere, and copy both the "reframework" folder and the lua-apclientpp.dll file into your game folder.
+4. Download the source for this client, extract that zip somewhere, and copy both the "reframework" folder and the lua-apclientpp.dll file into your game folder.
     - It may ask to overwrite or merge on the "reframework" folder, just click Yes.
 5. That's it! Start the game and enjoy!
 
