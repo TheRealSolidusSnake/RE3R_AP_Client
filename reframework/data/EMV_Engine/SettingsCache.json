@@ -36,6 +36,7 @@
         "System.Collections.Generic.List`1<offline.gamemastering.InventoryManager.ItemData>": "get_Count",
         "offline.gamemastering.InventoryManager.ItemData": "get_Count",
         "offline.gamemastering.InventoryManager.ItemData[]": "get_Count",
+        "via.motion.Chain": "getGroupCount",
         "via.motion.Motion": "get_JointCount"
     },
     "increments": {
