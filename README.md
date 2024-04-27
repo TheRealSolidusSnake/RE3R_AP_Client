@@ -10,7 +10,7 @@ Archipelago randomizer client for Resident Evil 3 Remake, designed to work with 
 
 ## Install Steps
 
-1. **THIS ONLY WORKS WITH THE non-RTX BETA OF RE3R ON STEAM. TO SWITCH, RIGHT-CLICK RE3R AND OPEN PROPERTIES:**
+1. **THIS ONLY WORKS WITH THE non-RTX BETA OF RE3R ON STEAM. RIGHT-CLICK RE3R AND OPEN PROPERTIES:**
 ![non-rtx-RE3R](https://github.com/dontjoome/RE3R_AP_Client/assets/63137482/ddbeea99-7217-4276-a3fb-9bf0c292d386)
 2. Download REFramework from the most recent release here: https://github.com/praydog/REFramework/releases
     - Get the RE3_TDB67 zip.
