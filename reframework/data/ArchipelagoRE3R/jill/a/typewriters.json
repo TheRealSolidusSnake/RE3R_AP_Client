@@ -16,7 +16,7 @@
 	{ 
         "name": "Downtown - Tool Shop", 
         "location_id": 4, 
-        "map_id": 167, 
+        "map_id": 154, 
         "player_position": [-83.04, 0.0, -159.41], 
         "item_object": "0221_sm41_000_Typewriter01A_00_control" 
     },
