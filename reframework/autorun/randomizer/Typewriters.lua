@@ -31,12 +31,25 @@ function Typewriters.Unlock(name, item_name)
         return
     end
 
+    -- Typewriters.UnlockAll()
+    -- return
+
     for t, typewriter in pairs(Lookups.typewriters) do
         if typewriter["name"] == name or typewriter["item_object"] == item_name then
             Typewriters.unlocked_typewriters[typewriter["item_object"]] = true
 
             break
         end
+    end
+end
+
+function Typewriters.UnlockAll()
+    if #Lookups.typewriters == 0 then -- no typewriters, no typewriters to unlock
+        return
+    end
+
+    for t, typewriter in pairs(Lookups.typewriters) do
+        Typewriters.unlocked_typewriters[typewriter["item_object"]] = true
     end
 end
 

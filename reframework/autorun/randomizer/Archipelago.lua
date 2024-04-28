@@ -51,7 +51,7 @@ end
 function APSlotConnectedHandler(slot_data)
     Archipelago.hasConnectedPrior = true
     GUI.AddText('Connected.')
-    
+
     return Archipelago.SlotDataHandler(slot_data)
 end
 AP_REF.on_slot_connected = APSlotConnectedHandler
@@ -81,12 +81,12 @@ AP_REF.on_items_received = APItemsReceivedHandler
 function Archipelago.ItemsReceivedHandler(items_received)
     for k, row in pairs(items_received) do
         -- if the index of the incoming item is greater than the index of our last item at save, accept it
-        if not Storage.lastSavedItemIndex or row["index"] > Storage.lastSavedItemIndex then
+        if row["index"] ~= nil and (not Storage.lastSavedItemIndex or row["index"] > Storage.lastSavedItemIndex) then
             local item_data = Archipelago._GetItemFromItemsData({ id = row["item"] })
             local location_data = nil
             local is_randomized = 1
 
-            if row["location"] > 0 then
+            if row["location"] ~= nil and row["location"] > 0 then
                 location_data = Archipelago._GetLocationFromLocationData({ id = row["location"] })
 
                 if location_data and location_data['raw_data']['randomized'] ~= nil then
@@ -94,12 +94,12 @@ function Archipelago.ItemsReceivedHandler(items_received)
                 end
             end
 
-            if item_data["name"] then
+            if item_data["name"] and row["player"] ~= nil then
                 Archipelago.ReceiveItem(item_data["name"], row["player"], is_randomized)
             end
 
             -- if the index is also greater than the index of our last received index, update last received
-            if not Storage.lastReceivedItemIndex or row["index"] > Storage.lastReceivedItemIndex then
+            if row["index"] ~= nil and (not Storage.lastReceivedItemIndex or row["index"] > Storage.lastReceivedItemIndex) then
                 Storage.lastReceivedItemIndex = row["index"]
             end
         end
@@ -141,34 +141,40 @@ AP_REF.on_print_json = APPrintJSONHandler
 
 function Archipelago.PrintJSONHandler(json_rows)
     local player_sender, item, player_receiver, location = nil
+    local player = Archipelago.GetPlayer()
 
     -- if it's a hint, ignore it and return
-    if #json_rows > 0 and string.find(json_rows[1]["text"], "[Hint]") then
+    if #json_rows > 0 and json_rows[1]["text"] ~= nil and string.find(json_rows[1]["text"], "[Hint]") then
         return
     end
 
     for k, row in pairs(json_rows) do
         -- if it's a player id and no sender is set, it's the sender
-        if row["type"] == "player_id" and not player_sender then
+        if row["type"] ~= nil and row["type"] == "player_id" and not player_sender then
             player_sender = AP_REF.APClient:get_player_alias(tonumber(row["text"]))
 
         -- if it's a player id and the sender is set, it's the receiver
-        elseif row["type"] == "player_id" and player_sender then
+        elseif row["type"] ~= nil and row["type"] == "player_id" and player_sender then
             player_receiver = AP_REF.APClient:get_player_alias(tonumber(row["text"]))
 
-        elseif row["type"] == "item_id" then
+        elseif row["type"] ~= nil and row["type"] == "item_id" then
             item = AP_REF.APClient:get_item_name(tonumber(row["text"]))
-        elseif row["type"] == "location_id" then
+        elseif row["type"] ~= nil and row["type"] == "location_id" then
             location = AP_REF.APClient:get_location_name(tonumber(row["text"]))
         end
     end
 
     if player_sender and item and player_receiver and location then
-        if not Storage.lastSavedItemIndex or row == nil or row["index"] == nil or row["index"] > Storage.lastSavedItemIndex then
-            if player_receiver then
-                GUI.AddSentItemText(player_sender, item, player_receiver, location)
-            else
-                GUI.AddSentItemSelfText(player_sender, item, location)
+        -- if we received, items received will give us the message
+        -- if we sent, we want the text here
+        -- everything else, don't care.
+        if player['alias'] ~= nil and player_sender == player['alias'] then
+            if not Storage.lastSavedItemIndex or row == nil or row["index"] == nil or row["index"] > Storage.lastSavedItemIndex then
+                if player_receiver then
+                    GUI.AddSentItemText(player_sender, item, player_receiver, location)
+                else
+                    GUI.AddSentItemSelfText(player_sender, item, location)
+                end
             end
         end
     end
@@ -211,6 +217,29 @@ function Archipelago.IsLocationRandomized(location_data)
     end
 
     return true
+end
+
+function Archipelago.IsSentChessPanel(location_data)
+    local location = Archipelago._GetLocationFromLocationData(location_data, true) -- include_sent_locations
+    local scenario_suffix = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. ")"
+
+    if not location then
+        return false
+    end
+
+    if string.find(location['name'], 'Queen Panel') or string.find(location['name'], 'King Panel') or string.find(location['name'], 'Rook Panel') or 
+        string.find(location['name'], 'Bishop Panel') or string.find(location['name'], 'Knight Panel') or string.find(location['name'], 'Pawn Panel') then 
+
+        for k, loc in pairs(Lookups.locations) do
+            location_name_with_region = loc['region'] .. scenario_suffix .. " - " .. loc['name']
+
+            if location['name'] == location_name_with_region and loc['sent'] ~= nil and loc['sent'] then
+                return true
+            end
+        end
+    end
+
+    return false
 end
 
 function Archipelago.CheckForVictoryLocation(location_data)
@@ -302,8 +331,7 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
         local sentToBox = false
 
         if is_randomized > 0 then
-            -- max slots is 20, so only process a new hip pouch if it will result in no more than 20
-            if item_name == "Hip Pouch" and Inventory.GetMaxSlots() <= 18 then
+            if item_name == "Hip Pouch" then
                 Inventory.IncreaseMaxSlots(2) -- simulate receiving the hip pouch by increasing player inv slots by 2
                 GUI.AddReceivedItemText(item_name, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
 

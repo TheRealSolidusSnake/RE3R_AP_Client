@@ -92,38 +92,28 @@ function Items.SetupInteractHook()
                 return
             end
 
-            -- If we're starting Carlos' part, send him right beside another trigger to load RPD
-            if item_name == 'Tyrell_02' then -- very beginning of Carlos' section, taking a couple steps forward
-                
-                Player.WarpToPosition(Vector3f.new(-17.28, 0.0, 16.38)) -- warp beside trigger
+            -- If we're starting Ada's part, get the trigger to end the Ada event, send Ada to it, and trigger it
+            if location_to_check['item_object'] == 'CheckPoint_StartAdaPart' then
+                local leonStart = Scene.getSceneObject():findGameObject("WW_AdaEndEvent_EV580")
+                local leonStartInteract = leonStart:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.InteractBehavior")))
+                local leonStartTrigger = leonStartInteract:call("getTrigger", 0)
 
+                Player.WarpToPosition(Vector3f.new(-20.61, -42.25, -26.85)) -- right beside the trigger
+                leonStartTrigger:call("activate", Scene.getSceneObject():findGameObject("pl2000")) -- activate takes the player object
                 return
             end
-
-            if item_name == 'RPD_Mess_1stLicker_00' then -- next convenient trigger for Carlos to hit after RPD loads
-                Player.WarpToPosition(Vector3f.new(-33.61, -0.03, -12.1)) -- next Tyrell radio
-
-                return
-            end
-
-            if item_name == 'Door_2_1_008_gimmick' then -- next convenient trigger for Carlos to hit after RPD loads
-                Player.WarpToPosition(Vector3f.new(-11.65, 5.2, -21.05)) -- next Tyrell radio
-
-                return
-            end
-
-            if item_name == 'RPD_Mess_ItemGet_104' then -- final trigger for Carlos to hit to finish his segment
-                Player.WarpToPosition(Vector3f.new(-11.65, 5.2, -21.05)) -- next Tyrell radio
-
-                return
-            end
-            -- END Carlos Skip          
 
             local isLocationRandomized = Archipelago.IsLocationRandomized(location_to_check)
+            local isSentChessPanel = Archipelago.IsSentChessPanel(location_to_check)
 
             if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) or Archipelago.IsConnected()) then
                 -- if it's an item, call vanish and save to get rid of it
                 if item_positions and isLocationRandomized then
+                    -- if it's a chess panel that's already been sent, ignore whatever item is there and let the game take over
+                    if isSentChessPanel then
+                        return
+                    end
+
                     item_positions:call('vanishItemAndSave()')
                 end
                 

@@ -52,9 +52,12 @@ re.on_pre_application_entry("UpdateBehavior", function()
             Archipelago.waitingForSync = false
             Archipelago.Sync()
         end
-    elseif Scene:isGameOver() and not Archipelago.waitingForSync then
-        Archipelago.waitingForSync = true
+    else
         Objectives.isInit = false -- look for the Purpose GUI again and destroy it
+    end
+
+    if Scene:isGameOver() and not Archipelago.waitingForSync then
+        Archipelago.waitingForSync = true
     end
 end)
 
