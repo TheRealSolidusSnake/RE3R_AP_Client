@@ -108,7 +108,8 @@
         "condition": {},
         "item_object": "sm70_205",
         "parent_object": "ItemPositions",
-        "folder_path": "RopewayContents/World/Location_DownTown/Environments/st03_0208_0/gimmick"  
+        "folder_path": "RopewayContents/World/Location_DownTown/Environments/st03_0208_0/gimmick",
+        "randomized": 0  
 	},
 	{
         "name": "Inside Cop Car",
@@ -122,7 +123,7 @@
 	},
 	{
         "name": "Toy Shop Counter",
-        "region": "Main Avenue",
+        "region": "Toy Shop",
         "original_item": "Fancy Box - Green Jewel",
         "condition": {},
         "item_object": "sm73_311",
@@ -514,7 +515,7 @@
         "item_object": "EventPlay_EV322_k",
         "parent_object": "",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/Scenario/S03_1000/ES_S03_1000",  
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Breakable Box",
@@ -523,7 +524,8 @@
         "condition": {},
         "item_object": "sm70_100",
         "parent_object": "ItemPositions",
-        "folder_path": "RopewayContents/World/Location_DownTown/Environments/st03_0402_0/gimmick"  
+        "folder_path": "RopewayContents/World/Location_DownTown/Environments/st03_0402_0/gimmick",
+        "randomized": 0  
 	},
 	{
         "name": "By Portable Generator",
@@ -561,7 +563,7 @@
         "item_object": "sm77_000",
         "parent_object": "sm77_000",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/NemesisDropItems",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "2nd Nemesis Case",
@@ -571,7 +573,7 @@
         "item_object": "sm77_001",
         "parent_object": "sm77_001",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/NemesisDropItems",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "3rd Nemesis Case",
@@ -581,7 +583,7 @@
         "item_object": "sm77_002",
         "parent_object": "sm77_002",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/NemesisDropItems",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Subway Access Passage",
@@ -843,8 +845,7 @@
         "condition": {},
         "item_object": "sm70_100",
         "parent_object": "sm70_100",
-        "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_1100_Kendo_Area/I_RPD_Street",
-        "randomized": 0
+        "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_1100_Kendo_Area/I_RPD_Street"
 	},
 	{
         "name": "Case near RPD Garage",
@@ -958,7 +959,7 @@
         "item_object": "sm77_004",
         "parent_object": "sm77_004",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/NemesisDropItems",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Breakable Box",
@@ -968,7 +969,7 @@
         "item_object": "sm70_102",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0301_0/gimmick_Escape",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Near Breakable Box",
@@ -978,7 +979,7 @@
         "item_object": "sm70_002",
         "parent_object": "sm70_002_0301",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Brad's Corpse",
@@ -988,7 +989,7 @@
         "item_object": "sm73_203",
         "parent_object": "sm73_203",
         "folder_path": "RopewayManagers/TemporaryObjects/Enemy",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Crates near Medallion Statue",
@@ -998,7 +999,7 @@
         "item_object": "sm70_001",
         "parent_object": "sm70_001",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Waiting Room Barricade",
@@ -1008,7 +1009,7 @@
         "item_object": "sm70_000",
         "parent_object": "sm70_000",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Couch Case",
@@ -1020,7 +1021,7 @@
         "item_object": "sm70_102",
         "parent_object": "ItemPositions_sm41_410",
         "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0202_0/gimmick_Escape",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Case on Couch",
@@ -1030,7 +1031,7 @@
         "item_object": "WP6300",
         "parent_object": "WP6300",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Table",
@@ -1040,7 +1041,7 @@
         "item_object": "sm70_102",
         "parent_object": "sm70_102",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Breakable Box",
@@ -1050,7 +1051,7 @@
         "item_object": "sm70_001",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0217_0/gimmick_Escape",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Case near Desks",
@@ -1062,7 +1063,7 @@
         "item_object": "sm71_200",
         "parent_object": "ItemPositions_sm41_410",
         "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0208_0/gimmick_Escape",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Locker",
@@ -1072,7 +1073,7 @@
         "item_object": "sm70_102",
         "parent_object": "ItemPositions_NormalLocker_1FW_OfficeW",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/GeneralPurposeGimmicks/OpenLocker",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Safe",
@@ -1082,7 +1083,7 @@
         "item_object": "sm74_200",
         "parent_object": "Pos_SafeBox_1FWOffice",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/1FW/WestOffice/IronSafe_1FWOffice",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Desk near Safe",
@@ -1092,7 +1093,7 @@
         "item_object": "sm70_100",
         "parent_object": "sm70_100",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Reception Window",
@@ -1102,7 +1103,7 @@
         "item_object": "sm70_100",
         "parent_object": "sm70_100",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cabinet near Reception Window",
@@ -1112,7 +1113,7 @@
         "item_object": "sm70_002",
         "parent_object": "sm70_002_WestOffice",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Right Locker",
@@ -1122,7 +1123,7 @@
         "item_object": "sm70_002",
         "parent_object": "ItemPositions_NormalLocker_1FW3DarkRoom",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/GeneralPurposeGimmicks/OpenLocker",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Left Locker",
@@ -1132,7 +1133,7 @@
         "item_object": "sm70_102",
         "parent_object": "ItemPositions_NormalLocker_1FW1DarkRoom",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/GeneralPurposeGimmicks/OpenLocker",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Breakable Box",
@@ -1142,7 +1143,7 @@
         "item_object": "sm70_000",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0603_0/gimmick_Escape",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "DCM Locker",
@@ -1152,7 +1153,7 @@
         "item_object": "sm70_102",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/GeneralPurposeGimmicks/OpenLocker",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "On Box",
@@ -1162,7 +1163,7 @@
         "item_object": "sm73_201",
         "parent_object": "sm73_201",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Locker 104",
@@ -1172,7 +1173,7 @@
         "item_object": "sm73_200",
         "parent_object": "sm73_200_Bomb_Locker104",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/1FW/hokanko/HokankoLocker/HokankoItems",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Locker 106",
@@ -1182,7 +1183,7 @@
         "item_object": "sm70_102",
         "parent_object": "sm70_102_Asshell_Locker106",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/1FW/hokanko/HokankoLocker/HokankoItems",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Locker 109",
@@ -1192,7 +1193,7 @@
         "item_object": "WP6200",
         "parent_object": "WP6200∩╝┐Grenade_Locker109",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/1FW/hokanko/HokankoLocker/HokankoItems",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Tower Rack",
@@ -1202,7 +1203,7 @@
         "item_object": "sm70_001",
         "parent_object": "sm70_001",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "CAP Locker",
@@ -1212,7 +1213,7 @@
         "item_object": "WP6300",
         "parent_object": "ItemPositions_NormalLocker_2FW2Corridor",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/GeneralPurposeGimmicks/OpenLocker",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "On Bench",
@@ -1222,7 +1223,7 @@
         "item_object": "sm70_102",
         "parent_object": "sm70_102",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Right Locker",
@@ -1232,7 +1233,7 @@
         "item_object": "sm70_102",
         "parent_object": "ItemPositions_NormalLocker_2FW10LockerRoom",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/GeneralPurposeGimmicks/OpenLocker",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Left Locker",
@@ -1242,7 +1243,7 @@
         "item_object": "sm70_000",
         "parent_object": "ItemPositions_NormalLocker_2FW9LockerRoom",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/GeneralPurposeGimmicks/OpenLocker",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Breakable Box",
@@ -1252,7 +1253,7 @@
         "item_object": "sm70_001",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0412_0/gimmick_Escape",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "By Linen Room",
@@ -1262,7 +1263,7 @@
         "item_object": "sm70_102",
         "parent_object": "sm70_102",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Case in Armory",
@@ -1274,7 +1275,7 @@
         "item_object": "sm70_102",
         "parent_object": "ItemPositions_sm41_410",
         "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0404_0/gimmick_Escape",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Desk by Armory",
@@ -1284,7 +1285,7 @@
         "item_object": "WP6300",
         "parent_object": "WP6300_StarsOffice",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "First Aid Kit",
@@ -1294,7 +1295,7 @@
         "item_object": "sm70_000",
         "parent_object": "sm70_000_StarsOffice",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Box by Entrance",
@@ -1304,7 +1305,7 @@
         "item_object": "sm70_002",
         "parent_object": "sm70_002_StarsOffice",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Bench 1",
@@ -1440,7 +1441,7 @@
         "region": "Plaza",
         "original_item": "Shotgun Shells",
         "condition": {},
-        "item_object": "sm70_100",
+        "item_object": "sm70_101",
         "parent_object": "sm70_101sgshell",
         "folder_path": "RopewayContents/World/Location_ClockTower/LocationLevel_ClockTower/Item"
 	},
@@ -1458,7 +1459,7 @@
         "region": "Plaza",
         "original_item": "Shotgun Shells",
         "condition": {},
-        "item_object": "sm70_100",
+        "item_object": "sm70_101",
         "parent_object": "sm70_101sgshell_Car01B_00",
         "folder_path": "RopewayContents/World/Location_ClockTower/Environments/st03_0806_0/gimmick"
 	},
@@ -1470,7 +1471,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0101_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0101",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Admissions Desk 1",
@@ -1480,7 +1481,7 @@
         "item_object": "sm70_000",
         "parent_object": "st04_0102_sm70_000_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0102",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Admissions Desk 2",
@@ -1490,7 +1491,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0102_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0102",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Reception Desk",
@@ -1500,7 +1501,7 @@
         "item_object": "sm70_002",
         "parent_object": "st04_0103_sm70_002_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0103",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Reception Desk",
@@ -1510,7 +1511,7 @@
         "item_object": "sm73_403",
         "parent_object": "sm73_403(CassetPlayer)",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/KeyItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "By Couch",
@@ -1520,7 +1521,7 @@
         "item_object": "sm70_001",
         "parent_object": "st04_0105_sm70_001_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0105",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Breakable Box",
@@ -1530,7 +1531,7 @@
         "item_object": "sm70_100",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_Hospital/Environments/st04_0107_0/gimmick",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Table",
@@ -1540,7 +1541,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0107_sm70_102_01",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0107",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Gurney",
@@ -1550,7 +1551,7 @@
         "item_object": "sm70_100",
         "parent_object": "st04_0202_sm70_100_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0202",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Shelves",
@@ -1560,7 +1561,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0202_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0202",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Shelf",
@@ -1570,7 +1571,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0203_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0203",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "By Typewriter",
@@ -1580,7 +1581,7 @@
         "item_object": "sm70_001",
         "parent_object": "st04_0203_sm70_001_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0203",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Stepstool",
@@ -1590,7 +1591,7 @@
         "item_object": "sm70_100",
         "parent_object": "st04_0203_sm70_100_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0203",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Table",
@@ -1600,7 +1601,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0204_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0204",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Safe",
@@ -1610,7 +1611,7 @@
         "item_object": "0101_sm42_019_SafeBoxDial01A_control",
         "parent_object": "",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/LocationFsm_Hospital/common/ES_common/SafeBox",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Overbed Table 1",
@@ -1620,7 +1621,7 @@
         "item_object": "sm70_001",
         "parent_object": "st04_0210_sm70_001_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0210",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Overbed Table 2",
@@ -1630,7 +1631,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0210_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0210",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Supply Cart",
@@ -1640,7 +1641,7 @@
         "item_object": "WP6200",
         "parent_object": "st04_0210_wp6200_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0210",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Southside",
@@ -1650,7 +1651,7 @@
         "item_object": "sm71_202",
         "parent_object": "st04_0113_sm71_202",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0113",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Northwest Corner 1",
@@ -1660,7 +1661,7 @@
         "item_object": "sm70_001",
         "parent_object": "st04_0113_sm70_001_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0113",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Northwest Corner 2",
@@ -1670,7 +1671,7 @@
         "item_object": "sm73_407",
         "parent_object": "sm73_407(Key)",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/KeyItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Near Courtyard Exit",
@@ -1680,7 +1681,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0104_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0104",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Far Locker",
@@ -1690,7 +1691,7 @@
         "item_object": "sm73_400",
         "parent_object": "Locker_cardkey",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/LockerItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Left Locker",
@@ -1700,7 +1701,7 @@
         "item_object": "WP6300",
         "parent_object": "Locker_Senko",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/LockerItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "By Locker",
@@ -1710,7 +1711,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0206_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0206",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Stepstool",
@@ -1720,7 +1721,7 @@
         "item_object": "sm70_002",
         "parent_object": "st04_0206_sm70_002_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0206",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Overbed Table",
@@ -1730,7 +1731,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0209_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0209",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Overbed Table 1",
@@ -1740,7 +1741,7 @@
         "item_object": "sm73_402",
         "parent_object": "sm73_402(Tape)",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/KeyItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Overbed Table 2",
@@ -1750,7 +1751,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0209_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0209",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cart 1",
@@ -1760,7 +1761,7 @@
         "item_object": "WP6300",
         "parent_object": "st04_0108_Wp6300_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0108",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cart 2",
@@ -1770,7 +1771,7 @@
         "item_object": "WP6300",
         "parent_object": "st04_0108_Wp6300_01",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0108",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cart 3",
@@ -1780,7 +1781,7 @@
         "item_object": "WP6200",
         "parent_object": "st04_0108_wp6100_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0108",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cart 4",
@@ -1790,7 +1791,7 @@
         "item_object": "WP6200",
         "parent_object": "st04_0108_wp6100_01",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0108",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cart 5",
@@ -1800,7 +1801,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0108_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0108",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cart 6",
@@ -1810,7 +1811,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0108_sm70_102_01",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0108",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cart 7",
@@ -1820,7 +1821,7 @@
         "item_object": "sm70_100",
         "parent_object": "st04_0108_sm70_100_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0108",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cart 8",
@@ -1830,7 +1831,7 @@
         "item_object": "sm70_001",
         "parent_object": "st04_0108_sm70_001_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0108",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Breakable Box",
@@ -1840,7 +1841,7 @@
         "item_object": "sm70_001",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_Hospital/Environments/st04_0107_0/gimmick",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Desk 1",
@@ -1850,7 +1851,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0109_sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0109",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Desk 2",
@@ -1860,7 +1861,7 @@
         "item_object": "sm70_100",
         "parent_object": "st04_0109_sm70_100_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0109",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Desk 3",
@@ -1870,7 +1871,7 @@
         "item_object": "sm70_001",
         "parent_object": "st04_0109_sm70_001_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0109",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Desk 4",
@@ -1880,7 +1881,7 @@
         "item_object": "sm70_102",
         "parent_object": "st04_0109_sm70_102_01",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0109",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cold Storage",
@@ -1890,7 +1891,7 @@
         "item_object": "sm73_404",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_Hospital/Environments/gmk_door",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "T-FAS",
@@ -1900,7 +1901,7 @@
         "item_object": "sm70_000",
         "parent_object": "st04_0101_sm70_000_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0101",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Weapon Crate 1",
@@ -1910,7 +1911,7 @@
         "item_object": "sm73_406",
         "parent_object": "sm73_406",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Weapon Crate 2",
@@ -1920,7 +1921,7 @@
         "item_object": "sm70_100",
         "parent_object": "sm70_100_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Weapon Crate 3",
@@ -1930,7 +1931,7 @@
         "item_object": "sm70_102",
         "parent_object": "sm70_102_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Weapon Crate 4",
@@ -1940,7 +1941,7 @@
         "item_object": "sm70_000",
         "parent_object": "sm70_000",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Weapon Crate 5",
@@ -1950,7 +1951,7 @@
         "item_object": "sm70_102",
         "parent_object": "sm70_102_01",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Weapon Crate 6",
@@ -1960,7 +1961,7 @@
         "item_object": "sm70_100",
         "parent_object": "sm70_100_01",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Weapon Crate 7",
@@ -1970,7 +1971,7 @@
         "item_object": "sm70_100",
         "parent_object": "sm70_100_01",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cabinet 1",
@@ -1980,7 +1981,7 @@
         "item_object": "sm74_200",
         "parent_object": "sm74_200",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Cabinet 2",
@@ -1990,7 +1991,7 @@
         "item_object": "sm70_001",
         "parent_object": "sm70_001_gherb",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Munitions 1",
@@ -2000,7 +2001,7 @@
         "item_object": "WP6300",
         "parent_object": "WP6300_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Munitions 2",
@@ -2010,7 +2011,7 @@
         "item_object": "WP6300",
         "parent_object": "WP6300_00_01",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Munitions 3",
@@ -2020,7 +2021,7 @@
         "item_object": "WP6200",
         "parent_object": "WP6200_00",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Munitions 4",
@@ -2030,7 +2031,7 @@
         "item_object": "WP6200",
         "parent_object": "WP6200_00_01",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Munitions 5",
@@ -2040,7 +2041,7 @@
         "item_object": "WP6200",
         "parent_object": "WP6200_00_02",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Munitions 6",
@@ -2050,7 +2051,7 @@
         "item_object": "WP6200",
         "parent_object": "WP6200_00_02",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/RoujousenRepopItem",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "By Doors 1",
@@ -2439,7 +2440,7 @@
         "condition": {},
         "item_object": "sm70_001",
         "parent_object": "sm70_001",
-        "folder_path": "RopewayContents/World/Location_Laboratory/Environments/st05_0108_0/gimmick"	
+        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory"	
 	},
 	{
         "name": "On Cart 2",
@@ -2448,7 +2449,7 @@
         "condition": {},
         "item_object": "sm70_207",
         "parent_object": "sm70_207",
-        "folder_path": "RopewayContents/World/Location_Laboratory/Environments/st05_0108_0/gimmick"	
+        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory"	
 	},
 	{
         "name": "On Floor",
@@ -2521,7 +2522,7 @@
         "item_object": "st05_0110_sm41_427_ES_VaccineFreezer01A_gimmick",
         "parent_object": "",
         "folder_path": "RopewayContents/World/Location_Laboratory/Environments/st05_0110_0/gimmick",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Storage",
@@ -2531,7 +2532,7 @@
         "item_object": "st05_0107_sm41_426_ES_GrowthMachine01A_gimmick",
         "parent_object": "",
         "folder_path": "RopewayContents/World/Location_Laboratory/Environments/st05_0107_0/gimmick",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "On Cart 1",
@@ -2561,7 +2562,7 @@
         "item_object": "sm73_502",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_Laboratory/Environments/st05_0108_0/gimmick",
-		"randomized": 0
+	"randomized": 0
 	},
 	{
         "name": "Weapon Crate 1",
@@ -2606,7 +2607,8 @@
         "condition": {},
         "item_object": "sm70_206",
         "parent_object": "ItemPositions",
-        "folder_path": "RopewayContents/World/Location_Laboratory/Environments/st05_0202_0/gimmick"
+        "folder_path": "RopewayContents/World/Location_Laboratory/Environments/st05_0202_0/gimmick",
+	"randomized": 0
 	},
 	{
         "name": "Attache Case",
