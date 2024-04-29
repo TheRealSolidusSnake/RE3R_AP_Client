@@ -41,7 +41,8 @@ function GUI.CheckForAndDisplayMessages()
             if 
                 string.sub(textItem.message, -1) ~= '!' and string.sub(textItem.message, -1) ~= ')' 
                 and not string.find(textItem.message, 'Connected.') and not string.find(textItem.message, 'Disconnected.') 
-                and not string.find(textItem.message, 'connected.')
+                and not string.find(textItem.message, 'connected.') and not string.find(textItem.message, 'changed.')
+                and not string.find(textItem.message, 'nearby item box.')
             then
                 imgui.same_line()
             end    
@@ -68,6 +69,17 @@ function GUI.AddText(message, color)
     
     table.insert(GUI.textList, textObject)
     GUI.lastText = os.time()
+end
+
+-- Function for only having one message of this kind in the message list, so we don't spam it unnecessarily.
+function GUI.OnceText(message)
+    for k, v in pairs(GUI.textList) do
+        if v.message == message then
+            return
+        end
+    end
+
+    GUI.AddText(message)
 end
 
 -- receiving item from self or another player

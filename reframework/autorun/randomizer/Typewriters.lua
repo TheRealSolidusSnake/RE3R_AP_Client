@@ -91,7 +91,8 @@ function Typewriters.DisplayWarpMenu()
             imgui.push_style_color(imgui.COLOR_BUTTON, Vector4f.new(1, 1, 1, 0.07))
         end
 
-        if imgui.button(typewriter["name"]) then
+        -- don't allow the user to teleport while using the item box, and check that they're in-game for good measure too
+        if imgui.button(typewriter["name"]) and Scene.isInGame() and not Scene.isUsingItemBox() then
             -- if the player has unlocked the typewriter by interacting once, let them teleport; otherwise, do nothing
             if Typewriters.unlocked_typewriters[typewriter["item_object"]] then
                 local locationThroughManager = sdk.get_managed_singleton(sdk.game_namespace("LocationThroughManager"))
@@ -113,6 +114,13 @@ function Typewriters.DisplayWarpMenu()
         if not typewriter["line_break"] then
             imgui.same_line()
         end
+    end
+
+    imgui.new_line()
+    imgui.new_line()
+
+    if imgui.button("Unlock All Typewriters") then
+        Typewriters.UnlockAll()
     end
   
     -- Warping while Ada and triggering any cutscenes breaks the game

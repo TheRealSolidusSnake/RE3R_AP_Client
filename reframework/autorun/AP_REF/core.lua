@@ -352,7 +352,7 @@ local function main_menu()
 	if mainWindowVisible then
 		imgui.set_next_window_size(Vector2f.new(600, 300), 4)
 		if showMainWindow then
-			showMainWindow = imgui.begin_window("Archipelago REFramework", showMainWindow, nil)
+			showMainWindow = imgui.begin_window("Archipelago Client for REFramework", showMainWindow, nil)
 		else
 			imgui.begin_window("Archipelago REFramework", nil, nil)
 		end
@@ -364,18 +364,22 @@ local function main_menu()
         end
 
 		local size = imgui.get_window_size()
-		imgui.push_item_width(size.x / 5)
-		changed, hostname, _1, _2 = imgui.input_text("Host", host)
+        local foo = ""
+        imgui.push_item_width(0.001) -- this makes the input effectively zero-width but preserves the padding for the label
+        imgui.input_text("Host:", foo) -- ^ it's dumb that we have to do this, and I hope imgui one day supports left-side labels (what a joke)
+        imgui.same_line()
+        imgui.push_item_width(size.x / 5)
+		changed, hostname, _1, _2 = imgui.input_text("Slot:", host) -- imgui labels are displayed on the right (WHY?!), so this label is for the NEXT input
 		if changed then
 			host = hostname
 		end
 		imgui.same_line()
-		changed, slotname, _1, _2 = imgui.input_text("Slot", slot)
+		changed, slotname, _1, _2 = imgui.input_text("Password:", slot) -- imgui labels are displayed on the right (WHY?!), so this label is for the NEXT input
 		if changed then
 			slot = slotname
 		end
 		imgui.same_line()
-		changed, pass, _1, _2 = imgui.input_text("Password", password)
+		changed, pass, _1, _2 = imgui.input_text("", password)
 		if changed then
 			password = pass
 		end
@@ -392,7 +396,7 @@ local function main_menu()
 		end
 		imgui.pop_item_width()
 		imgui.separator()
-		imgui.begin_child_window("ScrollRegion", Vector2f.new(size.x-25, size.y-85), true, 0)
+		imgui.begin_child_window("ScrollRegion", Vector2f.new(size.x-5, size.y-55), true, 0)
 		imgui.push_style_var(14, Vector2f.new(0,0))
 		for i, value in ipairs(textLog) do
 			for i, val in ipairs(value) do
@@ -406,26 +410,30 @@ local function main_menu()
 		end
 		imgui.pop_style_var()
 		imgui.end_child_window()
-		imgui.text("Input:")
-		imgui.same_line()
-		imgui.push_item_width((size.x / 4)*3)
-		changed, input, _1, _2 = imgui.input_text("", current_text)
-		if changed then
-			current_text = input
-		end
-		imgui.same_line()
-		if imgui.button("Send") then
-			if current_text ~= "" then
-				if string.sub(current_text,1, 1) == "/" then
-					DisplayClientCommand(string.sub(current_text, 2))
-					current_text = ""
-				elseif ap ~= nil then
-					AP_REF.APClient:Say(current_text)
-					current_text = ""
-				end
-			end
-		end
-		imgui.pop_item_width()
+
+        -- None of the commands work except maybe send? So just remove the input box and button for sending commands for now.
+        --
+		-- imgui.text("Input:")
+		-- imgui.same_line()
+		-- imgui.push_item_width((size.x / 4)*3)
+		-- changed, input, _1, _2 = imgui.input_text("", current_text)
+		-- if changed then
+		-- 	current_text = input
+		-- end
+		-- imgui.same_line()
+		-- if imgui.button("Send") then
+		-- 	if current_text ~= "" then
+		-- 		if string.sub(current_text,1, 1) == "/" then
+		-- 			DisplayClientCommand(string.sub(current_text, 2))
+		-- 			current_text = ""
+		-- 		elseif ap ~= nil then
+		-- 			AP_REF.APClient:Say(current_text)
+		-- 			current_text = ""
+		-- 		end
+		-- 	end
+		-- end
+		-- imgui.pop_item_width()
+
 		imgui.end_window()
 	end
 end
