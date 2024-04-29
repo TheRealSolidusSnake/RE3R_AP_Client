@@ -2,6 +2,7 @@ local Storage = {}
 Storage.storageInitialized = false
 Storage.lastReceivedItemIndex = -1
 Storage.lastSavedItemIndex = -1
+Storage.talkedToMarvin = false
 
 function Storage.Load()
     local existing_file = json.load_file(Storage.GetFilePath())
@@ -11,6 +12,8 @@ function Storage.Load()
 
         Storage.lastReceivedItemIndex = existing_file['last_received']
         Storage.lastSavedItemIndex = existing_file['last_saved']
+        Storage.talkedToMarvin = existing_file['talked_to_marvin'] or false
+        Storage.swappedStartingWeapon = existing_file['swapped_starting_weapon'] or false
         
         for k, typewriter in pairs(unlocked_typewriters) do
             Typewriters.Unlock("", typewriter)
@@ -30,7 +33,13 @@ function Storage.Update()
         return
     end
 
-    stored_values = { last_received = Storage.lastReceivedItemIndex, last_saved = Storage.lastSavedItemIndex, unlocked_typewriters = Typewriters.GetAllUnlocked() }
+    stored_values = { 
+        last_received = Storage.lastReceivedItemIndex, 
+        last_saved = Storage.lastSavedItemIndex, 
+        talked_to_marvin = Storage.talkedToMarvin,
+        swapped_starting_weapon = Storage.swappedStartingWeapon,
+        unlocked_typewriters = Typewriters.GetAllUnlocked() 
+    }
 
     json.dump_file(Storage.GetFilePath(), stored_values)
 end
@@ -46,6 +55,14 @@ function Storage.GetFilePath()
     local player = Archipelago.GetPlayer()
 
     return Lookups.filepath .. "_storage/" .. player["seed"] .. "_" .. player["slot"] .. ".json"
+end
+
+function Storage.Reset()
+    Storage.storageInitialized = false
+    Storage.lastReceivedItemIndex = -1
+    Storage.lastSavedItemIndex = -1
+    Storage.talkedToMarvin = false
+    Storage.swappedStartingWeapon = false
 end
 
 return Storage

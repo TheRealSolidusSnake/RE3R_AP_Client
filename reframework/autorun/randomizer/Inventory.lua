@@ -91,4 +91,48 @@ function Inventory.AddItem(itemId, weaponId, weaponParts, bulletId, count)
     return false
 end
 
+function Inventory.SwapItem(fromItemIds, fromWeaponIds, itemId, weaponId, weaponParts, bulletId, count)
+    local inventoryManager = sdk.get_managed_singleton(sdk.game_namespace("gamemastering.InventoryManager"))
+    local playerInventory = inventoryManager:get_CurrentInventory()
+    local playerInventorySlots = playerInventory:get_field("_Slots")
+    local playerCurrentMaxSlots = playerInventory:get_field("_CurrentSlotSize")
+    local mItems = playerInventorySlots:get_field("mItems")
+    local items = {}
+    
+    for i, item in pairs(mItems:get_elements()) do
+        if item ~= nil then
+            local slotItemId = item:call("get_ItemID()")
+            local slotWeaponId = item:call("get_WeaponType()")
+            local slotIndex = item:get_Index()
+
+            if fromItemIds then
+                for k, fromItemId in pairs(fromItemIds) do
+                    if slotItemId == fromItemId then
+                        if itemId > 0 then -- is an item
+                            playerInventory:setSlot(slotIndex, itemId, count, 0, 0)
+                        end
+            
+                        return true
+                    end
+                end
+            end
+
+            if fromWeaponIds then
+                for k, fromWeaponId in pairs(fromWeaponIds) do
+                    if slotWeaponId == fromWeaponId then
+                        if weaponId > 0 then -- is a weapon
+                            local set_slot_weapon_string = "setSlot(System.Int32, " .. sdk.game_namespace("EquipmentDefine.WeaponType") .. ", " .. sdk.game_namespace("EquipmentDefine.WeaponParts") .. ", " .. sdk.game_namespace("gamemastering.Item.ID") .. ", System.Int32, " .. sdk.game_namespace("gamemastering.InventoryManager.ItemExData") .. ")"
+                            playerInventory:call(set_slot_weapon_string, slotIndex, weaponId, 0, tonumber(bulletId), count, 0)
+                        end
+            
+                        return true
+                    end
+                end
+            end
+        end
+    end
+
+    return false
+end
+
 return Inventory
