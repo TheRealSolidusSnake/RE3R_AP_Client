@@ -3,9 +3,9 @@ Archipelago randomizer client for Resident Evil 3 Remake, designed to work with 
 
 ## IMPORTANT / READ FIRST
 
-- Use teleports sparingly
+- Use teleports sparingly, and do not teleport to Downtown areas after fighting Nemesis at the Demolition Site. 
 - Do not switch save files, or you may lose items.
-- Save often. Save after boss fights.
+- Save often. Save after boss fights. 
 - When you complete a randomizer, restart your game before starting another one.
 
 ## Install Steps
