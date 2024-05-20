@@ -437,7 +437,7 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
             -- sending weapons to inventory causes them to not work until boxed + retrieved, so send weapons to box always for now
                 -- also send key and gating items to box to prevent softlocking issues if Carlos was sent Jill's keys during a multiworld
             if 
-                item_ref.type ~= "Weapon" and item_ref.type ~= "Subweapon" and item_ref.type ~= "Key" and item_ref.type ~= "Gating" and Inventory.HasSpaceForItem()
+                item_ref.type ~= "Weapon" and item_ref.type ~= "Subweapon" and item_ref.type ~= "Key" and item_ref.type ~= "Gating" and item_ref.type ~= "Ammo" and Inventory.HasSpaceForItem()
             then
                 local addedToInv = Inventory.AddItem(tonumber(itemId), tonumber(weaponId), weaponParts, bulletId, tonumber(count))
 
