@@ -31,18 +31,16 @@ function Inventory.GetCurrentItems()
                 local slotItemId = item:call("get_ItemID()")
                 local slotWeaponId = item:call("get_WeaponType()")
     
-                if slotItemId <= 0 and slotWeaponId <= 0 then
-                    break
-                end
-    
-                table.insert(items, item)
-    
-                local isFatSlot = item:call("get_IsFatSlot()")
-    
-                if item:call("get_IsFatSlot()") then
-                    table.insert(items, item) -- list the same item in its two slots
-                    skipNext = true
-                end    
+                if slotItemId > 0 or slotWeaponId > 0 then                 
+                    table.insert(items, item)
+
+                    local isFatSlot = item:call("get_IsFatSlot()")
+
+                    if item:call("get_IsFatSlot()") then
+                        table.insert(items, item) -- list the same item in its two slots
+                        skipNext = true
+                    end
+                end  
             else
                 skipNext = false
             end    
@@ -62,6 +60,18 @@ function Inventory.HasSpaceForItem()
     end
 
     return #currentItems + 2 < Inventory.GetMaxSlots() -- leave a 2 slot padding for non-randomized pickups
+end
+
+function Inventory.HasItemId(item_id, weapon_id)
+    local currentItems = Inventory.GetCurrentItems()
+
+    for k, item in pairs(currentItems) do
+        if item:call("get_ItemID()") == item_id or item:call("get_WeaponType()") == weapon_id then
+            return true
+        end
+    end
+
+    return false
 end
 
 function Inventory.AddItem(itemId, weaponId, weaponParts, bulletId, count)

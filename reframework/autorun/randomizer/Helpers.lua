@@ -1,5 +1,13 @@
 local Helpers = {}
 
+function Helpers.gameObject(obj_name)
+    return scene:findGameObject(obj_name)
+end
+
+function Helpers.component(obj, component_namespace)
+    return obj:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace(component_namespace)))
+end
+
 -- getting transform children is kinda annoying, so here's a helper for it
 function Helpers.get_children(xform)
 	local children = {}

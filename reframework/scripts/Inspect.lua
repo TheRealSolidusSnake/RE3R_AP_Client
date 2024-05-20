@@ -134,11 +134,17 @@ function InspectTypewriter.GetLocationId(gameObject)
 end
 
 function InspectTypewriter.GetMapId(gameObject)
-    if game == "RE2R" or game == "RE3R" then
+    if game == "RE2R" then
         local comp_gimmick_control = gameObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickControl")))
         local comp_gimmick_body = comp_gimmick_control:call("get_MyGimmickBody()")
         
         return comp_gimmick_body:get_field("AssignMapID")
+    end
+
+    if game == "RE3R" then
+        local comp_gimmick_control = gameObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickControl")))
+        
+        return comp_gimmick_control:call("getMapIdForMapClearing()")
     end
 
     if game == "RE7" then

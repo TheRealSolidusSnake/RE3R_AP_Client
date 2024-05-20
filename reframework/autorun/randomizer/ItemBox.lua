@@ -59,7 +59,9 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count)
     if itemLocker ~= nil then
         local gimmickItemLockerControlComponent = itemLocker:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickItemLockerControl")))
         local storageItems = gimmickItemLockerControlComponent:get_field("StorageItems")
+        local storageItems2nd = gimmickItemLockerControlComponent:get_field("StorageItems2nd")
         local mItems = storageItems:get_field("mItems")
+        local mItems2nd = storageItems2nd:get_field("mItems")
 
         for i, item in pairs(mItems:get_elements()) do
             local slotItemId = item:get_ItemId()
@@ -73,8 +75,24 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count)
                     item:set_Count(count) -- love the consistency with player inv
                 end
 
-                return
-            end            
+                break
+            end
+        end
+     
+        for i, item in pairs(mItems2nd:get_elements()) do
+            local slotItemId = item:get_ItemId()
+            local slotWeaponId = item:get_WeaponId()
+
+            if slotItemId <= 0 and slotWeaponId <= 0 then
+                if weaponId > 0 then
+                    item:setWeapon(weaponId, 0, count, tonumber(bulletId), 0)
+                else
+                    item:set_ItemId(itemId)
+                    item:set_Count(count) -- love the consistency with player inv
+                end
+
+                break
+            end
         end
     end
 end

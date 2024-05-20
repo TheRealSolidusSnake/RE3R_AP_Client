@@ -493,7 +493,7 @@ end)
 
 
 re.on_draw_ui(function()
-	changed, showWindow = imgui.checkbox("Show Archipelago UI", showMainWindow)
+	changed, showWindow = imgui.checkbox("Show Archipelago Client UI", showMainWindow)
 	if changed then
 		showMainWindow = showWindow
 	end

@@ -80,6 +80,7 @@ function Items.SetupInteractHook()
 
             -- If we're interacting with the victory location, send victory and bail
             if Archipelago.CheckForVictoryLocation(location_to_check) then
+                Archipelago.SendLocationCheck(location_to_check)
                 GUI.AddText("Goal Completed!")
 
                 return
@@ -91,44 +92,6 @@ function Items.SetupInteractHook()
 
                 return
             end
-
-            if item_name == "CFPlayExtra_GoHall" and item_folder_path == "RopewayContents/World/Location_RPD/LocationLevel_RPD/Scenario/S02_0000/1FE/1FE_GoHall" then
-                Storage.talkedToMarvin = true
-            end
-
-            -- If we're starting Ada's part, get the trigger to end the Ada event, send Ada to it, and trigger it
-            if location_to_check['item_object'] == 'CheckPoint_StartAdaPart' then
-                local leonStart = Scene.getSceneObject():findGameObject("WW_AdaEndEvent_EV580")
-                local leonStartInteract = leonStart:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.InteractBehavior")))
-                local leonStartTrigger = leonStartInteract:call("getTrigger", 0)
-
-                Player.WarpToPosition(Vector3f.new(-20.61, -42.25, -26.85)) -- right beside the trigger
-                leonStartTrigger:call("activate", Scene.getSceneObject():findGameObject("pl2000")) -- activate takes the player object
-                return
-            end
-
-            -- If we're starting Sherry's part, intercept the stuffed animal interact, send her right beside another trigger to load Orphanage fully,
-            --   then use that trigger (the next if below) to send her to the final cutscene
-            if item_name == 'sm73_727' then -- very beginning of Sherry section, interacting with stuffed animal  
-                item_positions:call('vanishItemAndSave()') -- skip the item stuff entirely
-
-                Player.WarpToPosition(Vector3f.new(54.11, 4.67, -210.19)) -- warp beside the crawl spot in the playroom
-
-                return
-            end
-
-            if item_name == 'OrphanAsylum_SetFlag_Tutorial_PL' then -- next convenient trigger for Sherry to hit after Orphanage loads
-                Player.WarpToPosition(Vector3f.new(47.86, 0.95, -205.94)) -- warp beside the final sherry cutscene
-
-                -- now, activate the final sherry cutscene
-                local sherryEnd = Scene.getSceneObject():findGameObject("OrphanAsylum_PlayEvent_EV400")
-                local sherryEndInteract = sherryEnd:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.InteractBehavior")))
-                local sherryEndFSM = sherryEndInteract:call("getTrigger", 0).Feedbacks[0]
-                sherryEndFSM:call("execute")
-                
-                return
-            end
-            -- END Sherry Skip
         
             local isLocationRandomized = Archipelago.IsLocationRandomized(location_to_check)
             local isSentChessPanel = Archipelago.IsSentChessPanel(location_to_check)
@@ -142,6 +105,13 @@ function Items.SetupInteractHook()
                     end
 
                     item_positions:call('vanishItemAndSave()')
+
+                    -- the game sets an invincble flag on the player when picking up an item,
+                    --    which apparently normally gets unset by something on the item itself
+                    -- since we're vanishing it, we need to manually unset the invincible flag
+                    local playerObj = Player.GetGameObject()
+                    local compHitPoint = playerObj:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("HitPointController")))
+                    compHitPoint:set_field("<Invincible>k__BackingField", false)
                 end
                 
                 if string.find(item_name, "SafeBoxDial") then -- if it's a safe, cancel the next safe ui
@@ -191,20 +161,48 @@ function Items.SetupStatueUIHook()
             local compFromHook = sdk.to_managed_object(args[2])
             local statueObject = compFromHook:call('get_GameObject()') -- the dial gimmick
             local compGimmickGUI = statueObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gui.RopewayGimmickAttachmentGUI")))
-            local statueName = statueObject:call("get_Name()")
-            local lastInteractableName = Items.lastInteractable:call("get_Name()")
+            local compGimmickAttach = statueObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickAttachment")))
+            local dialControlObject = compGimmickAttach:get_field("_GimmickControl"):get_GameObject()
 
-            if string.gsub(tostring(lastInteractableName), '_control', '_gimmick') ~= statueName then
+            if not dialControlObject then
                 return
             end
 
-            compFromHook:call("setFinished()")
+            -- for some reason, *some* of the statues will throw an error despite properly marking off as they should
+            --   i think it's related to the game having two statue controls on some of them (why?!), but don't care enough to dig into more.
+            --   so just pcall that f**ker and ignore the error, since it works anyways
+            pcall(function () 
+                local compAddItems = dialControlObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.option.AddItemsToInventorySettings")))
+                local compDialSettings = dialControlObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.option.AttachmentAlphabetLockSettings")))
+                local settingList = compAddItems:get_field("SettingList")
+                local itemPosObject = settingList[0]:get_field("ItemPositions")
+                local itemPositions = itemPosObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("item.ItemPositions")))
+                local statueName = statueObject:call("get_Name()")
+                local lastInteractableName = ""
+                
+                if Items.lastInteractable then 
+                    lastInteractableName = Items.lastInteractable:call("get_Name()")
+                end
 
-            if compFromHook:get_field("_CurState") > 1 then
-                Items.cancelNextStatueUI = false
-                Items.lastInteractable = nil
-                compGimmickGUI:call("SetCancel()") -- closes the safe interaction view / returns to player
-            end
+                if string.gsub(tostring(lastInteractableName), '_control', '_gimmick') ~= statueName then
+                    return
+                end
+
+                compFromHook:call("setFinished()")
+
+                if compFromHook:get_field("_CurState") > 1 then
+                    Items.cancelNextStatueUI = false
+                    Items.lastInteractable = nil
+                    itemPositions:vanishItemAndSave()
+                    itemPosObject:call("set_Enabled", false)
+                    
+                    compAddItems:set_field("SettingList", nil)
+                    compAddItems:call("set_Enabled", false)
+                    compDialSettings:call("TransmitCorrectAnswer", compGimmickGUI)
+                    compGimmickGUI:call("SetSatisfy()")
+                    compFromHook:call("set_Enabled", false)
+                end            
+            end)
         end
     end)
 end
@@ -220,12 +218,20 @@ function Items.SetupSafeUIHook()
             local safeBoxObject = compFromHook:call('get_GameObject()') -- the dial gimmick
             local compGimmickGUI = safeBoxObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gui.RopewayGimmickAttachmentGUI")))
             local compGimmickBody = safeBoxObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickBody")))
+            local compFsmState = safeBoxObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("FsmStateController")))
             local safeBoxControlObject = compGimmickBody:get_field("_GimmickControl"):call("get_GameObject()")
+            local safeBoxControlParent = safeBoxControlObject:get_Transform():get_Parent():get_GameObject()
             local compInteractBehavior = safeBoxControlObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.InteractBehavior")))
+            local compDialSettings = safeBoxControlObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.option.AttachmentSafeBoxDialSettings")))
+            local compAddItem = safeBoxControlParent:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.option.AddItemToInventorySettings")))
+            local itemPosObject = compAddItem:get_field("ItemPositions")
+            local itemPositions = itemPosObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("item.ItemPositions")))
 
             Items.cancelNextSafeUI = false
-            compGimmickGUI:call("SetCancel()") -- closes the safe interaction view / returns to player
-            compInteractBehavior:get_field("MyInteract"):call("clear()") -- makes the safe no longer interactable via "use key"
+            itemPositions:vanishItemAndSave()
+            compGimmickGUI:call("SetSatisfy()")
+            compAddItem:set_field("Enable", false) -- I guess set_Enabled is only for gameobjects and not components? smh
+            compDialSettings:call("TransmitCorrectAnswer", compGimmickGUI)
         end
     end)
 end

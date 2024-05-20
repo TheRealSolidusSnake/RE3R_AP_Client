@@ -13,11 +13,7 @@ function Scene.getSceneObject()
     return Scene.sceneObject
 end
 
-function Scene.getMainFlowManager()
-    if Scene.mainFlowManager ~= nil then
-        return Scene.mainFlowManager
-    end
-
+function Scene.getGameMaster()
     -- local gameMaster = Scene.getSceneObject():findGameObject("30_GameMaster")
     local masters = Scene.getSceneObject():findGameObjectsWithTag("Masters")
     local gameMaster = nil
@@ -29,10 +25,37 @@ function Scene.getMainFlowManager()
             break
         end
     end
+     
+    return gameMaster
+end
 
+function Scene.getMainFlowManager()
+    if Scene.mainFlowManager ~= nil then
+        return Scene.mainFlowManager
+    end
+
+    local gameMaster = Scene.getGameMaster()
     Scene.mainFlowManager = gameMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gamemastering.MainFlowManager")))
 
     return Scene.mainFlowManager
+end
+
+function Scene.getSurvivorType()
+    local gameMaster = Scene.getGameMaster()
+    local survivorManager = gameMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("SurvivorManager")))
+    local survivors = survivorManager:get_field("ExistSurvivorInfoList")
+
+    for _, survivor in pairs(survivors:get_field("mItems")) do
+        if survivor then
+            local isActive = survivor:get_field("<IsActivePlayer>k__BackingField")
+
+            if isActive then
+                return survivor:get_field("<SurvivorType>k__BackingField")
+            end
+        end
+    end
+
+    return -1
 end
 
 function Scene.getGUIItemBox()
@@ -57,6 +80,14 @@ end
 
 function Scene.isUsingItemBox()
     return Scene.getGUIItemBox():get_DrawSelf() -- is the ItemBox GUI "drawn"?
+end
+
+function Scene.isCharacterJill()
+    return Scene.getSurvivorType() == 0
+end
+
+function Scene.isCharacterCarlos()
+    return Scene.getSurvivorType() == 1
 end
 
 function Scene.getCurrentLocation()

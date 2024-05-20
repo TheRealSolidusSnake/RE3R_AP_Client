@@ -1,7 +1,11 @@
 local Player = {}
 
+function Player.GetGameObject()
+    return player.gameobj
+end
+
 function Player.GetCurrentPosition()
-    return player.gameobj:get_Transform():get_Position()
+    return Player.GetGameObject():get_Transform():get_Position()
 end
 
 function Player.WarpToPosition(vectorNew)
@@ -11,7 +15,7 @@ function Player.WarpToPosition(vectorNew)
 end
 
 function Player.LookAt(transform)
-    player.gameobj:get_Transform():lookAt(transform)
+    Player.GetGameObject():get_Transform():lookAt(transform)
 end
 
 return Player

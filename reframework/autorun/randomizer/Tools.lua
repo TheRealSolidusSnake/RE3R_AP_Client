@@ -8,6 +8,10 @@ function Tools.ShowGUI()
             " - " .. Lookups.difficulty:gsub("^%l", string.upper)
     end
 
+    -- local player_character_text = "   (not in-game)"
+    -- if Scene.isCharacterJill() then player_character_text = "   Jill" end
+    -- if Scene.isCharacterCarlos() then player_character_text = "   Carlos" end
+
     imgui.set_next_window_size(Vector2f.new(200, 400), 0)
     imgui.begin_window("Archipelago Game Mod ", nil,
         8 -- NoScrollbar
@@ -19,6 +23,9 @@ function Tools.ShowGUI()
     imgui.text_colored("AP Scenario & Difficulty:   ", -10825765)
     imgui.text(scenario_text)
     imgui.new_line()
+    -- imgui.text_colored("Current Player Character:   ", -10825765)
+    -- imgui.text(player_character_text)
+    -- imgui.new_line()
     imgui.text_colored("Credits:", -10825765)
     imgui.text("@Solidus")
     imgui.text("   - Main campaign")

@@ -23,7 +23,6 @@ ItemBox = require("randomizer/ItemBox")
 Items = require("randomizer/Items")
 Player = require("randomizer/Player")
 Scene = require("randomizer/Scene")
-StartingWeapon = require("randomizer/StartingWeapon")
 Storage = require("randomizer/Storage")
 Typewriters = require("randomizer/Typewriters")
 Tools = require("randomizer/Tools")
@@ -49,7 +48,6 @@ re.on_pre_application_entry("UpdateBehavior", function()
         Archipelago.Init()
         Items.Init()
         DestroyObjects.Init()
-        StartingWeapon.Init()
 
         if Archipelago.waitingForSync then
             Archipelago.waitingForSync = false

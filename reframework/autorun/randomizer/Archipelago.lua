@@ -1,7 +1,6 @@
 local Archipelago = {}
 Archipelago.seed = nil
 Archipelago.slot = nil
-Archipelago.starting_weapon = nil
 Archipelago.hasConnectedPrior = false -- keeps track of whether the player has connected at all so players don't have to remove AP mod to play vanilla
 Archipelago.isInit = false -- keeps track of whether init things like handlers need to run
 Archipelago.waitingForSync = false -- randomizer calls APSync when "waiting for sync"; i.e., when you die
@@ -82,10 +81,6 @@ function Archipelago.SlotDataHandler(slot_data)
 
     Archipelago.seed = player["seed"]
     Archipelago.slot = player["slot"]
-
-    if slot_data.starting_weapon ~= nil then
-        Archipelago.starting_weapon = slot_data.starting_weapon
-    end
 
     Lookups.Load(slot_data.character, slot_data.scenario, string.lower(slot_data.difficulty or "Standard"))
     Storage.Load()
@@ -428,15 +423,22 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
 
         if is_randomized > 0 then
             -- max slots is 20, so only process a new hip pouch if it will result in no more than 20
-            if item_name == "Hip Pouch" and Inventory.GetMaxSlots() <= 18 then
-                Inventory.IncreaseMaxSlots(2) -- simulate receiving the hip pouch by increasing player inv slots by 2
-                GUI.AddReceivedItemText(item_name, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
+            if item_name == "Hip Pouch" then
+                if Inventory.GetMaxSlots() <= 18 then
+                    Inventory.IncreaseMaxSlots(2) -- simulate receiving the hip pouch by increasing player inv slots by 2
+                    GUI.AddReceivedItemText(item_name, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
+                else
+                    GUI.AddText("Received Hip Pouch, but inventory is at maximum size. Ignoring.")
+                end
 
                 return
             end
 
             -- sending weapons to inventory causes them to not work until boxed + retrieved, so send weapons to box always for now
-            if item_ref.type ~= "Weapon" and item_ref.type ~= "Subweapon" and Inventory.HasSpaceForItem() then
+                -- also send key and gating items to box to prevent softlocking issues if Carlos was sent Jill's keys during a multiworld
+            if 
+                item_ref.type ~= "Weapon" and item_ref.type ~= "Subweapon" and item_ref.type ~= "Key" and item_ref.type ~= "Gating" and Inventory.HasSpaceForItem()
+            then
                 local addedToInv = Inventory.AddItem(tonumber(itemId), tonumber(weaponId), weaponParts, bulletId, tonumber(count))
 
                 -- if adding to inventory failed, add it to the box as a backup
@@ -446,7 +448,7 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
                     ItemBox.AddItem(tonumber(itemId), tonumber(weaponId), weaponParts, bulletId, tonumber(count))
                     sentToBox = true    
                 end
-            -- if this item is a weapon/subweapon or the player doesn't have room in inventory, send to the box
+            -- if this item is a weapon/subweapon/key or the player doesn't have room in inventory, send to the box
             else
                 ItemBox.AddItem(tonumber(itemId), tonumber(weaponId), weaponParts, bulletId, tonumber(count))
                 sentToBox = true
@@ -536,7 +538,6 @@ end
 function Archipelago.Reset()
     Archipelago.seed = nil
     Archipelago.slot = nil
-    Archipelago.starting_weapon = nil
     Archipelago.itemsQueue = {}
 end
 
