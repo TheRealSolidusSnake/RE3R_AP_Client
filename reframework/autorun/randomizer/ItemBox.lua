@@ -4,6 +4,15 @@ function ItemBox.GetAnyAvailable()
     local scene = Scene.getSceneObject()
     local gimmick_objects = scene:call("findGameObjectsWithTag(System.String)", "Gimmick")
     
+    -- there's occasionally an error about trying to loop an REManagedObject, so don't do that
+    if type(gimmick_objects) ~= "table" then
+        if gimmick_objects.get_elements then
+            gimmick_objects = gimmick_objects:get_elements()
+        else
+            return nil -- if it's not something that we can call "get_elements" on, then it might as well be nil
+        end
+    end
+
     for k, gimmick in pairs(gimmick_objects) do
         gimmickName = gimmick:call("get_Name()")
 

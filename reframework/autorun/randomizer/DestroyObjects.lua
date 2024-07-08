@@ -3,7 +3,7 @@ DestroyObjects.isInit = false
 DestroyObjects.lastRemoval = os.time()
 
 function DestroyObjects.Init()
-    if not DestroyObjects.isInit then
+    if Archipelago.IsConnected() and not DestroyObjects.isInit then
         DestroyObjects.isInit = true
         DestroyObjects.DestroyAll()
     end

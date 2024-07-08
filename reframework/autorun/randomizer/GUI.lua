@@ -2,6 +2,8 @@ local GUI = {}
 GUI.textList = {}
 GUI.lastText = os.time()
 GUI.logo = nil
+GUI.font = "Prompt-Medium.ttf"
+GUI.font_size = 24
 
 function GUI.CheckForAndDisplayMessages()
     if next(GUI.textList) == nil then
@@ -24,100 +26,93 @@ function GUI.CheckForAndDisplayMessages()
     )
     -- ImGui Window Flags (3rd arg) reference here: https://oprypin.github.io/crystal-imgui/ImGui/ImGuiWindowFlags.html
     
-    local font = imgui.load_font("BebasNeue-Regular.ttf", 24)
+    local font = imgui.load_font(GUI.font, GUI.font_size)
 
     if (font ~= nil) then
         imgui.push_font(font)
     end
 
-    for k, textItem in pairs(GUI.textList) do
-        if textItem.message ~= nil then
-            if textItem.color then
-                imgui.text_colored(textItem.message, textItem.color)    
-            else
-                imgui.text(textItem.message)
+    imgui.push_style_var(14, Vector2f.new(0,0)) -- text padding
+
+    for k, textArray in pairs(GUI.textList) do
+        for k2, textItem in pairs(textArray) do
+            if textItem.message ~= nil then
+                if textItem.color then
+                    imgui.text_colored(textItem.message, textItem.color)    
+                else
+                    imgui.text(textItem.message)
+                end
             end
-    
-            if 
-                string.sub(textItem.message, -1) ~= '!' and string.sub(textItem.message, -1) ~= ')' 
-                and not string.find(textItem.message, 'Connected.') and not string.find(textItem.message, 'Disconnected.') 
-                and not string.find(textItem.message, 'connected.') and not string.find(textItem.message, 'changed.')
-                and not string.find(textItem.message, 'nearby item box.')
-            then
-                imgui.same_line()
-            end    
+
+            imgui.same_line()
         end
+
+        imgui.new_line()
     end
 
+    imgui.pop_style_var(1)
     imgui.pop_font()
+    imgui.end_window()
     imgui.end_window()
 end
 
 function GUI.AddText(message, color)
     local textObject = {}
     textObject.message = message
-    textObject.color = color
-
-    -- i don't remember how these colors work, and i hate them
-    if (textObject.color == "green") then
-        textObject.color = -14710248
-    elseif (textObject.color == "yellow") then
-        textObject.color = -10825765
-    elseif (textObject.color == "blue") then
-        textObject.color = -5825765
-    end
     
-    table.insert(GUI.textList, textObject)
+    -- convert legacy colors to a system yellow
+    if color ~= nil and color ~= "" then
+        textObject.color = AP_REF.HexToImguiColor("d9d904")
+    end
+        
+    table.insert(GUI.textList, {textObject})
     GUI.lastText = os.time()
 end
 
--- Function for only having one message of this kind in the message list, so we don't spam it unnecessarily.
-function GUI.OnceText(message)
-    for k, v in pairs(GUI.textList) do
-        if v.message == message then
-            return
+function GUI.AddTexts(textObjects)
+    for k, textObject in pairs(textObjects) do   
+        -- convert legacy colors to a system yellow
+        if textObject.color == "green" then
+            textObject.color = AP_REF.HexToImguiColor("d9d904")
         end
     end
 
-    GUI.AddText(message)
+    table.insert(GUI.textList, textObjects)
+    GUI.lastText = os.time()
 end
 
 -- receiving item from self or another player
-function GUI.AddReceivedItemText(item_object, sendingPlayer, selfPlayer, sentToBox)
+function GUI.AddReceivedItemText(item_name, item_color, sendingPlayer, selfPlayer, sentToBox)
+    local textObjects = {}
+
     if sendingPlayer == selfPlayer then
-        GUI.AddText("Found  your ") 
+        table.insert(textObjects, { message="Found your " })
     else
-        GUI.AddText("Received ") 
+        table.insert(textObjects, { message="Received " })
     end
     
-    GUI.AddText(item_object, "green")
-
+    table.insert(textObjects, { message=item_name, color=AP_REF.HexToImguiColor(item_color) })
+    
     if sendingPlayer and sendingPlayer ~= selfPlayer then
-        GUI.AddText(" from " .. sendingPlayer)
+        table.insert(textObjects, { message=" from " .. sendingPlayer })
     end
 
     if sentToBox then
-        GUI.AddText(". Sent to item box!")
+        table.insert(textObjects, { message=". Sent to item box!" })
     else
-        GUI.AddText("!")
+        table.insert(textObjects, { message="!" })
     end
+
+    GUI.AddTexts(textObjects)
 end
 
 -- sending item to another player
-function GUI.AddSentItemText(player_sender, item, player_receiver, location)
-    GUI.AddText(player_sender .. " sent ")
-    GUI.AddText(item, "green")
-    GUI.AddText(" to " .. player_receiver .. "!")
-end
-
--- sending item to self
--- is this even called ever?
-function GUI.AddSentItemSelfText(player_sender, item, location)
-    GUI.AddText(player_sender .. " found their ")
-    GUI.AddText(item, "green")
-    GUI.AddText(" (")
-    GUI.AddText(location, "green")
-    GUI.AddText(")")
+function GUI.AddSentItemText(player_sender, item_name, item_color, player_receiver, location)
+    GUI.AddTexts({
+        { message=player_sender .. " sent " },
+        { message=item_name, color=AP_REF.HexToImguiColor(item_color) },
+        { message=" to " .. player_receiver .. "!" }
+    })
 end
 
 function GUI.ClearText()

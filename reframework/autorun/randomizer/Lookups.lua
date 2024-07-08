@@ -36,8 +36,10 @@ function Lookups.Load(character, scenario, difficulty)
 
     if hardcore_locations then
         for k, v in pairs(hardcore_locations) do
-            v['hardcore'] = true
-            table.insert(Lookups.locations, v)
+            if not v['remove'] then -- ignore "remove" locations because they're for generation only
+                v['hardcore'] = true
+                table.insert(Lookups.locations, v)
+            end
         end
     end
 end

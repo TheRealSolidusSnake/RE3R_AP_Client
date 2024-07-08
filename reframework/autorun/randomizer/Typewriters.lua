@@ -18,10 +18,16 @@ function Typewriters.AddUnlockedText(name, item_name, no_save_warning)
         end
     end
 
-    if #typewriterText > 0 then
-        GUI.AddText("Unlocked ") 
-        GUI.AddText(typewriterText, "green")
-        GUI.AddText(" typewriter!" .. (not no_save_warning and " Don't forget to save!!" or ""))
+    if #typewriterText > 0 then     
+        if typewriterText == "RPD - Lobby" and string.lower(Lookups.scenario) == "a" and not Storage.talkedToMarvin then
+            GUI.AddText("Lobby Typewriter will unlock after you talk to Marvin for the first time.")
+        else
+            GUI.AddTexts({
+                { message="Unlocked " },
+                { message=typewriterText, color="green" },
+                { message=" typewriter!" .. (not no_save_warning and " Don't forget to save!!" or "") }
+            }) 
+        end
     end
 end
 
@@ -76,23 +82,28 @@ function Typewriters.DisplayWarpMenu()
         return
     end
 
-    local font = imgui.load_font("BebasNeue-Regular.ttf", 24)
+    local font = imgui.load_font(GUI.font, GUI.font_size)
 
     if (font ~= nil) then
         imgui.push_font(font)
     end
 
     for t, typewriter in pairs(Lookups.typewriters) do
-        
+        local typewriter_disabled = false
+
+        if typewriter["name"] == "RPD - Lobby" and string.lower(Lookups.scenario) == "a" and not Storage.talkedToMarvin then
+            typewriter_disabled = true
+        end
+
         -- if the player has unlocked the typewriter by interacting once, set active color; otherwise, set default
-        if Typewriters.unlocked_typewriters[typewriter["item_object"]] then
+        if Typewriters.unlocked_typewriters[typewriter["item_object"]] and not typewriter_disabled then
             imgui.push_style_color(imgui.COLOR_BUTTON, Vector4f.new(2.5, 2.5, 2.5, 1.00))
         else
             imgui.push_style_color(imgui.COLOR_BUTTON, Vector4f.new(1, 1, 1, 0.07))
         end
 
         -- don't allow the user to teleport while using the item box, and check that they're in-game for good measure too
-        if imgui.button(typewriter["name"]) and Scene.isInGame() and not Scene.isUsingItemBox() then
+        if imgui.button(typewriter["name"]) and Scene.isInGame() and not Scene.isUsingItemBox() and not typewriter_disabled then
             -- if the player has unlocked the typewriter by interacting once, let them teleport; otherwise, do nothing
             if Typewriters.unlocked_typewriters[typewriter["item_object"]] then
                 local locationThroughManager = sdk.get_managed_singleton(sdk.game_namespace("LocationThroughManager"))

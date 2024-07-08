@@ -99,19 +99,17 @@ function Items.SetupInteractHook()
             if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) or Archipelago.IsConnected()) then
                 -- if it's an item, call vanish and save to get rid of it
                 if item_positions and isLocationRandomized then
+                    -- we were originally unsetting the invincibility flag here, but there's occasionally a bug where
+                    --    the game forgets that the player exists, making setting the flag not possible
+                    -- so we just set our own flag to relentlessly attempt to turn off invinc until it works
+                    Archipelago.waitingForInvincibiltyOff = true
+                    
                     -- if it's a chess panel that's already been sent, ignore whatever item is there and let the game take over
                     if isSentChessPanel then
                         return
                     end
 
                     item_positions:call('vanishItemAndSave()')
-
-                    -- the game sets an invincble flag on the player when picking up an item,
-                    --    which apparently normally gets unset by something on the item itself
-                    -- since we're vanishing it, we need to manually unset the invincible flag
-                    local playerObj = Player.GetGameObject()
-                    local compHitPoint = playerObj:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("HitPointController")))
-                    compHitPoint:set_field("<Invincible>k__BackingField", false)
                 end
                 
                 if string.find(item_name, "SafeBoxDial") then -- if it's a safe, cancel the next safe ui
@@ -130,25 +128,19 @@ function Items.SetupInteractHook()
 end
 
 function Items.SetupDisconnectWaitHook()
-    -- This didn't work in RE3R last time I checked.
-    -- Basically, this hook tries to avoid letting the player pick up items (thus, removing the item locations) 
-    --   when they were disconnected and haven't reconnected. 
-    --
-    --
+    local guiNewInventoryTypeDef = sdk.find_type_definition(sdk.game_namespace("gui.EsInventoryBehavior"))
+    local guiNewInventoryMethod = guiNewInventoryTypeDef:get_method("set_CaptionBehavior")
 
-    -- local guiNewInventoryTypeDef = sdk.find_type_definition(sdk.game_namespace("gui.NewInventoryBehavior"))
-    -- local guiNewInventoryMethod = guiNewInventoryTypeDef:get_method("setCaptionState")
+    -- small hook that handles cancelling inventory UIs when having connected before and being not reconnected
+    sdk.hook(guiNewInventoryMethod, function (args)
+        if Items.cancelNextUI then
+            local uiMaster = Scene.getSceneObject():findGameObject("UIMaster")
+            local compGuiMaster = uiMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gui.GUIMaster")))
 
-    -- -- small hook that handles cancelling inventory UIs when having connected before and being not reconnected
-    -- sdk.hook(guiNewInventoryMethod, function (args)
-    --     if Items.cancelNextUI then
-    --         local uiMaster = Scene.getSceneObject():findGameObject("UIMaster")
-    --         local compGuiMaster = uiMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gui.GUIMaster")))
-
-    --         Items.cancelNextUI = false
-    --         compGuiMaster:closeInventoryForce()
-    --     end
-    -- end)
+            Items.cancelNextUI = false
+            compGuiMaster:closeInventoryForce()
+        end
+    end)
 end
 
 function Items.SetupStatueUIHook()

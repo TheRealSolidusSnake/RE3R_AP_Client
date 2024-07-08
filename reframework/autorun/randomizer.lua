@@ -57,12 +57,34 @@ re.on_pre_application_entry("UpdateBehavior", function()
         if Archipelago.CanReceiveItems() then
             Archipelago.ProcessItemsQueue()
         end
+
+        -- if the game randomly forgets that the player exists and tries to leave the invincibility flag on from item pickup,
+        --   relentlessly check for the player existing until it does, then turn that flag off
+        if Archipelago.waitingForInvincibiltyOff then
+            if Player.TurnOffInvincibility() then
+                Archipelago.waitingForInvincibiltyOff = false
+            end
+        end
+
+        if Player.waitingForKill then
+            Player.Kill()
+        else
+            Archipelago.canDeathLink = true
+            Archipelago.wasDeathLinked = false
+        end
     else
         DestroyObjects.isInit = false -- look for objects that should be destroyed and destroy them again
     end
 
-    if Scene:isGameOver() and not Archipelago.waitingForSync then
-        Archipelago.waitingForSync = true
+    if Scene:isInGameOver() then
+        if Archipelago.canDeathLink and not Archipelago.wasDeathLinked then
+            Archipelago.canDeathLink = false
+            Archipelago:SendDeathLink()
+        end
+        
+        if not Archipelago.waitingForSync then
+            Archipelago.waitingForSync = true
+        end
     end
 end)
 
@@ -76,9 +98,11 @@ re.on_frame(function ()
         Tools.ShowGUI()
     end
 
-    if Scene:isInGame() then 
+    if Scene:isInGame() or Scene:isInGameOver() then
         GUI.CheckForAndDisplayMessages()
-        
+    end
+
+    if Scene:isInGame() then 
         -- only show the typewriter window when the user presses the reframework hotkey
         if reframework:is_drawing_ui() then
             Typewriters.DisplayWarpMenu()

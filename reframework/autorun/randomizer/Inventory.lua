@@ -31,16 +31,16 @@ function Inventory.GetCurrentItems()
                 local slotItemId = item:call("get_ItemID()")
                 local slotWeaponId = item:call("get_WeaponType()")
     
-                if slotItemId > 0 or slotWeaponId > 0 then                 
+                if slotItemId > 0 or slotWeaponId > 0 then
                     table.insert(items, item)
-
+        
                     local isFatSlot = item:call("get_IsFatSlot()")
-
+        
                     if item:call("get_IsFatSlot()") then
                         table.insert(items, item) -- list the same item in its two slots
                         skipNext = true
-                    end
-                end  
+                    end                    
+                end
             else
                 skipNext = false
             end    

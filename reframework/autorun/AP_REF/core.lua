@@ -46,6 +46,11 @@ AP_REF.APTrapColor = "FA8072"
 AP_REF.APLocationColor = "00FF7F"
 AP_REF.APEntranceColor = "6495ED"
 
+-- connection config settings
+AP_REF.APHost = "localhost:38281"
+AP_REF.APSlot = "Player1"
+AP_REF.APPassword = ""
+
 function AP_REF.HexToImguiColor(color)
 	local r = string.sub(color, 1, 2)
 	local g = string.sub(color, 3, 4)
@@ -74,10 +79,6 @@ end
 -- Utilize at your own peril
 AP_REF.APClient = nil
 -----------------------------------
-
-local host = "localhost:38281"
-local slot = "Player1"
-local password = ""
 
 local mainWindowVisible = true
 local showMainWindow = true
@@ -220,20 +221,30 @@ local function set_room_info_handler(callback)
 	function room_info_handler()
 		debug_print("Room info")
 		callback()
-		local tags = {"Lua-APClientPP"}
-		if AP_REF.APGameName == "" then
-			table.insert(tags, "TextOnly")
-		end
-		for i, val in ipairs(AP_REF.APTags) do
-			table.insert(tags, val)
-		end
-		AP_REF.APClient:ConnectSlot(slot, password, AP_REF.APItemsHandling, tags, {0, 4, 3})
+		
+		AP_REF.APClient:ConnectSlot(AP_REF.APSlot, AP_REF.APPassword, AP_REF.APItemsHandling, {"Lua-APClientPP"}, {0, 5, 0})
 	end
 	AP_REF.APClient:set_room_info_handler(room_info_handler)
 end
 local function set_slot_connected_handler(callback)
 	function slot_connected_handler(slot_data)
 		debug_print("Slot connected")
+
+        local tags = {"Lua-APClientPP"}
+
+		if AP_REF.APGameName == "" then
+			table.insert(tags, "TextOnly")
+		end
+
+		for i, val in ipairs(AP_REF.APTags) do
+			table.insert(tags, val)
+		end
+
+        if slot_data.death_link then
+            table.insert(tags, "DeathLink")
+        end
+
+        AP_REF.APClient:ConnectUpdate(nil, tags) -- set deathlink tag if needed
 		callback(slot_data)
 	end
 	AP_REF.APClient:set_slot_connected_handler(slot_connected_handler)
@@ -369,19 +380,19 @@ local function main_menu()
         imgui.input_text("Host:", foo) -- ^ it's dumb that we have to do this, and I hope imgui one day supports left-side labels (what a joke)
         imgui.same_line()
         imgui.push_item_width(size.x / 5)
-		changed, hostname, _1, _2 = imgui.input_text("Slot:", host) -- imgui labels are displayed on the right (WHY?!), so this label is for the NEXT input
+		changed, hostname, _1, _2 = imgui.input_text("Slot:", AP_REF.APHost) -- imgui labels are displayed on the right (WHY?!), so this label is for the NEXT input
 		if changed then
-			host = hostname
+			AP_REF.APHost = hostname
 		end
 		imgui.same_line()
-		changed, slotname, _1, _2 = imgui.input_text("Password:", slot) -- imgui labels are displayed on the right (WHY?!), so this label is for the NEXT input
+		changed, slotname, _1, _2 = imgui.input_text("Password:", AP_REF.APSlot) -- imgui labels are displayed on the right (WHY?!), so this label is for the NEXT input
 		if changed then
-			slot = slotname
+			AP_REF.APSlot = slotname
 		end
 		imgui.same_line()
-		changed, pass, _1, _2 = imgui.input_text("", password)
+		changed, pass, _1, _2 = imgui.input_text("", AP_REF.APPassword)
 		if changed then
-			password = pass
+			AP_REF.APPassword = pass
 		end
 		imgui.same_line()
 		if connected then
@@ -391,7 +402,7 @@ local function main_menu()
 			end
 		else
 			if imgui.button("Connect") then
-				APConnect(host)
+				APConnect(AP_REF.APHost)
 			end
 		end
 		imgui.pop_item_width()
@@ -411,7 +422,7 @@ local function main_menu()
 		imgui.pop_style_var()
 		imgui.end_child_window()
 
-        -- None of the commands work except maybe send? So just remove the input box and button for sending commands for now.
+        -- None of the commands work except maybe say? So just remove the input box and button for sending commands for now.
         --
 		-- imgui.text("Input:")
 		-- imgui.same_line()
@@ -448,6 +459,12 @@ local function SaveConfig()
     config["APTrapColor"] = AP_REF.APTrapColor
     config["APLocationColor"] = AP_REF.APLocationColor
 	config["APEntranceColor"] = AP_REF.APEntranceColor
+
+    -- store last connection settings so they're restored on game relaunch
+    config["APHost"] = AP_REF.APHost
+    config["APSlot"] = AP_REF.APSlot
+    config["APPassword"] = AP_REF.APPassword
+
     if not json.dump_file("AP_REF.json", config, 4) then
         print("Config cannot be saved!")
     end
@@ -479,6 +496,17 @@ local function ReadConfig()
         end
 		if config["APEntranceColor"] ~= nil then
 			AP_REF.APEntranceColor = config["APEntranceColor"]
+		end
+
+        -- save last connection settings so we can restore them when the game is closed and reopened
+        if config["APHost"] ~= nil then
+			AP_REF.APHost = config["APHost"]
+		end
+        if config["APSlot"] ~= nil then
+			AP_REF.APSlot = config["APSlot"]
+		end
+        if config["APPassword"] ~= nil then
+			AP_REF.APPassword = config["APPassword"]
 		end
     else
         SaveConfig()

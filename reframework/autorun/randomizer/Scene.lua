@@ -25,7 +25,7 @@ function Scene.getGameMaster()
             break
         end
     end
-     
+
     return gameMaster
 end
 
@@ -35,6 +35,7 @@ function Scene.getMainFlowManager()
     end
 
     local gameMaster = Scene.getGameMaster()
+
     Scene.mainFlowManager = gameMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gamemastering.MainFlowManager")))
 
     return Scene.mainFlowManager
@@ -74,8 +75,16 @@ function Scene.isInGame()
     return Scene.getMainFlowManager():get_IsInGame()
 end
 
-function Scene.isGameOver()
+function Scene.isInPause()
+    return Scene.getMainFlowManager():get_IsInPause()
+end
+
+function Scene.isInGameOver()
     return Scene.getMainFlowManager():get_IsInGameOver()
+end
+
+function Scene.goToGameOver()
+    return Scene.getMainFlowManager():call("goGameOverSimple", nil)
 end
 
 function Scene.isUsingItemBox()
