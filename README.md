@@ -10,15 +10,7 @@ Archipelago randomizer client for Resident Evil 3 Remake, designed to work with 
 
 ## Install Steps
 
-1. **THIS ONLY WORKS WITH THE non-RTX BETA OF RE3R ON STEAM. RIGHT-CLICK RE3R AND OPEN PROPERTIES:**
-![non-rtx-RE3R](https://github.com/dontjoome/RE3R_AP_Client/assets/63137482/ddbeea99-7217-4276-a3fb-9bf0c292d386)
-2. Download REFramework from the most recent release here: https://github.com/praydog/REFramework/releases
-    - Get the RE3_TDB67 zip.
-3. Extract the REFramework zip in your RE3 game folder (Steam or otherwise)
-    - Once you've done this, you should have an reframework folder in your game folder, and it should've added a dinput8.dll to the game folder.
-4. Download the source for this client, extract that zip somewhere, and copy both the "reframework" folder and the lua-apclientpp.dll file into your game folder.
-    - It may ask to overwrite or merge on the "reframework" folder, just click Yes.
-5. That's it! Start the game and enjoy!
+Follow the visual setup guide here: https://dontjoome.github.io/RE3R_AP_SetupGuide/
 
 ## I need general help.
 
