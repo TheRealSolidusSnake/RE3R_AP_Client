@@ -71,7 +71,9 @@ function Player.TurnOffInvincibility()
 
     if playerObj then
         local compHitPoint = Player.GetHitPointController()
+        local compHitPoint2nd = Player.GetHitPointController()
         compHitPoint:set_field("<Invincible>k__BackingField", false)
+        compHitPoint2nd:set_field("<SecondInvincible>k__BackingField", false)
 
         return true
     else
