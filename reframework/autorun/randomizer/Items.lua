@@ -92,6 +92,20 @@ function Items.SetupInteractHook()
 
                 return
             end
+
+            if item_name == "sm42_505_ES_C4Bomb01A_CH2_gimmick" and item_folder_path == "RopewayContents/World/Location_RPD/LocationLevel_RPD/Scenario/S02_0300/ES_S02_0300/ShowerRoomBlownUp" then
+
+                GUI.AddText("Warning: Entering the STARS Office is a one way trip")
+                GUI.AddText("The STARS Office also has permanently missable items in it")
+                GUI.AddText("It is recommended that you complete all checks in the RPD prior to entering.")
+            end
+
+            if item_name == "msg15_wait" and item_folder_path == "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Scenario/S04_0300/ES_S04_0300/Msg" then
+
+                GUI.AddText("Warning: Curing Jill will prevent you from getting earlier item checks")
+                GUI.AddText("Locations in the Hospital will be gone forever if you happened to skip any")
+                GUI.AddText("It is recommended that you complete all checks in the Hospital prior to curing Jill.")
+            end
         
             local isLocationRandomized = Archipelago.IsLocationRandomized(location_to_check)
             local isSentChessPanel = Archipelago.IsSentChessPanel(location_to_check)
@@ -102,7 +116,7 @@ function Items.SetupInteractHook()
                     -- we were originally unsetting the invincibility flag here, but there's occasionally a bug where
                     --    the game forgets that the player exists, making setting the flag not possible
                     -- so we just set our own flag to relentlessly attempt to turn off invinc until it works
-                    Archipelago.waitingForInvincibiltyOff = true
+                    Archipelago.waitingForInvincibilityOff = true
                     
                     -- if it's a chess panel that's already been sent, ignore whatever item is there and let the game take over
                     if isSentChessPanel then
@@ -110,6 +124,21 @@ function Items.SetupInteractHook()
                     end
 
                     item_positions:call('vanishItemAndSave()')
+
+                    -- the game sets an invincible flag on the player when picking up an item,
+                    --    which apparently normally gets unset by something on the item itself
+                    -- since we're vanishing it, we need to manually unset the invincible flag
+                    local playerObj = Player.GetGameObject()
+                    local compHitPoint = playerObj:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("HitPointController")))
+		    local compHitPoint2nd = playerObj:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("HitPointController")))
+		    local compHitPoint3rd = playerObj:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("HitPointController")))
+		    
+                    compHitPoint:call("set_Invincible(System.Boolean)", false)
+        	    compHitPoint:set_field("<Invincible>k__BackingField", false)
+        	    compHitPoint2nd:call("set_SecondInvincible(System.Boolean)", false)
+        	    compHitPoint2nd:set_field("<SecondInvincible>k__BackingField", false)
+    		    compHitPoint3rd:call("set_TrackInvincible(System.Boolean)", true)
+        	    compHitPoint3rd:set_field("<TrackInvincible>k__BackingField", true)
                 end
                 
                 if string.find(item_name, "SafeBoxDial") then -- if it's a safe, cancel the next safe ui
@@ -129,7 +158,7 @@ end
 
 function Items.SetupDisconnectWaitHook()
     local guiNewInventoryTypeDef = sdk.find_type_definition(sdk.game_namespace("gui.EsInventoryBehavior"))
-    local guiNewInventoryMethod = guiNewInventoryTypeDef:get_method("set_CaptionBehavior")
+    local guiNewInventoryMethod = guiNewInventoryTypeDef:get_method("setCaptionState")
 
     -- small hook that handles cancelling inventory UIs when having connected before and being not reconnected
     sdk.hook(guiNewInventoryMethod, function (args)

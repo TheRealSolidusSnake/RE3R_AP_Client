@@ -6,7 +6,7 @@ Archipelago.death_link = false -- comes over in slot data
 Archipelago.hasConnectedPrior = false -- keeps track of whether the player has connected at all so players don't have to remove AP mod to play vanilla
 Archipelago.isInit = false -- keeps track of whether init things like handlers need to run
 Archipelago.waitingForSync = false -- randomizer calls APSync when "waiting for sync"; i.e., when you die
-Archipelago.waitingForInvincibiltyOff = false -- occasionally, the game "forgets" who the player is, so this is a backup to toggle off item pickup invincibility
+Archipelago.waitingForInvincibilityOff = false -- occasionally, the game "forgets" who the player is, so this is a backup to toggle off item pickup invincibility
 Archipelago.canDeathLink = false -- this gets set to true when you're in-game, then a deathlink can send in game over and this is set to false again, repeat
 Archipelago.wasDeathLinked = false -- this gets set to true when we're killed from a deathlink, so we don't trigger another deathlink (and a loop)
 
@@ -119,6 +119,8 @@ AP_REF.on_items_received = APItemsReceivedHandler
 function Archipelago.ItemsReceivedHandler(items_received)
     local itemsWaiting = {}
     local damageTrapReceived = false
+    local parasiteTrapReceived = false
+    local pukeTrapReceived = false
 
     -- add all of the randomized items to an item queue to wait for send
     for k, row in pairs(items_received) do
@@ -137,11 +139,26 @@ function Archipelago.ItemsReceivedHandler(items_received)
                 end
             end
 
+            if item_data["name"] == "Victory" then
+                    Archipelago.ReceiveItem(item_data["name"])
+            end
+
             if item_data["name"] and 
-                not (item_data["name"] == "Damage Trap" and damageTrapReceived) 
+                not (item_data["name"] == "Victory") and 
+                not (item_data["name"] == "Damage Trap" and damageTrapReceived) and 
+		not (item_data["name"] == "Parasite Trap" and parasiteTrapReceived) and
+                not (item_data["name"] == "Puke Trap" and pukeTrapReceived)
             then
-                if item_data["name"] == "Damage Trap" then
+            	if item_data["name"] == "Damage Trap" then
                     damageTrapReceived = true
+                end
+
+                if item_data["name"] == "Parasite Trap" then
+                    parasiteTrapReceived = true
+                end
+
+                if item_data["name"] == "Puke Trap" then
+                    pukeTrapReceived = true
                 end
 
                 if item_data["name"] and row["player"] ~= nil and is_randomized == 0 then
@@ -377,6 +394,8 @@ function Archipelago.IsSentChessPanel(location_data)
     local location = Archipelago._GetLocationFromLocationData(location_data, true) -- include_sent_locations
     local scenario_suffix = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. ")"
     local scenario_suffix_hardcore = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "H)"
+    local scenario_suffix_nightmare = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "N)"
+    local scenario_suffix_inferno = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "I)"
 
     if not location then
         return false
@@ -388,8 +407,14 @@ function Archipelago.IsSentChessPanel(location_data)
         for k, loc in pairs(Lookups.locations) do
             location_name_with_region = loc['region'] .. scenario_suffix .. " - " .. loc['name']
             location_name_with_region_hardcore = loc['region'] .. scenario_suffix_hardcore .. " - " .. loc['name']
+            location_name_with_region_nightmare = loc['region'] .. scenario_suffix_nightmare .. " - " .. loc['name']
+            location_name_with_region_inferno = loc['region'] .. scenario_suffix_inferno .. " - " .. loc['name']
 
-            if Lookups.difficulty == 'hardcore' and location['name'] == location_name_with_region_hardcore and loc['sent'] ~= nil and loc['sent'] then
+            if Lookups.difficulty == 'inferno' and location['name'] == location_name_with_region_inferno and loc['sent'] ~= nil and loc['sent'] then
+                return true
+            elseif Lookups.difficulty == 'nightmare' and location['name'] == location_name_with_region_nightmare and loc['sent'] ~= nil and loc['sent'] then
+                return true
+            elseif Lookups.difficulty == 'hardcore' and location['name'] == location_name_with_region_hardcore and loc['sent'] ~= nil and loc['sent'] then
                 return true
             elseif location['name'] == location_name_with_region and loc['sent'] ~= nil and loc['sent'] then
                 return true
@@ -550,6 +575,22 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
                 return
             end
 
+	    if item_name == "Parasite Trap" then
+
+                Player.Parasite()
+                GUI.AddReceivedItemText(item_name, item_color, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
+
+                return
+            end
+
+            if item_name == "Puke Trap" then
+
+                Player.Puke()
+                GUI.AddReceivedItemText(item_name, item_color, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
+
+                return
+            end
+
             -- max slots is 20, so only process a new hip pouch if it will result in no more than 20
             if item_name == "Hip Pouch" then
                 if Inventory.GetMaxSlots() <= 18 then
@@ -565,7 +606,8 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
             -- sending weapons to inventory causes them to not work until boxed + retrieved, so send weapons to box always for now
                 -- also send key and gating items to box to prevent softlocking issues if Carlos was sent Jill's keys during a multiworld
             if 
-                item_ref.type ~= "Weapon" and item_ref.type ~= "Subweapon" and item_ref.type ~= "Key" and item_ref.type ~= "Gating" and item_ref.type ~= "Ammo" and Inventory.HasSpaceForItem()
+                item_ref.type ~= "Weapon" and item_ref.type ~= "Subweapon" and item_ref.type ~= "Key" and item_ref.type ~= "Gating" and item_ref.type ~= "Ammo" and 
+		item_ref.type ~= "Upgrade" and Inventory.HasSpaceForItem()
             then
                 local addedToInv = Inventory.AddItem(tonumber(itemId), tonumber(weaponId), weaponParts, bulletId, tonumber(count))
 
@@ -615,10 +657,72 @@ function Archipelago._GetLocationFromLocationData(location_data, include_sent_lo
     local translated_location = {}
     local scenario_suffix = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. ")"
     local scenario_suffix_hardcore = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "H)"
+    local scenario_suffix_nightmare = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "N)"
+    local scenario_suffix_inferno = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "I)"
 
     if location_data['id'] and not location_data['name'] then
         location_data['name'] = AP_REF.APClient:get_location_name(location_data['id'], player['game'])
     end
+
+    -- if the difficulty is inferno, loop first looking for inferno locations only so we can prioritize matching those
+    if Lookups.difficulty == 'inferno' then
+        for k, loc in pairs(Lookups.locations) do
+            if loc['inferno'] ~= nil and loc['inferno'] then -- if it doesn't have the inferno attribute, it's not a inferno location, skip it for later
+                location_name_with_region_inferno = loc['region'] .. scenario_suffix_inferno .. " - " .. loc['name']
+        
+                if location_data['name'] == location_name_with_region_inferno then
+                    translated_location['name'] = location_name_with_region_inferno
+                    translated_location['raw_data'] = loc
+        
+                    break
+                end
+        
+                if include_sent_locations or not loc['sent'] then
+                    -- StartArea/SherryRoom is the shotgun shell location at start of Labs that can *also* be a shotgun if you haven't gotten one
+                    -- and it's only 1 location so, if it's there, match it regardless of item object + parent object
+                    if (loc['item_object'] == location_data['item_object'] and loc['parent_object'] == location_data['parent_object'] and loc['folder_path'] == location_data['folder_path']) or
+                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/SherryRoom') and string.find(location_data['folder_path'], 'StartArea/SherryRoom')) or 
+                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/Sherry Room') and string.find(location_data['folder_path'], 'StartArea/Sherry Room')) 
+                    then
+                        translated_location['name'] = location_name_with_region_inferno
+                        translated_location['raw_data'] = loc
+        
+                        break
+                    end
+                end
+            end
+        end
+    end -- end if inferno diff and looking for inferno locations
+
+    -- if the difficulty is nightmare, loop first looking for nightmare locations only so we can prioritize matching those
+    if Lookups.difficulty == 'nightmare' then
+        for k, loc in pairs(Lookups.locations) do
+            if loc['nightmare'] ~= nil and loc['nightmare'] then -- if it doesn't have the inferno attribute, it's not a inferno location, skip it for later
+                location_name_with_region_nightmare = loc['region'] .. scenario_suffix_nightmare .. " - " .. loc['name']
+        
+                if location_data['name'] == location_name_with_region_nightmare then
+                    translated_location['name'] = location_name_with_region_nightmare
+                    translated_location['raw_data'] = loc
+        
+                    break
+                end
+        
+                if include_sent_locations or not loc['sent'] then
+                    -- StartArea/SherryRoom is the shotgun shell location at start of Labs that can *also* be a shotgun if you haven't gotten one
+                    -- and it's only 1 location so, if it's there, match it regardless of item object + parent object
+                    if (loc['item_object'] == location_data['item_object'] and loc['parent_object'] == location_data['parent_object'] and loc['folder_path'] == location_data['folder_path']) or
+                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/SherryRoom') and string.find(location_data['folder_path'], 'StartArea/SherryRoom')) or 
+                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/Sherry Room') and string.find(location_data['folder_path'], 'StartArea/Sherry Room')) 
+                    then
+                        translated_location['name'] = location_name_with_region_nightmare
+                        translated_location['raw_data'] = loc
+        
+                        break
+                    end
+                end
+            end
+        end
+    end -- end if inferno diff and looking for inferno locations
 
     -- if the difficulty is hardcore, loop first looking for hardcore locations only so we can prioritize matching those
     if Lookups.difficulty == 'hardcore' then
@@ -650,7 +754,7 @@ function Archipelago._GetLocationFromLocationData(location_data, include_sent_lo
         end
     end -- end if hardcore diff and looking for hardcore locations
 
-    -- if it's not hardcore difficulty or if the location wasn't matched to a hardcore one, match standard locations instead
+    -- if it's not nightmare/hardcore difficulty or if the location wasn't matched to a nightmare/hardcore one, match standard locations instead
     if not translated_location['name'] then
         for k, loc in pairs(Lookups.locations) do
             if not (loc['hardcore'] ~= nil and loc['hardcore']) then -- if it's a hardcore location, we want to skip it here, since we're only handling standards

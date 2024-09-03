@@ -3,7 +3,7 @@ GUI.textList = {}
 GUI.lastText = os.time()
 GUI.logo = nil
 GUI.font = "Prompt-Medium.ttf"
-GUI.font_size = 24
+GUI.font_size = 20
 
 function GUI.CheckForAndDisplayMessages()
     if next(GUI.textList) == nil then

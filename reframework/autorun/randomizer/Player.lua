@@ -21,6 +21,10 @@ function Player.GetSurvivorConditionComponent()
     return Helpers.component(Player.GetGameObject(), "survivor.SurvivorCondition")
 end
 
+function Player.GetBurnConditionComponent()
+    return Helpers.component(Player.GetGameObject(), "effect.script.EsPlBurnupController")
+end
+
 function Player.GetCurrentPosition()
     return Player.GetGameObject():get_Transform():get_Position()
 end
@@ -33,6 +37,23 @@ end
 
 function Player.LookAt(transform)
     Player.GetGameObject():get_Transform():lookAt(transform)
+end
+
+function Player.Parasite()
+    local sc = Player.GetSurvivorConditionComponent()
+    
+    sc:set_field("ParasiteStateName", 1880218003)
+    sc:set_field("_ReserveResistParasite", false)
+    sc:set_field("_ParasiteTimeRate", 1)
+    sc:call("set_IsParasite(System.Boolean)", true)
+    
+end
+
+function Player.Puke()
+    local puke = Player.GetSurvivorConditionComponent()
+    
+    puke:set_field("_ReserveResistParasite", true)
+    puke:set_field("_IsParasite", true)
 end
 
 function Player.Damage(can_kill)
@@ -53,14 +74,17 @@ function Player.Damage(can_kill)
 end
 
 function Player.Kill()
+    local burn = Player.GetBurnConditionComponent()
+
     if Scene.isInPause() or Scene.isUsingItemBox() or not Scene.isInGame() then
         Player.waitingForKill = true
 
         return
     end
-
+    
     Player.waitingForKill = false
     Scene.goToGameOver()
+    burn:set_field("bRequestBurnUp", true)
 end
 
 -- the game sets an invincible flag on the player when picking up an item,
@@ -72,8 +96,14 @@ function Player.TurnOffInvincibility()
     if playerObj then
         local compHitPoint = Player.GetHitPointController()
         local compHitPoint2nd = Player.GetHitPointController()
+        local compHitPoint3rd = Player.GetHitPointController()
+
+        compHitPoint:call("set_Invincible(System.Boolean)", false)
         compHitPoint:set_field("<Invincible>k__BackingField", false)
+        compHitPoint2nd:call("set_SecondInvincible(System.Boolean)", false)
         compHitPoint2nd:set_field("<SecondInvincible>k__BackingField", false)
+    	compHitPoint3rd:call("set_TrackInvincible(System.Boolean)", true)
+        compHitPoint3rd:set_field("<TrackInvincible>k__BackingField", true)
 
         return true
     else

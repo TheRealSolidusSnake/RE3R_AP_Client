@@ -23,7 +23,7 @@ function Tools.ShowGUI()
     -- if Scene.isCharacterJill() then player_character_text = "   Jill" end
     -- if Scene.isCharacterCarlos() then player_character_text = "   Carlos" end
 
-    imgui.set_next_window_size(Vector2f.new(185, 425), 0)
+    imgui.set_next_window_size(Vector2f.new(185, 565), 0)
     imgui.begin_window("Archipelago Game Mod ", nil,
         8 -- NoScrollbar
     )

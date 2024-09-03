@@ -60,9 +60,9 @@ re.on_pre_application_entry("UpdateBehavior", function()
 
         -- if the game randomly forgets that the player exists and tries to leave the invincibility flag on from item pickup,
         --   relentlessly check for the player existing until it does, then turn that flag off
-        if Archipelago.waitingForInvincibiltyOff then
+        if Archipelago.waitingForInvincibilityOff then
             if Player.TurnOffInvincibility() then
-                Archipelago.waitingForInvincibiltyOff = false
+                Archipelago.waitingForInvincibilityOff = false
             end
         end
 
