@@ -1547,7 +1547,8 @@
         "condition": {},
         "item_object": "sm70_100",
         "parent_object": "sm70_100hgsell",
-        "folder_path": "RopewayContents/World/Location_ClockTower/LocationLevel_ClockTower/Item"
+        "folder_path": "RopewayContents/World/Location_ClockTower/LocationLevel_ClockTower/Item",
+        "randomized": 0
     },
     {
         "name": "Bench near Statues",
@@ -1556,7 +1557,8 @@
         "condition": {},
         "item_object": "sm70_001",
         "parent_object": "sm70_001gherb",
-        "folder_path": "RopewayContents/World/Location_ClockTower/LocationLevel_ClockTower/Item"
+        "folder_path": "RopewayContents/World/Location_ClockTower/LocationLevel_ClockTower/Item",
+        "randomized": 0
     },
     {
         "name": "By School Bus 1",
