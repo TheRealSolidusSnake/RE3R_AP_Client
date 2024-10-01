@@ -390,41 +390,6 @@ function Archipelago.IsLocationRandomized(location_data)
     return true
 end
 
-function Archipelago.IsSentChessPanel(location_data)
-    local location = Archipelago._GetLocationFromLocationData(location_data, true) -- include_sent_locations
-    local scenario_suffix = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. ")"
-    local scenario_suffix_hardcore = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "H)"
-    local scenario_suffix_nightmare = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "N)"
-    local scenario_suffix_inferno = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "I)"
-
-    if not location then
-        return false
-    end
-
-    if string.find(location['name'], 'Queen Panel') or string.find(location['name'], 'King Panel') or string.find(location['name'], 'Rook Panel') or 
-        string.find(location['name'], 'Bishop Panel') or string.find(location['name'], 'Knight Panel') or string.find(location['name'], 'Pawn Panel') then 
-
-        for k, loc in pairs(Lookups.locations) do
-            location_name_with_region = loc['region'] .. scenario_suffix .. " - " .. loc['name']
-            location_name_with_region_hardcore = loc['region'] .. scenario_suffix_hardcore .. " - " .. loc['name']
-            location_name_with_region_nightmare = loc['region'] .. scenario_suffix_nightmare .. " - " .. loc['name']
-            location_name_with_region_inferno = loc['region'] .. scenario_suffix_inferno .. " - " .. loc['name']
-
-            if Lookups.difficulty == 'inferno' and location['name'] == location_name_with_region_inferno and loc['sent'] ~= nil and loc['sent'] then
-                return true
-            elseif Lookups.difficulty == 'nightmare' and location['name'] == location_name_with_region_nightmare and loc['sent'] ~= nil and loc['sent'] then
-                return true
-            elseif Lookups.difficulty == 'hardcore' and location['name'] == location_name_with_region_hardcore and loc['sent'] ~= nil and loc['sent'] then
-                return true
-            elseif location['name'] == location_name_with_region and loc['sent'] ~= nil and loc['sent'] then
-                return true
-            end
-        end
-    end
-
-    return false
-end
-
 function Archipelago.GetLocationName(location_data)
     local location = Archipelago._GetLocationFromLocationData(location_data, true) -- include_sent_locations
 

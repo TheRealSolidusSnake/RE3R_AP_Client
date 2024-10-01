@@ -108,7 +108,6 @@ function Items.SetupInteractHook()
             end
         
             local isLocationRandomized = Archipelago.IsLocationRandomized(location_to_check)
-            local isSentChessPanel = Archipelago.IsSentChessPanel(location_to_check)
 
             if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) or Archipelago.IsConnected()) then
                 -- if it's an item, call vanish and save to get rid of it
@@ -118,11 +117,6 @@ function Items.SetupInteractHook()
                     -- so we just set our own flag to relentlessly attempt to turn off invinc until it works
                     Archipelago.waitingForInvincibilityOff = true
                     
-                    -- if it's a chess panel that's already been sent, ignore whatever item is there and let the game take over
-                    if isSentChessPanel then
-                        return
-                    end
-
                     item_positions:call('vanishItemAndSave()')
 
                     -- the game sets an invincible flag on the player when picking up an item,
