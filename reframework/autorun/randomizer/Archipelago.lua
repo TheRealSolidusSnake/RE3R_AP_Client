@@ -540,8 +540,7 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
                 return
             end
 
-	    if item_name == "Parasite Trap" then
-
+            if item_name == "Parasite Trap" then
                 Player.Parasite()
                 GUI.AddReceivedItemText(item_name, item_color, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
 
@@ -549,7 +548,6 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
             end
 
             if item_name == "Puke Trap" then
-
                 Player.Puke()
                 GUI.AddReceivedItemText(item_name, item_color, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
 
@@ -568,12 +566,11 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
                 return
             end
 
-            -- sending weapons to inventory causes them to not work until boxed + retrieved, so send weapons to box always for now
-                -- also send key and gating items to box to prevent softlocking issues if Carlos was sent Jill's keys during a multiworld
-            if 
-                item_ref.type ~= "Weapon" and item_ref.type ~= "Subweapon" and item_ref.type ~= "Key" and item_ref.type ~= "Gating" and item_ref.type ~= "Ammo" and 
-		item_ref.type ~= "Upgrade" and Inventory.HasSpaceForItem()
-            then
+            -- Define included types for inventory (currently empty, meaning nothing goes to inventory)
+            local includedTypes = {}
+
+            -- Check if the item type is included for inventory addition
+            if includedTypes[item_ref.type] and Inventory.HasSpaceForItem() then
                 local addedToInv = Inventory.AddItem(tonumber(itemId), tonumber(weaponId), weaponParts, bulletId, tonumber(count))
 
                 -- if adding to inventory failed, add it to the box as a backup
@@ -583,8 +580,8 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
                     ItemBox.AddItem(tonumber(itemId), tonumber(weaponId), weaponParts, bulletId, tonumber(count))
                     sentToBox = true    
                 end
-            -- if this item is a weapon/subweapon/key or the player doesn't have room in inventory, send to the box
             else
+                -- Always send to the box
                 ItemBox.AddItem(tonumber(itemId), tonumber(weaponId), weaponParts, bulletId, tonumber(count))
                 sentToBox = true
             end
@@ -593,6 +590,8 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
         GUI.AddReceivedItemText(item_name, item_color, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
     end
 end
+
+
 
 function Archipelago.SendVictory()
     AP_REF.APClient:StatusUpdate(AP_REF.AP.ClientStatus.GOAL)   
