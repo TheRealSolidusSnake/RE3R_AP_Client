@@ -20,6 +20,7 @@ GUI = require("randomizer/GUI")
 Helpers = require("randomizer/Helpers")
 Inventory = require("randomizer/Inventory")
 ItemBox = require("randomizer/ItemBox")
+ItemDuplicates = require("randomizer/ItemDuplicates")
 Items = require("randomizer/Items")
 Player = require("randomizer/Player")
 Scene = require("randomizer/Scene")
@@ -85,6 +86,8 @@ re.on_pre_application_entry("UpdateBehavior", function()
         if not Archipelago.waitingForSync then
             Archipelago.waitingForSync = true
         end
+
+        Archipelago.didGameOver = true
     end
 end)
 

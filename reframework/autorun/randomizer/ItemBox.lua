@@ -13,7 +13,7 @@ function ItemBox.GetAnyAvailable()
     end
 
     for k, gimmick in pairs(gimmick_objects) do
-        local gimmickName = gimmick:call("get_Name()")
+        gimmickName = gimmick:call("get_Name()")
 
         if string.find(gimmickName, "ItemLocker") and string.find(gimmickName, "_control") then
             local compGimmickControl = gimmick:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickControl")))
@@ -28,28 +28,45 @@ function ItemBox.GetAnyAvailable()
 end
 
 function ItemBox.GetItems()
-    local itemLocker = ItemBox.GetAnyAvailable()
-    local itemList = {}
+    itemLocker = ItemBox.GetAnyAvailable()
+    itemList = {}
 
+    -- check that the item box we got is actually available first
     if itemLocker ~= nil then
-        local gimmickItemLockerControlComponent = itemLocker:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickItemLockerControl")))
-        local storageItems = gimmickItemLockerControlComponent:get_field("StorageItems")
-        local mItems = storageItems:get_field("mItems")
+        gimmickItemLockerControlComponent = itemLocker:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickItemLockerControl")))
+        storageItems = gimmickItemLockerControlComponent:get_field("StorageItems")
+        mItems = storageItems:get_field("mItems")
+        foundOpenSlot = false
 
         for i, item in pairs(mItems) do
-            local defaultItem = item:get_field("DefaultItem")
-            local itemId = defaultItem:get_field("ItemId")
-            local weaponId = defaultItem:get_field("WeaponId")
+            if item ~= nil then
+                defaultItem = item:get_field("DefaultItem")
+                -- ItemId, WeaponId, WeaponParts, BulletId, Count
 
-            if itemId <= 0 and weaponId <= 0 then
-                return itemList
+                itemId = defaultItem:get_field("ItemId")
+                weaponId = defaultItem:get_field("WeaponId")
+
+                -- if we found an empty slot, the item list is complete
+                if itemId > 0 or weaponId > 0 then
+                    table.insert(itemList, item)
+                end
             end
-
-            table.insert(itemList, defaultItem)
         end
     end
 
     return itemList
+end
+
+function ItemBox.GetItemNames()
+    local itemNames = {}
+
+    for k, v in pairs(ItemBox.GetItems()) do
+        if v ~= nil then
+            table.insert(itemNames, v:call("getName()"))
+        end
+    end
+
+    return itemNames
 end
 
 function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count)
@@ -62,10 +79,10 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count)
         local mItems = storageItems:get_field("mItems")
         local mItems2nd = storageItems2nd:get_field("mItems")
 
-        -- Define lists of itemIDs and weaponIDs for Carlos and both
-        local carlosItems = {33, 96, 97, 98, 214, 218} -- Assault Rifle Parts/Ammo, Tape Player and Locker Room Key
+        -- Define lists of stuff that needs to go to either Carlos, or to both characters (all items default to Jill)
+        local carlosItems = {33, 96, 97, 98, 164, 214, 218} -- Assault Rifle Parts/Ammo, ID Card, Tape Player and Locker Room Key
         local carlosWeapons = {21} -- Assault Rifle
-        local bothItems = {1, 2, 3, 31, 61} -- Healing, Handgun Ammo/Powder
+        local bothItems = {1, 2, 3, 31, 61, 261} -- Healing, Handgun Ammo/Powder, Hip Pouch
         local bothWeapons = {65, 66} -- Grenades
 
         -- Helper function to check if an ID is in a list
@@ -78,7 +95,7 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count)
             return false
         end
 
-        -- Determine target storage
+        -- Determine target storage for items being added
         local targetStorage = mItems -- Default to Jill's storage
 
         if isInList(itemId, carlosItems) then
@@ -109,7 +126,6 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count)
             end
         end
 
-        -- Handle single or multiple storages
         if type(targetStorage) == "table" then
             for _, storage in ipairs(targetStorage) do
                 addItemToStorage(storage)

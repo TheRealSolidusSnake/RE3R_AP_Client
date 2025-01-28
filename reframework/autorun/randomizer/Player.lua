@@ -39,21 +39,18 @@ function Player.LookAt(transform)
     Player.GetGameObject():get_Transform():lookAt(transform)
 end
 
-function Player.Parasite()
-    local sc = Player.GetSurvivorConditionComponent()
-    
-    sc:set_field("ParasiteStateName", 1880218003)
-    sc:set_field("_ReserveResistParasite", false)
-    sc:set_field("_ParasiteTimeRate", 1)
-    sc:call("set_IsParasite(System.Boolean)", true)
-    
+function Player.GetShotgunObject()
+    return Helpers.gameObject("0503_sm44_404_ES_ShotgunCase01A_gimmick")
 end
 
-function Player.Puke()
-    local puke = Player.GetSurvivorConditionComponent()
+function Player.ForcedConditionComponent()
+    return Helpers.component(Player.GetShotgunObject(), "gimmick.action.EsGimmickOpenObject")
+end
+
+function Player.Forced()
+    local fcc = Player.ForcedConditionComponent()
     
-    puke:set_field("_ReserveResistParasite", true)
-    puke:set_field("_IsParasite", true)
+    fcc:set_field("bGetItemForce", false)
 end
 
 function Player.Damage(can_kill)

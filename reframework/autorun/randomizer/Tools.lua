@@ -23,7 +23,7 @@ function Tools.ShowGUI()
     -- if Scene.isCharacterJill() then player_character_text = "   Jill" end
     -- if Scene.isCharacterCarlos() then player_character_text = "   Carlos" end
 
-    imgui.set_next_window_size(Vector2f.new(185, 565), 0)
+    imgui.set_next_window_size(Vector2f.new(200, 715), 0)
     imgui.begin_window("Archipelago Game Mod ", nil,
         8 -- NoScrollbar
     )
@@ -44,14 +44,16 @@ function Tools.ShowGUI()
     imgui.text("@Solidus")
     imgui.text("   - Main campaign")
     imgui.text("@Fuzzy")
-    imgui.text("   - Original dev")
-    imgui.text("   - Goated with teh sauce")
+    imgui.text("   - Original Dev")
+    imgui.text("   - Goated With Teh Sauce")
     imgui.text("@Silvris")
     imgui.text("   - Client Dev")
     imgui.text("@Johnny Hamcobbler")
     imgui.text("   - Testing & Client Help")
     imgui.text("@DiStegro")
-    imgui.text("   - Locations write-up")
+    imgui.text("   - Locations Write-up")
+    imgui.text("@JustNU")
+    imgui.text("   - Various Fixes")
     imgui.new_line()
 
     if Lookups.character and Lookups.scenario then
@@ -64,6 +66,16 @@ function Tools.ShowGUI()
             Storage.lastReceivedItemIndex = -1
             Storage.lastSavedItemIndex = -1
             Archipelago.waitingForSync = true
+        end
+
+        imgui.new_line()
+        imgui.text_colored("Missing a starting Pouch?", -10825765)
+        imgui.text("Click this button to receive")
+        imgui.text(" a hip pouch!")
+
+        if imgui.button("Receive Hip Pouch") then
+            GUI.AddText("Receiving Hip Pouch...")
+            Archipelago.ReceiveItem("Hip Pouch", nil, 1)
         end
     end
 

@@ -1,24 +1,33 @@
 local Inventory = {}
 
-function Inventory.GetMaxSlots()
+function Inventory.GetPlayerInventory()
     local inventoryManager = sdk.get_managed_singleton(sdk.game_namespace("gamemastering.InventoryManager"))
+
+    if inventoryManager == nil then
+        return nil
+    end
+
     local playerInventory = inventoryManager:get_CurrentInventory()
+
+    return playerInventory
+end
+
+function Inventory.GetMaxSlots()
+    local playerInventory = Inventory.GetPlayerInventory()
     local playerCurrentMaxSlots = playerInventory:get_field("_CurrentSlotSize")
 
     return playerCurrentMaxSlots
 end
 
 function Inventory.IncreaseMaxSlots(amount)
-    local inventoryManager = sdk.get_managed_singleton(sdk.game_namespace("gamemastering.InventoryManager"))
-    local playerInventory = inventoryManager:get_CurrentInventory()
+    local playerInventory = Inventory.GetPlayerInventory()
     local playerCurrentMaxSlots = playerInventory:get_field("_CurrentSlotSize")
 
     playerInventory:call("set_CurrentSlotSize", playerCurrentMaxSlots + amount)
 end
 
 function Inventory.GetCurrentItems()
-    local inventoryManager = sdk.get_managed_singleton(sdk.game_namespace("gamemastering.InventoryManager"))
-    local playerInventory = inventoryManager:get_CurrentInventory()
+    local playerInventory = Inventory.GetPlayerInventory()
     local playerInventorySlots = playerInventory:get_field("_Slots")
     local playerCurrentMaxSlots = playerInventory:get_field("_CurrentSlotSize")
     local mItems = playerInventorySlots:get_field("mItems")
@@ -50,6 +59,18 @@ function Inventory.GetCurrentItems()
     return items
 end
 
+function Inventory.GetItemNames()
+    local itemNames = {}
+
+    for k, v in pairs(Inventory.GetCurrentItems()) do
+        if v ~= nil then
+            table.insert(itemNames, v:call("get_Name()"))
+        end
+    end
+
+    return itemNames
+end
+
 function Inventory.HasSpaceForItem()
     local currentItems = Inventory.GetCurrentItems()
     
@@ -75,8 +96,7 @@ function Inventory.HasItemId(item_id, weapon_id)
 end
 
 function Inventory.AddItem(itemId, weaponId, weaponParts, bulletId, count)
-    local inventoryManager = sdk.get_managed_singleton(sdk.game_namespace("gamemastering.InventoryManager"))
-    local playerInventory = inventoryManager:get_CurrentInventory()
+    local playerInventory = Inventory.GetPlayerInventory()
     local playerInventorySlots = playerInventory:get_field("_Slots")
     local mItems = playerInventorySlots:get_field("mItems")
     local slotEmpty = playerInventory:getSlotEmpty()
@@ -102,8 +122,7 @@ function Inventory.AddItem(itemId, weaponId, weaponParts, bulletId, count)
 end
 
 function Inventory.SwapItem(fromItemIds, fromWeaponIds, itemId, weaponId, weaponParts, bulletId, count)
-    local inventoryManager = sdk.get_managed_singleton(sdk.game_namespace("gamemastering.InventoryManager"))
-    local playerInventory = inventoryManager:get_CurrentInventory()
+    local playerInventory = Inventory.GetPlayerInventory()
     local playerInventorySlots = playerInventory:get_field("_Slots")
     local playerCurrentMaxSlots = playerInventory:get_field("_CurrentSlotSize")
     local mItems = playerInventorySlots:get_field("mItems")

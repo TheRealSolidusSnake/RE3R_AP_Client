@@ -1,6 +1,7 @@
 local Archipelago = {}
 Archipelago.seed = nil
 Archipelago.slot = nil
+Archipelago.ammo_pack_modifier = nil -- comes over in slot data
 Archipelago.damage_traps_can_kill = false -- comes over in slot data
 Archipelago.death_link = false -- comes over in slot data
 Archipelago.hasConnectedPrior = false -- keeps track of whether the player has connected at all so players don't have to remove AP mod to play vanilla
@@ -9,6 +10,7 @@ Archipelago.waitingForSync = false -- randomizer calls APSync when "waiting for 
 Archipelago.waitingForInvincibilityOff = false -- occasionally, the game "forgets" who the player is, so this is a backup to toggle off item pickup invincibility
 Archipelago.canDeathLink = false -- this gets set to true when you're in-game, then a deathlink can send in game over and this is set to false again, repeat
 Archipelago.wasDeathLinked = false -- this gets set to true when we're killed from a deathlink, so we don't trigger another deathlink (and a loop)
+Archipelago.didGameOver = false -- this gets set to true when we're killed, so that we know when processing items that another killing trap shouldn't be accepted
 
 Archipelago.itemsQueue = {}
 Archipelago.isProcessingItems = false -- this is set to true when the queue is being processed so we don't over-give
@@ -88,6 +90,9 @@ function Archipelago.SlotDataHandler(slot_data)
     Archipelago.seed = player["seed"]
     Archipelago.slot = player["slot"]
 
+    if slot_data.ammo_pack_modifier ~= nil then
+        Archipelago.ammo_pack_modifier = slot_data.ammo_pack_modifier
+    end
     if slot_data.damage_traps_can_kill ~= nil then
         Archipelago.damage_traps_can_kill = slot_data.damage_traps_can_kill
     end
@@ -119,8 +124,6 @@ AP_REF.on_items_received = APItemsReceivedHandler
 function Archipelago.ItemsReceivedHandler(items_received)
     local itemsWaiting = {}
     local damageTrapReceived = false
-    local parasiteTrapReceived = false
-    local pukeTrapReceived = false
 
     -- add all of the randomized items to an item queue to wait for send
     for k, row in pairs(items_received) do
@@ -145,20 +148,10 @@ function Archipelago.ItemsReceivedHandler(items_received)
 
             if item_data["name"] and 
                 not (item_data["name"] == "Victory") and 
-                not (item_data["name"] == "Damage Trap" and damageTrapReceived) and 
-		not (item_data["name"] == "Parasite Trap" and parasiteTrapReceived) and
-                not (item_data["name"] == "Puke Trap" and pukeTrapReceived)
+                not (item_data["name"] == "Damage Trap" and damageTrapReceived) 
             then
             	if item_data["name"] == "Damage Trap" then
                     damageTrapReceived = true
-                end
-
-                if item_data["name"] == "Parasite Trap" then
-                    parasiteTrapReceived = true
-                end
-
-                if item_data["name"] == "Puke Trap" then
-                    pukeTrapReceived = true
                 end
 
                 if item_data["name"] and row["player"] ~= nil and is_randomized == 0 then
@@ -182,7 +175,8 @@ end
 function Archipelago.CanReceiveItems()
     -- wait until the player is in game, with AP connected, and with an available item box (that's not in use)
     -- before sending any items over
-    return Scene.isInGame() and Archipelago.IsConnected() and ItemBox.GetAnyAvailable() ~= nil and not Scene.isUsingItemBox()
+    return Scene.isInGame() and Archipelago.IsConnected() and ItemBox.GetAnyAvailable() ~= nil and not Scene.isUsingItemBox() 
+        and Inventory.GetPlayerInventory() ~= nil
 end
 
 function Archipelago.CanBeKilled()
@@ -221,7 +215,12 @@ function Archipelago.ProcessItemsQueue()
             end
 
             if item_data["name"] and row["player"] ~= nil then
-                Archipelago.ReceiveItem(item_data["name"], row["player"], is_randomized)
+                -- if the player game over'd and they're being sent a damage trap right after respawn, ignore / don't receive it
+                if Archipelago.didGameOver and item_data["name"] == "Damage Trap" then
+                    GUI.AddText("Received Damage Trap, but currently respawning. Ignoring.")
+                else
+                    Archipelago.ReceiveItem(item_data["name"], row["player"], is_randomized)
+                end
             end
 
             -- if the index is also greater than the index of our last received index, update last received
@@ -232,6 +231,8 @@ function Archipelago.ProcessItemsQueue()
     end
 
     Storage.Update()
+
+    Archipelago.didGameOver = false -- once items have been received once after GO'ing, let the player die to traps again
     Archipelago.isProcessingItems = false -- unset for the next bit of processing
 end
 
@@ -423,25 +424,16 @@ function Archipelago.SendLocationCheck(location_data)
     location_ids[1] = location["id"]
 
     local result = AP_REF.APClient.LocationChecks(AP_REF.APClient, location_ids)
-    local sent_loc = location['raw_data']    
+    local sent_loc = location['raw_data']
 
     for k, loc in pairs(Lookups.locations) do
-        -- StartArea/SherryRoom is the shotgun shell location at start of Labs that can *also* be a shotgun if you haven't gotten one
-        -- and it's only 1 location so, if it's there, match it regardless of anything else
-        if (string.find(loc['folder_path'], 'StartArea/SherryRoom') and string.find(location_data['folder_path'], 'StartArea/SherryRoom')) or 
-            (string.find(loc['folder_path'], 'StartArea/Sherry Room') and string.find(location_data['folder_path'], 'StartArea/Sherry Room')) 
-        then
-            loc['sent'] = true
-            break
-        end
-
         local exact_match = true
 
-        -- check that the location is an exact match of the location's raw data that came back from the lookup
+        -- Check that the location is an exact match of the location's raw data from the lookup
         for lk, lv in pairs(sent_loc) do
             if not loc[lk] or loc[lk] ~= sent_loc[lk] then
                 exact_match = false
-                break -- if not, skip
+                break -- Skip if not an exact match
             end
         end
 
@@ -477,6 +469,12 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
     local item_ref = nil
     local item_number = nil
     local item_ammo = nil
+
+    -- check for specific duplicates and, if true, don't receive this copy since we already have one
+    if ItemDuplicates.Check(item_name) then
+        GUI.AddText("Received a " .. item_name .. ", but you already have one. Skipping.")
+        return
+    end
 
     for k, item in pairs(Lookups.items) do
         if item.name == item_name then
@@ -519,6 +517,46 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
             count = 1
         end
 
+        if item_ref.type == "Ammo" and Archipelago.ammo_pack_modifier ~= "None" then
+            local pmod = Archipelago.ammo_pack_modifier -- typing is hard
+            local random_min = 1
+            local random_max = math.ceil(count * 1.5) -- originally did 2x here, but high rolls made things too easy, this balanced out some
+
+            -- if Max, cap the ammo at the game's defined maximum for each ammo pack (if the pack count is green in-game, it's at the max)
+            if pmod == "Max" then 
+                local ammo_maxes = {
+                    ["Handgun Ammo"] = 60,
+                    ["Shotgun Shells"] = 20,
+                    ["Assault Rifle Ammo"] = 200,
+                    ["MAG Ammo"] = 20,
+                    ["Flame Rounds"] = 10,
+                    ["Acid Rounds"] = 10,
+                    ["Explosive Rounds"] = 10,
+		    ["Mine Rounds"] = 10,
+                }
+
+                if ammo_maxes[item_ref.name] ~= nil then
+                    count = ammo_maxes[item_ref.name]
+                else
+                    count = 500
+                end
+            end
+            if pmod == "Double" then count = count * 2 end
+            if pmod == "Half" then count = math.ceil(count / 2) end
+            if pmod == "Only Three" then count = 3 end
+            if pmod == "Only Two" then count = 2 end
+            if pmod == "Only One" then count = 1 end
+            if pmod == "Random Always" then count = math.random(random_min, random_max) end
+            
+            if pmod == "Random By Type" then
+                if Archipelago.ammo_pack_type_amount[item_name] == nil then
+                    Archipelago.ammo_pack_type_amount[item_name] = math.random(random_min, random_max)
+                end
+
+                count = Archipelago.ammo_pack_type_amount[item_name]
+            end
+        end
+
         if item_ref.progression == 1 then
             item_color = "ce28f7"
         elseif item_ref.type ~= "Lore" and item_ref.type ~= "Trap" then
@@ -532,23 +570,13 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
         local player_self = Archipelago.GetPlayer()
         local sentToBox = false
 
+        if sender == nil then
+            sender = player_self.number
+        end
+
         if is_randomized > 0 then
             if item_name == "Damage Trap" then
                 Player.Damage(Archipelago.damage_traps_can_kill)
-                GUI.AddReceivedItemText(item_name, item_color, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
-
-                return
-            end
-
-            if item_name == "Parasite Trap" then
-                Player.Parasite()
-                GUI.AddReceivedItemText(item_name, item_color, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
-
-                return
-            end
-
-            if item_name == "Puke Trap" then
-                Player.Puke()
                 GUI.AddReceivedItemText(item_name, item_color, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sentToBox)
 
                 return
@@ -591,8 +619,6 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
     end
 end
 
-
-
 function Archipelago.SendVictory()
     AP_REF.APClient:StatusUpdate(AP_REF.AP.ClientStatus.GOAL)   
 end
@@ -615,146 +641,59 @@ end
 
 function Archipelago._GetLocationFromLocationData(location_data, include_sent_locations)
     local player = Archipelago.GetPlayer()
-
     include_sent_locations = include_sent_locations or false
 
     local translated_location = {}
-    local scenario_suffix = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. ")"
-    local scenario_suffix_hardcore = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "H)"
-    local scenario_suffix_nightmare = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "N)"
-    local scenario_suffix_inferno = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "I)"
+    local scenario_suffixes = {
+        standard = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. ")",
+        hardcore = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "H)",
+        nightmare = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "N)",
+        inferno = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "I)"
+    }
 
     if location_data['id'] and not location_data['name'] then
         location_data['name'] = AP_REF.APClient:get_location_name(location_data['id'], player['game'])
     end
 
-    -- if the difficulty is inferno, loop first looking for inferno locations only so we can prioritize matching those
-    if Lookups.difficulty == 'inferno' then
-        for k, loc in pairs(Lookups.locations) do
-            if loc['inferno'] ~= nil and loc['inferno'] then -- if it doesn't have the inferno attribute, it's not a inferno location, skip it for later
-                location_name_with_region_inferno = loc['region'] .. scenario_suffix_inferno .. " - " .. loc['name']
-        
-                if location_data['name'] == location_name_with_region_inferno then
-                    translated_location['name'] = location_name_with_region_inferno
-                    translated_location['raw_data'] = loc
-        
-                    break
-                end
-        
-                if include_sent_locations or not loc['sent'] then
-                    -- StartArea/SherryRoom is the shotgun shell location at start of Labs that can *also* be a shotgun if you haven't gotten one
-                    -- and it's only 1 location so, if it's there, match it regardless of item object + parent object
-                    if (loc['item_object'] == location_data['item_object'] and loc['parent_object'] == location_data['parent_object'] and loc['folder_path'] == location_data['folder_path']) or
-                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/SherryRoom') and string.find(location_data['folder_path'], 'StartArea/SherryRoom')) or 
-                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/Sherry Room') and string.find(location_data['folder_path'], 'StartArea/Sherry Room')) 
-                    then
-                        translated_location['name'] = location_name_with_region_inferno
-                        translated_location['raw_data'] = loc
-        
+    local function match_location(loc, difficulty_suffix)
+        local location_name_with_region = loc['region'] .. difficulty_suffix .. " - " .. loc['name']
+
+        if location_data['name'] == location_name_with_region then
+            return location_name_with_region, loc
+        end
+
+        if include_sent_locations or not loc['sent'] then
+            if loc['item_object'] == location_data['item_object'] and loc['parent_object'] == location_data['parent_object'] and loc['folder_path'] == location_data['folder_path'] then
+                return location_name_with_region, loc
+            end
+        end
+
+        return nil, nil
+    end
+
+    local difficulties = {"inferno", "nightmare", "hardcore", "standard"}
+
+    for _, difficulty in ipairs(difficulties) do
+        if Lookups.difficulty == difficulty or difficulty == "standard" then
+            for _, loc in pairs(Lookups.locations) do
+                if difficulty == "standard" or (loc[difficulty] ~= nil and loc[difficulty]) then
+                    local name, raw_data = match_location(loc, scenario_suffixes[difficulty])
+                    if name then
+                        translated_location['name'] = name
+                        translated_location['raw_data'] = raw_data
                         break
                     end
                 end
             end
+            if translated_location['name'] then break end
         end
-    end -- end if inferno diff and looking for inferno locations
-
-    -- if the difficulty is nightmare, loop first looking for nightmare locations only so we can prioritize matching those
-    if Lookups.difficulty == 'nightmare' then
-        for k, loc in pairs(Lookups.locations) do
-            if loc['nightmare'] ~= nil and loc['nightmare'] then -- if it doesn't have the inferno attribute, it's not a inferno location, skip it for later
-                location_name_with_region_nightmare = loc['region'] .. scenario_suffix_nightmare .. " - " .. loc['name']
-        
-                if location_data['name'] == location_name_with_region_nightmare then
-                    translated_location['name'] = location_name_with_region_nightmare
-                    translated_location['raw_data'] = loc
-        
-                    break
-                end
-        
-                if include_sent_locations or not loc['sent'] then
-                    -- StartArea/SherryRoom is the shotgun shell location at start of Labs that can *also* be a shotgun if you haven't gotten one
-                    -- and it's only 1 location so, if it's there, match it regardless of item object + parent object
-                    if (loc['item_object'] == location_data['item_object'] and loc['parent_object'] == location_data['parent_object'] and loc['folder_path'] == location_data['folder_path']) or
-                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/SherryRoom') and string.find(location_data['folder_path'], 'StartArea/SherryRoom')) or 
-                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/Sherry Room') and string.find(location_data['folder_path'], 'StartArea/Sherry Room')) 
-                    then
-                        translated_location['name'] = location_name_with_region_nightmare
-                        translated_location['raw_data'] = loc
-        
-                        break
-                    end
-                end
-            end
-        end
-    end -- end if inferno diff and looking for inferno locations
-
-    -- if the difficulty is hardcore, loop first looking for hardcore locations only so we can prioritize matching those
-    if Lookups.difficulty == 'hardcore' then
-        for k, loc in pairs(Lookups.locations) do
-            if loc['hardcore'] ~= nil and loc['hardcore'] then -- if it doesn't have the hardcore attribute, it's not a hardcore location, skip it for later
-                location_name_with_region_hardcore = loc['region'] .. scenario_suffix_hardcore .. " - " .. loc['name']
-        
-                if location_data['name'] == location_name_with_region_hardcore then
-                    translated_location['name'] = location_name_with_region_hardcore
-                    translated_location['raw_data'] = loc
-        
-                    break
-                end
-        
-                if include_sent_locations or not loc['sent'] then
-                    -- StartArea/SherryRoom is the shotgun shell location at start of Labs that can *also* be a shotgun if you haven't gotten one
-                    -- and it's only 1 location so, if it's there, match it regardless of item object + parent object
-                    if (loc['item_object'] == location_data['item_object'] and loc['parent_object'] == location_data['parent_object'] and loc['folder_path'] == location_data['folder_path']) or
-                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/SherryRoom') and string.find(location_data['folder_path'], 'StartArea/SherryRoom')) or 
-                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/Sherry Room') and string.find(location_data['folder_path'], 'StartArea/Sherry Room')) 
-                    then
-                        translated_location['name'] = location_name_with_region_hardcore
-                        translated_location['raw_data'] = loc
-        
-                        break
-                    end
-                end
-            end
-        end
-    end -- end if hardcore diff and looking for hardcore locations
-
-    -- if it's not nightmare/hardcore difficulty or if the location wasn't matched to a nightmare/hardcore one, match standard locations instead
-    if not translated_location['name'] then
-        for k, loc in pairs(Lookups.locations) do
-            if not (loc['hardcore'] ~= nil and loc['hardcore']) then -- if it's a hardcore location, we want to skip it here, since we're only handling standards
-                location_name_with_region = loc['region'] .. scenario_suffix .. " - " .. loc['name']
-
-                if location_data['name'] == location_name_with_region then
-                    translated_location['name'] = location_name_with_region
-                    translated_location['raw_data'] = loc
-
-                    break
-                end
-
-                if include_sent_locations or not loc['sent'] then
-                    -- StartArea/SherryRoom is the shotgun shell location at start of Labs that can *also* be a shotgun if you haven't gotten one
-                    -- and it's only 1 location so, if it's there, match it regardless of item object + parent object
-                    if (loc['item_object'] == location_data['item_object'] and loc['parent_object'] == location_data['parent_object'] and loc['folder_path'] == location_data['folder_path']) or
-                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/SherryRoom') and string.find(location_data['folder_path'], 'StartArea/SherryRoom')) or 
-                        (loc['folder_path'] ~= nil and location_data['folder_path'] ~= nil and string.find(loc['folder_path'], 'StartArea/Sherry Room') and string.find(location_data['folder_path'], 'StartArea/Sherry Room')) 
-                    then
-                        translated_location['name'] = location_name_with_region
-                        translated_location['raw_data'] = loc
-
-                        break
-                    end
-                end
-            end
-        end
-    end -- end if standard diff and looking for standard locations
+    end
 
     if not translated_location['name'] then
         return nil
     end
 
     translated_location['id'] = AP_REF.APClient:get_location_id(translated_location['name'], player['game'])
-
-    -- now that we have name and id, return them
     return translated_location
 end
 
