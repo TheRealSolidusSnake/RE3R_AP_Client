@@ -15,7 +15,9 @@ Manifest = require("randomizer/Manifest")
 Lookups = require("randomizer/Lookups")
 
 Archipelago = require("randomizer/Archipelago")
+CutsceneItems = require("randomizer/CutsceneItems")
 DestroyObjects = require("randomizer/DestroyObjects")
+FixBoxes = require("randomizer/FixBoxes")
 GUI = require("randomizer/GUI")
 Helpers = require("randomizer/Helpers")
 Inventory = require("randomizer/Inventory")
@@ -49,6 +51,8 @@ re.on_pre_application_entry("UpdateBehavior", function()
         Archipelago.Init()
         Items.Init()
         DestroyObjects.Init()
+        CutsceneItems.Init()
+        FixBoxes.Init()
 
         if Archipelago.waitingForSync then
             Archipelago.waitingForSync = false
@@ -74,7 +78,9 @@ re.on_pre_application_entry("UpdateBehavior", function()
             Archipelago.wasDeathLinked = false
         end
     else
+        CutsceneItems.isInit = false -- look for objects that should be destroyed and destroy them again
         DestroyObjects.isInit = false -- look for objects that should be destroyed and destroy them again
+        FixBoxes.isInit = false -- look for objects that should be destroyed and destroy them again
     end
 
     if Scene:isInGameOver() then

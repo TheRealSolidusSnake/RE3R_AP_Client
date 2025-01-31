@@ -93,10 +93,6 @@ function Items.SetupInteractHook()
                 return
             end
 
-            if item_name == "0503_sm44_404_ES_ShotgunCase01A_gimmick:sm40_505_CutChain01A_Attachment_gimmick" and item_folder_path == "RopewayContents/World/Location_DownTown/Environments/st03_0503_0/gimmick" then
-                Player.Forced()
-            end
-
             if item_name == "sm42_505_ES_C4Bomb01A_CH2_gimmick" and item_folder_path == "RopewayContents/World/Location_RPD/LocationLevel_RPD/Scenario/S02_0300/ES_S02_0300/ShowerRoomBlownUp" then
 
                 GUI.AddText("Warning: Entering the STARS Office is a one way trip")
@@ -113,7 +109,7 @@ function Items.SetupInteractHook()
         
             local isLocationRandomized = Archipelago.IsLocationRandomized(location_to_check)
 
-            if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) or Archipelago.IsConnected()) then
+            if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) and not CutsceneItems[item_name] or Archipelago.IsConnected()) then
                 -- if it's an item, call vanish and save to get rid of it
                 if item_positions and isLocationRandomized then
                     -- we were originally unsetting the invincibility flag here, but there's occasionally a bug where

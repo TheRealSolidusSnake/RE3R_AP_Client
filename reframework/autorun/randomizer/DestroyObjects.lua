@@ -18,6 +18,12 @@ function DestroyObjects.DestroyAll()
     local destroyables = {
         DestroyObjects.GetPurposeGUI()
     }
+
+for k, obj in pairs(destroyables) do
+        if obj ~= nil then
+            obj:call("destroy", obj)
+        end        
+    end
 end
 
 function DestroyObjects.GetPurposeGUI()

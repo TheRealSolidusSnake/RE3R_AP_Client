@@ -80,7 +80,7 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count)
         local mItems2nd = storageItems2nd:get_field("mItems")
 
         -- Define lists of stuff that needs to go to either Carlos, or to both characters (all items default to Jill)
-        local carlosItems = {33, 96, 97, 98, 164, 214, 218} -- Assault Rifle Parts/Ammo, ID Card, Tape Player and Locker Room Key
+        local carlosItems = {33, 96, 97, 98, 162, 164, 214, 218} -- Assault Rifle Parts/Ammo, ID Card, Tape Player and Locker Room Key
         local carlosWeapons = {21} -- Assault Rifle
         local bothItems = {1, 2, 3, 31, 61, 261} -- Healing, Handgun Ammo/Powder, Hip Pouch
         local bothWeapons = {65, 66} -- Grenades

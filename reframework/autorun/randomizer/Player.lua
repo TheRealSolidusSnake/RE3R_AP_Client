@@ -39,20 +39,6 @@ function Player.LookAt(transform)
     Player.GetGameObject():get_Transform():lookAt(transform)
 end
 
-function Player.GetShotgunObject()
-    return Helpers.gameObject("0503_sm44_404_ES_ShotgunCase01A_gimmick")
-end
-
-function Player.ForcedConditionComponent()
-    return Helpers.component(Player.GetShotgunObject(), "gimmick.action.EsGimmickOpenObject")
-end
-
-function Player.Forced()
-    local fcc = Player.ForcedConditionComponent()
-    
-    fcc:set_field("bGetItemForce", false)
-end
-
 function Player.Damage(can_kill)
     local hpc = Player.GetHitPointController()
     local currentHealth = tonumber(hpc:get_field("<CurrentHitPoint>k__BackingField"))
