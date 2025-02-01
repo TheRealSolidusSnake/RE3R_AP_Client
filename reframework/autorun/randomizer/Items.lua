@@ -109,7 +109,7 @@ function Items.SetupInteractHook()
         
             local isLocationRandomized = Archipelago.IsLocationRandomized(location_to_check)
 
-            if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) or Archipelago.IsConnected()) then
+            if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) and not CutsceneItems[item_name] or Archipelago.IsConnected()) then
                 -- if it's an item, call vanish and save to get rid of it
                 if item_positions and isLocationRandomized then
                     -- we were originally unsetting the invincibility flag here, but there's occasionally a bug where
@@ -176,48 +176,20 @@ function Items.SetupStatueUIHook()
             local compFromHook = sdk.to_managed_object(args[2])
             local statueObject = compFromHook:call('get_GameObject()') -- the dial gimmick
             local compGimmickGUI = statueObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gui.RopewayGimmickAttachmentGUI")))
-            local compGimmickAttach = statueObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickAttachment")))
-            local dialControlObject = compGimmickAttach:get_field("_GimmickControl"):get_GameObject()
+            local statueName = statueObject:call("get_Name()")
+            local lastInteractableName = Items.lastInteractable:call("get_Name()")
 
-            if not dialControlObject then
+            if string.gsub(tostring(lastInteractableName), '_control', '_gimmick') ~= statueName then
                 return
             end
 
-            -- for some reason, *some* of the statues will throw an error despite properly marking off as they should
-            --   i think it's related to the game having two statue controls on some of them (why?!), but don't care enough to dig into more.
-            --   so just pcall that f**ker and ignore the error, since it works anyways
-            pcall(function () 
-                local compAddItems = dialControlObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.option.AddItemsToInventorySettings")))
-                local compDialSettings = dialControlObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.option.AttachmentAlphabetLockSettings")))
-                local settingList = compAddItems:get_field("SettingList")
-                local itemPosObject = settingList[0]:get_field("ItemPositions")
-                local itemPositions = itemPosObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("item.ItemPositions")))
-                local statueName = statueObject:call("get_Name()")
-                local lastInteractableName = ""
-                
-                if Items.lastInteractable then 
-                    lastInteractableName = Items.lastInteractable:call("get_Name()")
-                end
+            compFromHook:call("setFinished()")
 
-                if string.gsub(tostring(lastInteractableName), '_control', '_gimmick') ~= statueName then
-                    return
-                end
-
-                compFromHook:call("setFinished()")
-
-                if compFromHook:get_field("_CurState") > 1 then
-                    Items.cancelNextStatueUI = false
-                    Items.lastInteractable = nil
-                    itemPositions:vanishItemAndSave()
-                    itemPosObject:call("set_Enabled", false)
-                    
-                    compAddItems:set_field("SettingList", nil)
-                    compAddItems:call("set_Enabled", false)
-                    compDialSettings:call("TransmitCorrectAnswer", compGimmickGUI)
-                    compGimmickGUI:call("SetSatisfy()")
-                    compFromHook:call("set_Enabled", false)
-                end            
-            end)
+            if compFromHook:get_field("_CurState") > 1 then
+                Items.cancelNextStatueUI = false
+                Items.lastInteractable = nil
+                compGimmickGUI:call("SetCancel()") -- closes the safe interaction view / returns to player
+            end
         end
     end)
 end
@@ -233,20 +205,12 @@ function Items.SetupSafeUIHook()
             local safeBoxObject = compFromHook:call('get_GameObject()') -- the dial gimmick
             local compGimmickGUI = safeBoxObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gui.RopewayGimmickAttachmentGUI")))
             local compGimmickBody = safeBoxObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickBody")))
-            local compFsmState = safeBoxObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("FsmStateController")))
             local safeBoxControlObject = compGimmickBody:get_field("_GimmickControl"):call("get_GameObject()")
-            local safeBoxControlParent = safeBoxControlObject:get_Transform():get_Parent():get_GameObject()
             local compInteractBehavior = safeBoxControlObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.InteractBehavior")))
-            local compDialSettings = safeBoxControlObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.option.AttachmentSafeBoxDialSettings")))
-            local compAddItem = safeBoxControlParent:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.option.AddItemToInventorySettings")))
-            local itemPosObject = compAddItem:get_field("ItemPositions")
-            local itemPositions = itemPosObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("item.ItemPositions")))
 
             Items.cancelNextSafeUI = false
-            itemPositions:vanishItemAndSave()
-            compGimmickGUI:call("SetSatisfy()")
-            compAddItem:set_field("Enable", false) -- I guess set_Enabled is only for gameobjects and not components? smh
-            compDialSettings:call("TransmitCorrectAnswer", compGimmickGUI)
+            compGimmickGUI:call("SetCancel()") -- closes the safe interaction view / returns to player
+            compInteractBehavior:get_field("MyInteract"):call("clear()") -- makes the safe no longer interactable via "use key"
         end
     end)
 end

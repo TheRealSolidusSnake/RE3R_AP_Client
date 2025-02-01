@@ -39,23 +39,6 @@ function Player.LookAt(transform)
     Player.GetGameObject():get_Transform():lookAt(transform)
 end
 
-function Player.Parasite()
-    local sc = Player.GetSurvivorConditionComponent()
-    
-    sc:set_field("ParasiteStateName", 1880218003)
-    sc:set_field("_ReserveResistParasite", false)
-    sc:set_field("_ParasiteTimeRate", 1)
-    sc:call("set_IsParasite(System.Boolean)", true)
-    
-end
-
-function Player.Puke()
-    local puke = Player.GetSurvivorConditionComponent()
-    
-    puke:set_field("_ReserveResistParasite", true)
-    puke:set_field("_IsParasite", true)
-end
-
 function Player.Damage(can_kill)
     local hpc = Player.GetHitPointController()
     local currentHealth = tonumber(hpc:get_field("<CurrentHitPoint>k__BackingField"))

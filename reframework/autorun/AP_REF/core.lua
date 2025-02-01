@@ -423,28 +423,27 @@ local function main_menu()
 		imgui.end_child_window()
 
         -- None of the commands work except maybe say? So just remove the input box and button for sending commands for now.
-        --
-		-- imgui.text("Input:")
-		-- imgui.same_line()
-		-- imgui.push_item_width((size.x / 4)*3)
-		-- changed, input, _1, _2 = imgui.input_text("", current_text)
-		-- if changed then
-		-- 	current_text = input
-		-- end
-		-- imgui.same_line()
-		-- if imgui.button("Send") then
-		-- 	if current_text ~= "" then
-		-- 		if string.sub(current_text,1, 1) == "/" then
-		-- 			DisplayClientCommand(string.sub(current_text, 2))
-		-- 			current_text = ""
-		-- 		elseif ap ~= nil then
-		-- 			AP_REF.APClient:Say(current_text)
-		-- 			current_text = ""
-		-- 		end
-		-- 	end
-		-- end
-		-- imgui.pop_item_width()
 
+		imgui.text("Input:")
+		imgui.same_line()
+		imgui.push_item_width((size.x / 4)*3)
+		changed, input, _1, _2 = imgui.input_text("", current_text)
+		if changed then
+		    current_text = input
+		end
+		imgui.same_line()
+		if imgui.button("Send") then
+		    if current_text ~= "" then
+		        if string.sub(current_text,1, 1) == "/" then
+			    DisplayClientCommand(string.sub(current_text, 2))
+			    current_text = ""
+			elseif ap ~= nil then
+		 	    AP_REF.APClient:Say(current_text)
+		 	    current_text = ""
+		        end
+		    end
+	        end
+		imgui.pop_item_width()
 		imgui.end_window()
 	end
 end
