@@ -397,7 +397,7 @@ local function main_menu()
 		imgui.same_line()
 
 		-- Password Input
-		changed, pass = imgui.input_text("", AP_REF.APPassword)
+		changed, pass = imgui.input_text(" ", AP_REF.APPassword)
 		if changed then
 			AP_REF.APPassword = pass
 		end
@@ -451,7 +451,7 @@ local function main_menu()
 
 		-- Send Button
 		if imgui.button("Send") then
-			if current_text and current_text ~= " " then
+			if current_text and current_text ~= "" then
 				if string.sub(current_text, 1, 1) == "/" then
 					DisplayClientCommand(string.sub(current_text, 2))
 				elseif AP_REF.APClient then
