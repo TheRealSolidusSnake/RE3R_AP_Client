@@ -1,0 +1,8 @@
+reframework/data/AP_REF.json
+reframework/data/ArchipelagoRE2R/_storage
+reframework/autorun/Inspect.lua
+reframework/autorun/Console.lua
+reframework/autorun/EMV Engine
+reframework/data/Console/
+reframework/data/EMV_Engine/
+reframework/autorun_disabled
