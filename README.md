@@ -8,6 +8,11 @@ Archipelago randomizer client for Resident Evil 3 Remake, designed to work with 
 - Save often. Save after boss fights. 
 - When you complete a randomizer, restart your game before starting another one.
 
+## Missable Locations
+
+- Due to the nature of the game, there are points of no return and as such you can potentially miss items if you progress far enough.<br />
+Setting **Allow Missable Locations** to true in the yaml settings can put progression in those locations, you have been warned.
+
 ## Install Steps
 
 Follow the visual setup guide here: https://dontjoome.github.io/RE3R_AP_SetupGuide/
