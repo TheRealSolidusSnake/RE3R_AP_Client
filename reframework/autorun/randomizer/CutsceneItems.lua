@@ -22,8 +22,8 @@ function CutsceneItems.Shotgun()
     if not shotgunObject then
         return
     end
-    local conditionComponent = Helpers.component(shotgunObject, "gimmick.action.EsGimmickOpenObject")
-    conditionComponent:set_field("bGetItemForce", false)
+    local shotgunComponent = Helpers.component(shotgunObject, "gimmick.action.EsGimmickOpenObject")
+    shotgunComponent:set_field("bGetItemForce", false)
 end
 
 function CutsceneItems.Lockpick()
