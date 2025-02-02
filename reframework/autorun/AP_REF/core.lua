@@ -359,6 +359,8 @@ local function DisplayClientCommand(command)
 	end
 end
 
+
+-- I had a hard time reading this the way it was, so I restructured it a bit when I was trying to fix it. 
 local function main_menu()
 	if mainWindowVisible then
 		imgui.set_next_window_size(Vector2f.new(600, 300), 4)
@@ -380,7 +382,8 @@ local function main_menu()
         imgui.same_line()
         imgui.push_item_width(size.x / 5)
 
-		-- Host Input - Fields come before the textbox, so names are for the next field. 
+                -- Odd way of having the GUI since Host is attached to "Slot" and "Slot" to "Password" etc
+		-- Host Input  
 		changed, hostname = imgui.input_text("Slot:", AP_REF.APHost)
 		if changed then
 			AP_REF.APHost = hostname
@@ -438,7 +441,7 @@ local function main_menu()
 		imgui.pop_style_var()
 		imgui.end_child_window()
 
-        -- Input Box & Send Button
+        -- Input Box & Send Button are officially working?
 		imgui.text("Text Input:")
 		imgui.same_line()
 		imgui.push_item_width((size.x / 4) * 3)
