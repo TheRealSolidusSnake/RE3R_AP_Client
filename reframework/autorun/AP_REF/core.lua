@@ -222,7 +222,7 @@ local function set_room_info_handler(callback)
 		debug_print("Room info")
 		callback()
 		
-		AP_REF.APClient:ConnectSlot(AP_REF.APSlot, AP_REF.APPassword, AP_REF.APItemsHandling, {"Lua-APClientPP"}, {0, 4, 4})
+		AP_REF.APClient:ConnectSlot(AP_REF.APSlot, AP_REF.APPassword, AP_REF.APItemsHandling, {"Lua-APClientPP"}, {0, 5, 0})
 	end
 	AP_REF.APClient:set_room_info_handler(room_info_handler)
 end
