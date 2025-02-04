@@ -1,0 +1,144 @@
+{
+    "Collection_data": {
+        "case_sensitive": false,
+        "current_mesh_idx": 1,
+        "enable_component_search": true,
+        "enable_exclude_search": true,
+        "enable_include_search": false,
+        "excluded": [
+            "gimmick"
+        ],
+        "g_menu_open": false,
+        "gizmo_moves_selected": false,
+        "included": [
+            "[New]"
+        ],
+        "must_have": {
+            "Component": "via.motion.MotionFsm2",
+            "checked": true
+        },
+        "new_args": {
+            "disabled_components": [
+                "via.motion.Motion"
+            ]
+        },
+        "new_components": [
+            "via.Transform",
+            "via.render.Mesh",
+            "via.motion.Motion"
+        ],
+        "new_g_name": "NewObject",
+        "new_g_parent_name": "",
+        "o_tbl": {
+            "button_only": true,
+            "go": true
+        },
+        "only_parents": true,
+        "search_enemies": true,
+        "search_for": [
+            "via.physics.CharacterController",
+            "via.motion.ActorMotion",
+            "via.motion.DummySkeleton"
+        ],
+        "worldmatrix": "mat:1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 -242.15234375 -51.441108703613 -423.64929199219 1.0"
+    },
+    "add_DMC5_names": false,
+    "affect_children": true,
+    "always_update_lists": false,
+    "cache_orderedPairs": false,
+    "deferred_console": true,
+    "detach_collection": false,
+    "detach_reresource": false,
+    "embed_mobj_control_panel": true,
+    "exception_methods": null,
+    "generic_count_methods": {
+        "System.Boolean[]": "get_Count",
+        "System.Collections.Generic.Dictionary`2.Entry[[offline.gamemastering.Item.ID, mscorlib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Guid, mscorlib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]][]": "get_Count",
+        "System.Collections.Generic.Dictionary`2<System.Guid,offline.item.ItemPositions>": "get_Count",
+        "System.Collections.Generic.Dictionary`2<offline.EquipmentDefine.WeaponType,System.Guid>": "get_Count",
+        "System.Collections.Generic.Dictionary`2<offline.gamemastering.Item.ID,System.Guid>": "get_Count",
+        "System.Collections.Generic.Dictionary`2<offline.gamemastering.Item.ID,offline.gamemastering.item.ItemElement>": "get_Count",
+        "System.Collections.Generic.Dictionary`2[[System.Guid, mscorlib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[offline.item.ItemPositions, mscorlib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]][]": "get_Count",
+        "System.Collections.Generic.HashSet`1<offline.CostumeUserData>": "get_Count",
+        "System.Collections.Generic.List`1<offline.Collision.HitController>": "get_Count",
+        "System.Collections.Generic.List`1<offline.SurvivorCostumePrefabInfo>": "get_Count",
+        "System.Collections.Generic.List`1<offline.WeaponPrefabInfo>": "get_Count",
+        "System.Collections.Generic.List`1<offline.escape.gimmick.action.EsGimmickRandomContainer.AppearedItemInfo>": "get_Count",
+        "System.Collections.Generic.List`1<offline.gamemastering.InventoryManager.GimmickItem>": "get_Count",
+        "System.Collections.Generic.List`1<offline.gimmick.action.Trigger>": "get_Count",
+        "System.Collections.Generic.List`1<offline.gimmick.action.TriggerUseItem.ItemData>": "get_Count",
+        "System.Collections.Generic.List`1<offline.inventory.Slot>": "get_Count",
+        "System.Collections.Generic.List`1<offline.survivor.Equipment>": "get_Count",
+        "System.Collections.Generic.List`1<offline.survivor.Inventory>": "get_Count",
+        "System.Collections.Generic.List`1<offline.survivor.player.PlayerCondition>": "get_Count",
+        "System.Collections.Generic.List`1<via.GameObject>": "get_Count",
+        "System.String[]": "get_Count",
+        "offline.WwiseContainerApp": "getContainableAssetCount",
+        "offline.escape.gimmick.action.EsGimmickRandomContainer": "getReceiverCount",
+        "offline.gamemastering.InventoryManager": "getGetItemCount",
+        "offline.gamemastering.InventoryManager.GimmickItem[]": "get_Count",
+        "offline.gamemastering.InventoryManager.StockItem": "get_Count",
+        "offline.gamemastering.MainFlowManager": "get_ContinueCount",
+        "offline.gimmick.action.EsGimmickOpenObject": "getReceiverCount",
+        "offline.gimmick.action.EsGimmickVaccineFreezer": "getReceiverCount",
+        "offline.gimmick.action.GimmickAttachment": "getReceiverCount",
+        "offline.gimmick.action.GimmickDrawer": "getReceiverCount",
+        "offline.gimmick.action.InteractBehavior": "getTriggerNum",
+        "offline.gimmick.action.TriggerKey": "getLongIconCount",
+        "offline.gimmick.action.TriggerUseItem": "getLongIconCount",
+        "offline.gimmick.action.TriggerUseItem.ItemWork[]": "get_Count",
+        "offline.gimmick.option.AddItemsToInventorySettings.Param[]": "get_Count",
+        "offline.gimmick.option.CheckFlagSettings.Param[]": "get_Count",
+        "offline.gui.GUIMaster": "getOpenedLevelMapNum",
+        "offline.survivor.Inventory[]": "get_Count",
+        "offline.survivor.player.PlayerCondition": "get_MotionFsmLayerNum",
+        "via.Component[]": "get_Count",
+        "via.behaviortree.BehaviorTree": "getTreeCount",
+        "via.motion.Motion": "get_JointCount",
+        "via.motion.MotionFsm2": "getLayerCount",
+        "via.motion.MotionFsm2Layer": "getUserVariablesHubListCount",
+        "via.physics.Colliders": "getCollidersCount",
+        "via.render.Mesh": "get_MaterialNum",
+        "via.wwise.WwiseMotionSequence": "getNodeNameThinnedOutTriggerCount"
+    },
+    "increments": {
+        "System.Single": {
+            "increment": 0.01
+        },
+        "via.Quaternion": {
+            "increment": 0.01
+        },
+        "via.mat4": {
+            "increment": 0.01
+        },
+        "via.vec3": {
+            "increment": 0.01
+        }
+    },
+    "load_json": true,
+    "load_resources": true,
+    "loiter_by_default": true,
+    "max_element_size": 100,
+    "max_open_time": 30,
+    "objs_to_update": {
+        "offline.Collision.HitController": false,
+        "offline.gimmick.action.EsGimmickOpenObject": true
+    },
+    "remember_materials": true,
+    "show_all_fields": false,
+    "show_console": true,
+    "show_editable_tables": false,
+    "show_enable_checkboxes": true,
+    "show_uvars": true,
+    "transparent_bg": false,
+    "typedef_names_to_extensions": {
+        "MeshMaterialResourceHolder": "mdf2",
+        "MeshResourceHolder": "mesh",
+        "MotionBankResourceHolder": "motbank",
+        "TextureResourceHolder": "tex"
+    },
+    "update_module_idx": 1,
+    "use_child_windows": false,
+    "use_color_bytes": false,
+    "use_pcall": true
+}

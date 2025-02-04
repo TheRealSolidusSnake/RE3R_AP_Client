@@ -1,0 +1,43 @@
+{
+    "0503_sm44_404_ES_ShotgunCase01A_gimmick": {
+        "via.motion.MotionFsm2": {
+            "Open": true,
+            "OpenEnd": true,
+            "new state 4E88EF41": true
+        }
+    },
+    "0503_sm44_404_ES_ShotgunCase01A_gimmick:sm40_505_CutChain01A_Attachment_gimmick": {
+        "via.behaviortree.BehaviorTree": {
+            "PlayCamera": true,
+            "PlayForUseItem": true,
+            "UseItemOpenStart": true,
+            "UseItemSuccessStart": true,
+            "new state 50320D79": true,
+            "new state C22EAB3A": true
+        },
+        "via.motion.MotionFsm2": {
+            "init": true,
+            "play": true
+        }
+    },
+    "CheckGetKey": {
+        "via.behaviortree.BehaviorTree": {
+            "AreaSuccessStart": true,
+            "new state 17CFF066": true,
+            "new state F7C40A74": true
+        }
+    },
+    "st03_0219_sm42_476_ES_BreakBox01_gimmick": {
+        "via.behaviortree.BehaviorTree": {
+            "": true
+        }
+    },
+    "st05_0110_sm41_427_ES_VaccineFreezer01A_gimmick": {
+        "via.motion.MotionFsm2": {
+            "Close": true,
+            "Open": true,
+            "OpenEnd": true,
+            "new state 976AF5E7": true
+        }
+    }
+}

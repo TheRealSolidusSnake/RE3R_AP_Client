@@ -106,10 +106,16 @@ function Items.SetupInteractHook()
                 GUI.AddText("Locations in the Hospital will be gone forever if you happened to skip any")
                 GUI.AddText("It is recommended that you complete all checks in the Hospital prior to curing Jill.")
             end
+
+            -- when TyrelL starts his computer cutscene, set a flag so we can remove the Main Hall door
+            if item_name == "sm49_226_ES_Ch2_TyrellPC" and item_folder_path == "RopewayContents/World/Location_RPD/LocationLevel_RPD/Scenario/S02_0100/ES_S02_0100" then
+    		print("Setting talkedToTyrell to true")
+    		Storage.talkedToTyrell = true
+	    end
         
             local isLocationRandomized = Archipelago.IsLocationRandomized(location_to_check)
 
-            if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) and not CutsceneItems[item_name] or Archipelago.IsConnected()) then
+            if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) and not CutsceneObjects[item_name] or Archipelago.IsConnected()) then
                 -- if it's an item, call vanish and save to get rid of it
                 if item_positions and isLocationRandomized then
                     -- we were originally unsetting the invincibility flag here, but there's occasionally a bug where

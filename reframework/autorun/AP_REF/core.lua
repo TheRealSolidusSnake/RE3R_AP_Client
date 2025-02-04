@@ -438,10 +438,15 @@ local function main_menu()
 			imgui.new_line()
 		end
 
+		-- Auto-scroll logic
+		if imgui.get_scroll_y() >= imgui.get_scroll_max_y() then
+			imgui.set_scroll_here_y(1.0)
+		end
+
 		imgui.pop_style_var()
 		imgui.end_child_window()
 
-        -- Input Box & Send Button are officially working?
+        -- Input Box & Send Button
 		imgui.text("Text Input:")
 		imgui.same_line()
 		imgui.push_item_width((size.x / 4) * 3)
