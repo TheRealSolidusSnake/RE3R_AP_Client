@@ -1,5 +1,5 @@
 reframework/data/AP_REF.json
-reframework/data/ArchipelagoRE2R/_storage
+reframework/data/ArchipelagoRE3R/_storage
 reframework/autorun/Inspect.lua
 reframework/autorun/Console.lua
 reframework/autorun/EMV Engine
