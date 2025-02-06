@@ -26,4 +26,6 @@ We have a Discord thread dedicated to this rando! Join the Archipelago After Dar
 
 Report bugs in the Issues tab here in GitHub, or in the thread in the Discord server, and we'll get to them when we can!
 
+https://github.com/user-attachments/assets/134436ab-7ae8-408a-a5de-6996f86d4323
+
 
