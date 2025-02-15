@@ -8,7 +8,7 @@ function DestroyObjects.Init()
         DestroyObjects.DestroyAll()
     end
 
-    -- if the last check for objects to remove was X time ago or more, trigger another removal
+    -- Reset the init flag every 15 seconds
     if os.time() - DestroyObjects.lastRemoval > 15 then -- 15 seconds
         DestroyObjects.isInit = false
     end
@@ -19,7 +19,13 @@ function DestroyObjects.DestroyAll()
         DestroyObjects.GetPurposeGUI()
     }
 
-for k, obj in pairs(destroyables) do
+    -- Only add the door to destroyables if talkedToTyrell is true
+    if Storage.talkedToTyrell then
+        table.insert(destroyables, DestroyObjects.GetMainHallDoor())
+    end
+
+    -- Destroy all objects in the table
+    for k, obj in pairs(destroyables) do
         if obj ~= nil then
             obj:call("destroy", obj)
         end        
@@ -28,6 +34,10 @@ end
 
 function DestroyObjects.GetPurposeGUI()
     return Scene.getSceneObject():findGameObject("GUI_Purpose")
+end
+
+function DestroyObjects.GetMainHallDoor()
+    return Scene.getSceneObject():findGameObject("Door_2_1_030w_gimmick")
 end
 
 return DestroyObjects
