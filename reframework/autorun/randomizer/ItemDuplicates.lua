@@ -3,6 +3,8 @@ local ItemDuplicates = {}
 ItemDuplicates.duplicates_to_look_for = {}
 ItemDuplicates.duplicates_to_look_for["MGL Grenade Launcher"] = true
 ItemDuplicates.duplicates_to_look_for["M3 Shotgun"] = true
+ItemDuplicates.duplicates_to_look_for["Battery Pack"] = true
+ItemDuplicates.duplicates_to_look_for["Kendo Gate Key"] = true
 
 function ItemDuplicates.Check(item_name)
     if ItemDuplicates.duplicates_to_look_for[item_name] == nil then

@@ -50,8 +50,8 @@ re.on_pre_application_entry("UpdateBehavior", function()
     if Scene:isInGame() then 
         Archipelago.Init()
         Items.Init()
-        DestroyObjects.Init()
         CutsceneObjects.Init()
+        DestroyObjects.Init()
         FixBoxes.Init()
 
         if Archipelago.waitingForSync then

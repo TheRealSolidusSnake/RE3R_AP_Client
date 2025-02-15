@@ -4,6 +4,8 @@ Items.lastInteractable = nil
 Items.cancelNextUI = false
 Items.cancelNextSafeUI = false
 Items.cancelNextStatueUI = false
+Items.skipUiList = {}
+Items.skipUiList["st05_0110_sm41_427_ES_VaccineFreezer01A_gimmick"] = true
 
 function Items.Init()
     if not Items.isInit then
@@ -22,6 +24,7 @@ function Items.SetupInteractHook()
 
     -- main item hook, does all the AP stuff
     sdk.hook(interact_method, function(args)
+        Archipelago.waitingForInvincibilityOff = true
         feedbackFSM = sdk.to_managed_object(args[2])
         feedbackParent = sdk.to_managed_object(feedbackFSM:get_field('_Owner'))
         
@@ -70,6 +73,15 @@ function Items.SetupInteractHook()
 
             return
         end
+		
+        -- force exit item pick up ui on some interactions
+        if Items.skipUiList[item_name] ~= nil then
+            local uiMaster = Scene.getSceneObject():findGameObject("UIMaster")
+            local compGuiMaster = uiMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gui.GUIMaster")))
+
+            Items.cancelNextUI = false
+            compGuiMaster:closeInventory()
+        end
 
         -- if item_name and item_folder_path are not nil (even empty strings), do a location lookup to see if we should get an item
         if item_name ~= nil and item_folder_path ~= nil then
@@ -107,7 +119,7 @@ function Items.SetupInteractHook()
                 GUI.AddText("It is recommended that you complete all checks in the Hospital prior to curing Jill.")
             end
 
-            -- when TyrelL starts his computer cutscene, set a flag so we can remove the Main Hall door
+            -- when Tyrell starts his computer cutscene, set a flag so we can remove the Main Hall door
             if item_name == "sm49_226_ES_Ch2_TyrellPC" and item_folder_path == "RopewayContents/World/Location_RPD/LocationLevel_RPD/Scenario/S02_0100/ES_S02_0100" then
     		print("Setting talkedToTyrell to true")
     		Storage.talkedToTyrell = true
@@ -115,30 +127,9 @@ function Items.SetupInteractHook()
         
             local isLocationRandomized = Archipelago.IsLocationRandomized(location_to_check)
 
-            if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) and not CutsceneObjects[item_name] or Archipelago.IsConnected()) then
-                -- if it's an item, call vanish and save to get rid of it
-                if item_positions and isLocationRandomized then
-                    -- we were originally unsetting the invincibility flag here, but there's occasionally a bug where
-                    --    the game forgets that the player exists, making setting the flag not possible
-                    -- so we just set our own flag to relentlessly attempt to turn off invinc until it works
-                    Archipelago.waitingForInvincibilityOff = true
-                    
+            if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) and not CutsceneObjects[item_name] or Archipelago.IsConnected()) then    
+                if item_positions and isLocationRandomized then                   
                     item_positions:call('vanishItemAndSave()')
-
-                    -- the game sets an invincible flag on the player when picking up an item,
-                    --    which apparently normally gets unset by something on the item itself
-                    -- since we're vanishing it, we need to manually unset the invincible flag
-                    local playerObj = Player.GetGameObject()
-                    local compHitPoint = playerObj:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("HitPointController")))
-		    local compHitPoint2nd = playerObj:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("HitPointController")))
-		    local compHitPoint3rd = playerObj:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("HitPointController")))
-		    
-                    compHitPoint:call("set_Invincible(System.Boolean)", false)
-        	    compHitPoint:set_field("<Invincible>k__BackingField", false)
-        	    compHitPoint2nd:call("set_SecondInvincible(System.Boolean)", false)
-        	    compHitPoint2nd:set_field("<SecondInvincible>k__BackingField", false)
-    		    compHitPoint3rd:call("set_TrackInvincible(System.Boolean)", true)
-        	    compHitPoint3rd:set_field("<TrackInvincible>k__BackingField", true)
                 end
                 
                 if string.find(item_name, "SafeBoxDial") then -- if it's a safe, cancel the next safe ui
