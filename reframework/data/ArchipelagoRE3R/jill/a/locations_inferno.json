@@ -8,17 +8,22 @@
         "parent_object": "sm74_200_SideBag",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area/_Nightmare",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
             "Fire Hose",
             "Lock Pick",
             "Battery Pack",
             "Kendo Gate Key",
+            "ID Card",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -30,17 +35,22 @@
         "parent_object": "WP3000",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/Weapon/Nightmare",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
             "Fire Hose",
             "Lock Pick",
             "Battery Pack",
             "Kendo Gate Key",
+            "ID Card",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -82,7 +92,7 @@
     {
         "name": "On Cart",
         "region": "Pharmacy",
-        "original_item": "Fancy Box - Green Jewel",
+        "original_item": "Green Jewel",
         "condition": {},
         "item_object": "sm73_311",
         "parent_object": "sm73_311",
@@ -109,7 +119,7 @@
     {
         "name": "On Barrel 2",
         "region": "Side Alley",
-        "original_item": "Fancy Box - Blue Jewel",
+        "original_item": "Blue Jewel",
         "condition": {},
         "item_object": "sm73_312",
         "parent_object": "sm73_312",
@@ -118,21 +128,26 @@
     {
         "name": "Power Panel By Scaffolding",
         "region": "Power Maze",
-        "original_item": "Fancy Box - Red Jewel",
+        "original_item": "Red Jewel",
         "condition": {},
         "item_object": "sm73_313",
         "parent_object": "sm73_313",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/KeyItem/Nightmare",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
             "Battery Pack",
             "Kendo Gate Key",
+            "ID Card",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -144,14 +159,19 @@
         "parent_object": "sm70_206",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_900_Sewer/Nightmare",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
             "Kendo Gate Key",
+            "ID Card",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -163,14 +183,19 @@
         "parent_object": "sm70_205",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_1100_Kendo_Area/Inferno",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
             "Kendo Gate Key",
+            "ID Card",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -182,13 +207,18 @@
         "parent_object": "sm73_203",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common/NIGHTMARE",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
+            "ID Card",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -204,16 +234,19 @@
         "parent_object": "ItemPositions_sm41_410",
         "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0202_0/gimmick_Escape",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
-    
     {
         "name": "ID Case",
         "region": "West Office",
@@ -227,13 +260,17 @@
         "parent_object": "ItemPositions_sm41_410",
         "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0202_0/gimmick_Escape",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -245,13 +282,18 @@
         "parent_object": "sm70_001_onlyUnlimited",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
+            "ID Card",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -263,13 +305,18 @@
         "parent_object": "sm70_102_onlyUnlimited",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
+            "ID Card",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -281,13 +328,18 @@
         "parent_object": "sm70_100_onlyUnlimited",
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
+            "ID Card",
             "Locker Room Key",
             "Tape Player",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -304,11 +356,16 @@
         "parent_object": "Attache_MagnumBullet",
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/LockerItem",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
+            "ID Card",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -320,11 +377,16 @@
         "parent_object": "st04_0302_sm70_205_01",
         "folder_path": "RopewayContents/World/Location_Hospital2/LocationLevel_Hospital2/Item/common/ES_common/st04_0302",
         "allow_item": [
+            "Red Jewel",
+            "Blue Jewel",
+            "Green Jewel",
+            "ID Card",
             "Fuse 1",
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample"
+            "Culture Sample",
+            "Liquid-Filled Test Tube"
         ]
     },
     {
@@ -334,11 +396,7 @@
         "condition": {},
         "item_object": "sm70_100",
         "parent_object": "sm70_100_onlyUnlimited",
-        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/01_LockerRoom",
-        "allow_item": [
-            "Override Key",
-            "Culture Sample"
-        ]
+        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/01_LockerRoom"
     },
     {
         "name": "By Corpse",
@@ -347,11 +405,7 @@
         "condition": {},
         "item_object": "sm70_205",
         "parent_object": "sm70_205_onlyUnlimited",
-        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory",
-        "allow_item": [
-            "Override Key",
-            "Culture Sample"
-        ]
+        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory"
     },
     {
         "name": "Case Near Servers",
@@ -360,11 +414,7 @@
         "condition": {},
         "item_object": "sm70_208",
         "parent_object": "sm70_208_onlyUnlimited",
-        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory",
-        "allow_item": [
-            "Override Key",
-            "Culture Sample"
-        ]
+        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory"
     },
     {
         "name": "Attache Case",
@@ -373,11 +423,7 @@
         "condition": {},
         "item_object": "sm70_207",
         "parent_object": "sm70_208_Acase",
-        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory",
-        "allow_item": [
-            "Override Key",
-            "Culture Sample"
-        ]
+        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory"
     },
     {
         "name": "On Cart",
@@ -386,11 +432,7 @@
         "condition": {},
         "item_object": "sm70_002",
         "parent_object": "sm70_002_onlyUnlimited",
-        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory",
-        "allow_item": [
-            "Override Key",
-            "Culture Sample"
-        ]
+        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory"
     },
     {
         "name": "By Case",
@@ -399,11 +441,7 @@
         "condition": {},
         "item_object": "sm70_206",
         "parent_object": "sm70_206_onlyUnlimited",
-        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory",
-        "allow_item": [
-            "Override Key",
-            "Culture Sample"
-        ]
+        "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory"
     },
     {
         "name": "Final Fight 10",
@@ -414,7 +452,6 @@
         "parent_object": "sm70_100_SHard",
         "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/04_Room02"
     },
-    
     {
         "name": "Counter By Door",
         "region": "Supermarket",
