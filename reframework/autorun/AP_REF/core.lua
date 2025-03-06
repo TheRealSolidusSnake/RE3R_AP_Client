@@ -359,6 +359,7 @@ local function DisplayClientCommand(command)
 	end
 end
 
+
 -- I had a hard time reading this the way it was, so I restructured it a bit when I was trying to fix it. 
 local function main_menu()
 	if mainWindowVisible then
@@ -381,8 +382,8 @@ local function main_menu()
         imgui.same_line()
         imgui.push_item_width(size.x / 5)
 
-        -- Odd way of having the GUI since "Host" is attached to "Slot" and "Slot" to "Password"
-	-- Host Input  
+                -- Odd way of having the GUI since Host is attached to "Slot" and "Slot" to "Password" etc
+		-- Host Input  
 		changed, hostname = imgui.input_text("Slot:", AP_REF.APHost)
 		if changed then
 			AP_REF.APHost = hostname
@@ -390,7 +391,7 @@ local function main_menu()
 
 		imgui.same_line()
 
-	-- Slotname Input
+		-- Slotname Input
 		changed, slotname = imgui.input_text("Password:", AP_REF.APSlot)
 		if changed then
 			AP_REF.APSlot = slotname
@@ -398,7 +399,7 @@ local function main_menu()
 
 		imgui.same_line()
 
-	-- Password Input
+		-- Password Input
 		changed, pass = imgui.input_text(" ", AP_REF.APPassword)
 		if changed then
 			AP_REF.APPassword = pass
@@ -406,11 +407,10 @@ local function main_menu()
 
 		imgui.same_line()
 
-	-- Connect/Disconnect Buttons
+		-- Connect/Disconnect Buttons
 		if connected then
 			if imgui.button("Disconnect") then
                 disconnect_client = true
-                AP_REF.APClient = nil
                 table.insert(textLog, {{ text = "Disconnected." }})
 			end
 		else
@@ -422,7 +422,7 @@ local function main_menu()
 		imgui.pop_item_width()
 		imgui.separator()
 
-	-- Chat Log Display
+		-- Chat Log Display
 		imgui.begin_child_window("ScrollRegion", Vector2f.new(size.x-5, size.y-55), true, 0)
 		imgui.push_style_var(14, Vector2f.new(0,0))
 
@@ -437,7 +437,7 @@ local function main_menu()
 			imgui.new_line()
 		end
 
-	-- Auto-scroll logic
+		-- Auto-scroll logic
 		if imgui.get_scroll_y() >= imgui.get_scroll_max_y() then
 			imgui.set_scroll_here_y(1.0)
 		end
@@ -459,9 +459,7 @@ local function main_menu()
 		-- Send Button
 		if imgui.button("Send") then
 			if current_text and current_text ~= "" then
-				if string.sub(current_text, 1, 1) == "/" then
-					DisplayClientCommand(string.sub(current_text, 2))
-				elseif AP_REF.APClient then
+				if AP_REF.APClient then
 					AP_REF.APClient:Say(current_text)
 				end
 				current_text = "" -- Clear input after sending

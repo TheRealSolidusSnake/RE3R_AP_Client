@@ -2710,9 +2710,9 @@
     {
         "name": "Breakable Box",
         "region": "Promenade",
-        "original_item": "Red Herb",
+        "original_item": "High-Grade Gunpowder",
         "condition": {},
-        "item_object": "sm70_002",
+        "item_object": "sm70_206",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_ClockTower/Environments/st03_0804_0/gimmick",
         "allow_item": [
@@ -2726,8 +2726,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -4195,7 +4194,8 @@
         "condition": {},
         "item_object": "st05_0110_sm41_427_ES_VaccineFreezer01A_gimmick",
         "parent_object": "",
-        "folder_path": "RopewayContents/World/Location_Laboratory/Environments/st05_0110_0/gimmick"
+        "folder_path": "RopewayContents/World/Location_Laboratory/Environments/st05_0110_0/gimmick",
+        "randomized": 0
     },
     {
         "name": "By Case",
