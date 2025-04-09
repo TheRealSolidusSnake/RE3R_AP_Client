@@ -16,7 +16,7 @@ Archipelago randomizer client for Resident Evil 3 Remake, designed to work with 
 
 ## Install Steps
 
-Follow the visual setup guide here: https://dontjoome.github.io/RE3R_AP_SetupGuide/
+Follow the visual setup guide here: https://TheRealSolidusSnake.github.io/RE3R_AP_SetupGuide/
 
 ## I need general help.
 
