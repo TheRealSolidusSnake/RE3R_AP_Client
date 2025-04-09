@@ -1,5 +1,5 @@
 # RE3R AP Client
-Archipelago randomizer client for Resident Evil 3 Remake, designed to work with the RE3R apworld here: https://github.com/dontjoome/RE3R_AP_World
+Archipelago randomizer client for Resident Evil 3 Remake, designed to work with the RE3R apworld here: https://github.com/TheRealSolidusSnake/RE3R_AP_World
 
 ## IMPORTANT / READ FIRST
 
