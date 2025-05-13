@@ -6,9 +6,8 @@ function Tools.ShowGUI()
     local deathlink_color = AP_REF.HexToImguiColor('FFFFFF')
     
     -- if the lookups contain data, then we're connected, so do everything that needs connection
-    if Lookups.character and Lookups.scenario then
-        scenario_text = "   " .. Lookups.character:gsub("^%l", string.upper) .. " " .. string.upper(Lookups.scenario) .. 
-            " - " .. Lookups.difficulty:gsub("^%l", string.upper)
+    if Lookups.difficulty then
+        scenario_text = "   " .. " - " .. Lookups.difficulty:gsub("^%l", string.upper)
 
         if Archipelago.death_link then
             deathlink_text = "   On"
@@ -56,7 +55,7 @@ function Tools.ShowGUI()
     imgui.text("   - Various Fixes")
     imgui.new_line()
 
-    if Lookups.character and Lookups.scenario then
+    if Lookups.difficulty then
         imgui.text_colored("Missing Items?", -10825765)
         imgui.text("If you were sent items at the ")
         imgui.text("start and didn't receive them,")

@@ -101,12 +101,12 @@ function Archipelago.SlotDataHandler(slot_data)
         Archipelago.death_link = slot_data.death_link
     end
 
-    Lookups.Load(slot_data.character, slot_data.scenario, string.lower(slot_data.difficulty))
+    Lookups.Load(string.lower(slot_data.difficulty))
     Storage.Load()
 
     GUI.AddTexts({
         { message='AP Scenario: ' },
-        { message=Lookups.character:gsub("^%l", string.upper) .. ' ' .. string.upper(Lookups.scenario) .. ' ' .. string.upper(Lookups.difficulty), color="green" }
+        { message=string.upper(Lookups.difficulty), color="green" }
     })
 
     for t, typewriter_name in pairs(slot_data.unlocked_typewriters) do
@@ -645,10 +645,10 @@ function Archipelago._GetLocationFromLocationData(location_data, include_sent_lo
 
     local translated_location = {}
     local scenario_suffixes = {
-        standard = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. ")",
-        hardcore = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "H)",
-        nightmare = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "N)",
-        inferno = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "I)"
+        standard = "",
+        hardcore = " (" .. "H)",
+        nightmare = " (" .. "N)",
+        inferno = " (" .. "I)"
     }
 
     if location_data['id'] and not location_data['name'] then
