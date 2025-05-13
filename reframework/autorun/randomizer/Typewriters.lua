@@ -19,7 +19,7 @@ function Typewriters.AddUnlockedText(name, item_name, no_save_warning)
     end
 
     if #typewriterText > 0 then     
-        if typewriterText == "RPD - Lobby" and string.lower(Lookups.scenario) == "a" and not Storage.talkedToMarvin then
+        if typewriterText == "RPD - Lobby" and not Storage.talkedToMarvin then -- Marvin exist in RE3R ??
             GUI.AddText("Lobby Typewriter will unlock after you talk to Marvin for the first time.")
         else
             GUI.AddTexts({
@@ -91,7 +91,7 @@ function Typewriters.DisplayWarpMenu()
     for t, typewriter in pairs(Lookups.typewriters) do
         local typewriter_disabled = false
 
-        if typewriter["name"] == "RPD - Lobby" and string.lower(Lookups.scenario) == "a" and not Storage.talkedToMarvin then
+        if typewriter["name"] == "RPD - Lobby" and not Storage.talkedToMarvin then -- Marvin exist in RE3R ??
             typewriter_disabled = true
         end
 
@@ -134,7 +134,6 @@ function Typewriters.DisplayWarpMenu()
         Typewriters.UnlockAll()
     end
   
-    -- Warping while Ada and triggering any cutscenes breaks the game
 
     imgui.pop_font()
     imgui.end_window()
