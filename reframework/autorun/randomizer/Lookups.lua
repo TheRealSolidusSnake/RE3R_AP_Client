@@ -5,8 +5,6 @@ Lookups.items = {}
 Lookups.all_items = {}
 Lookups.locations = {}
 Lookups.typewriters = {}
--- Lookups.character = nil
--- Lookups.scenario = nil
 Lookups.difficulty = nil
 
 function Lookups.Load(difficulty)
@@ -15,12 +13,7 @@ function Lookups.Load(difficulty)
         return
     end
 
-    -- Lookups.character = character
-    -- Lookups.scenario = scenario
     Lookups.difficulty = difficulty
-
-    -- character = string.lower(character)
-    -- scenario = string.lower(scenario)
 
     local item_file = Lookups.filepath .. "/items.json"
     local location_file = Lookups.filepath .. "/locations.json"
@@ -70,8 +63,6 @@ function Lookups.Reset()
     Lookups.items = {}
     Lookups.locations = {}
     Lookups.typewriters = {}
-    -- Lookups.character = nil
-    -- Lookups.scenario = nil
     Lookups.difficulty = nil
 end
 
