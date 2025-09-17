@@ -1,7 +1,6 @@
 local ItemBox = {}
 
 function ItemBox.GetAnyAvailable()
-    local scene = Scene.getSceneObject()
     local gimmick_objects = scene:call("findGameObjectsWithTag(System.String)", "Gimmick")
 
     if type(gimmick_objects) ~= "table" then

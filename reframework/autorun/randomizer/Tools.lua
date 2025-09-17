@@ -4,7 +4,9 @@ function Tools.ShowGUI()
     local scenario_text = '   (not connected)'
     local deathlink_text = '   (not connected)'
     local deathlink_color = AP_REF.HexToImguiColor('FFFFFF')
-    
+    local version_text = '   ' .. tostring(Manifest.version)
+    local version_mismatch = false
+
     -- if the lookups contain data, then we're connected, so do everything that needs connection
     if Lookups.character and Lookups.scenario then
         scenario_text = "   " .. Lookups.character:gsub("^%l", string.upper) .. " " .. string.upper(Lookups.scenario) .. 
@@ -16,6 +18,18 @@ function Tools.ShowGUI()
         else
             deathlink_text = "   Off"
             deathlink_color = AP_REF.HexToImguiColor('777777')
+        end
+
+        if Archipelago.apworld_version == nil or Archipelago.apworld_version ~= Manifest.version then
+            if Archipelago.apworld_version ~= nil then
+                version_text = version_text .. ' (world is ' .. Archipelago.apworld_version .. ')'
+            else
+                version_text = version_text .. ' (world is outdated)'
+            end
+
+            version_mismatch = true
+        else
+            version_text = version_text .. ' (matches)'
         end
     end
     
@@ -29,7 +43,13 @@ function Tools.ShowGUI()
     )
 
     imgui.text_colored("Mod Version Number: ", -10825765)
-    imgui.text("   " .. tostring(Manifest.version))
+    
+    if version_mismatch then
+        imgui.text_colored(version_text, AP_REF.HexToImguiColor('fa3d2f'))
+    else
+        imgui.text(version_text)
+    end
+
     imgui.new_line()
     imgui.text_colored("AP Scenario & Difficulty:   ", -10825765)
     imgui.text(scenario_text)
@@ -37,9 +57,14 @@ function Tools.ShowGUI()
     imgui.text_colored("DeathLink:   ", -10825765)
     imgui.text_colored(deathlink_text, deathlink_color)
     imgui.new_line()
-    -- imgui.text_colored("Current Player Character:   ", -10825765)
-    -- imgui.text(player_character_text)
-    -- imgui.new_line()
+
+    imgui.separator()
+    imgui.text(" The default keyboard key to")
+    imgui.text(" show or hide these windows is")
+    imgui.text(" INSERT.")
+    imgui.separator()
+
+    imgui.new_line()
     imgui.text_colored("Credits:", -10825765)
     imgui.text("@Solidus")
     imgui.text("   - Main campaign")
@@ -57,15 +82,13 @@ function Tools.ShowGUI()
     imgui.new_line()
 
     if Lookups.character and Lookups.scenario then
-        imgui.text_colored("Missing Items?", -10825765)
-        imgui.text("If you were sent items at the ")
-        imgui.text("start and didn't receive them,")
-        imgui.text("click this button.")
+        imgui.text_colored("Clock Puzzle Broken?", -10825765)
+        imgui.text("Click this button to fix")
+        imgui.text(" the puzzle door!")
 
-        if imgui.button("Receive Items Again") then
-            Storage.lastReceivedItemIndex = -1
-            Storage.lastSavedItemIndex = -1
-            Archipelago.waitingForSync = true
+        if imgui.button("Fix Clock Puzzle") then
+            GUI.AddText("Fixing Clock Puzzle...")
+            CutsceneObjects.ClockPuzzle()
         end
 
         imgui.new_line()
@@ -77,6 +100,19 @@ function Tools.ShowGUI()
             GUI.AddText("Receiving Hip Pouch...")
             Archipelago.ReceiveItem("Hip Pouch", nil, 1)
         end
+
+        imgui.new_line()
+        imgui.text_colored("Missing Items?", -10825765)
+        imgui.text("If you were sent items at the ")
+        imgui.text("start and didn't receive them,")
+        imgui.text("click this button.")
+
+        if imgui.button("Receive Items Again") then
+            Storage.lastReceivedItemIndex = -1
+            Storage.lastSavedItemIndex = -1
+            Archipelago.waitingForSync = true
+        end
+
     end
 
     imgui.end_window()

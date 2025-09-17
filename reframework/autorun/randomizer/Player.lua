@@ -70,27 +70,42 @@ function Player.Kill()
     burn:set_field("bRequestBurnUp", true)
 end
 
--- the game sets an invincible flag on the player when picking up an item,
---    which apparently normally gets unset by something on the item itself
--- since we're vanishing items, we need to manually unset the invincible flag
+-- The game sets an invincible flag on the player when picking up an item,
+-- which normally gets unset by the item itself.
+-- Since we're vanishing items, we need to manually unset the invincible flag.
 function Player.TurnOffInvincibility()
     local playerObj = Player.GetGameObject()
-
     if playerObj then
         local compHitPoint = Player.GetHitPointController()
-        local compHitPoint2nd = Player.GetHitPointController()
-        local compHitPoint3rd = Player.GetHitPointController()
 
-        compHitPoint:call("set_Invincible(System.Boolean)", false)
-        compHitPoint:set_field("<Invincible>k__BackingField", false)
-        compHitPoint2nd:call("set_SecondInvincible(System.Boolean)", false)
-        compHitPoint2nd:set_field("<SecondInvincible>k__BackingField", false)
-    	compHitPoint3rd:call("set_TrackInvincible(System.Boolean)", true)
-        compHitPoint3rd:set_field("<TrackInvincible>k__BackingField", true)
+        if compHitPoint then
+            Player.RemovePlayerRestriction()
+            -- Explicitly disable all invincibility flags
+    	    compHitPoint:call("set_Invincible(System.Boolean)", false)
+   	    compHitPoint:set_field("<Invincible>k__BackingField", false)
+    	    compHitPoint:call("set_SecondInvincible(System.Boolean)", false)
+    	    compHitPoint:set_field("<SecondInvincible>k__BackingField", false)
+    	    compHitPoint:call("set_TrackInvincible(System.Boolean)", false)
+    	    compHitPoint:set_field("<TrackInvincible>k__BackingField", false)
+            local result = compHitPoint:call("get_Invincible")
+
+            if not result then return true else return false end
+        else
+            return false
+        end
 
         return true
     else
         return false
+    end
+end
+
+function Player.RemovePlayerRestriction()
+    local interactManager = Scene.getInteractManager()
+    local currentRestrictPlayer = interactManager:get_field("_CurrentRestrictPlayer")
+
+    if currentRestrictPlayer then
+        currentRestrictPlayer:call("set_Target", 0)
     end
 end
 

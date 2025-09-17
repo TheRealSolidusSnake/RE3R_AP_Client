@@ -222,7 +222,7 @@ local function set_room_info_handler(callback)
 		debug_print("Room info")
 		callback()
 		
-		AP_REF.APClient:ConnectSlot(AP_REF.APSlot, AP_REF.APPassword, AP_REF.APItemsHandling, {"Lua-APClientPP"}, {0, 5, 0})
+		AP_REF.APClient:ConnectSlot(AP_REF.APSlot, AP_REF.APPassword, AP_REF.APItemsHandling, {"Lua-APClientPP"}, {0, 6, 3})
 	end
 	AP_REF.APClient:set_room_info_handler(room_info_handler)
 end
@@ -480,7 +480,7 @@ local function SaveConfig()
     config["APFillerColor"] = AP_REF.APFillerColor
     config["APTrapColor"] = AP_REF.APTrapColor
     config["APLocationColor"] = AP_REF.APLocationColor
-	config["APEntranceColor"] = AP_REF.APEntranceColor
+    config["APEntranceColor"] = AP_REF.APEntranceColor
 
     -- store last connection settings so they're restored on game relaunch
     config["APHost"] = AP_REF.APHost

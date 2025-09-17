@@ -19,11 +19,6 @@ function DestroyObjects.DestroyAll()
         DestroyObjects.GetPurposeGUI()
     }
 
-    -- Only add the door to destroyables if talkedToTyrell is true
-    if Storage.talkedToTyrell then
-        table.insert(destroyables, DestroyObjects.GetMainHallDoor())
-    end
-
     -- Destroy all objects in the table
     for k, obj in pairs(destroyables) do
         if obj ~= nil then
@@ -33,11 +28,7 @@ function DestroyObjects.DestroyAll()
 end
 
 function DestroyObjects.GetPurposeGUI()
-    return Scene.getSceneObject():findGameObject("GUI_Purpose")
-end
-
-function DestroyObjects.GetMainHallDoor()
-    return Scene.getSceneObject():findGameObject("Door_2_1_030w_gimmick")
+    return scene:call("findGameObject(System.String)", "GUI_Purpose")
 end
 
 return DestroyObjects

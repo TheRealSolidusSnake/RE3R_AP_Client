@@ -2,31 +2,58 @@ local Scene = {}
 
 Scene.sceneObject = nil
 Scene.mainFlowManager = nil
+Scene.interactManager = nil
+Scene.guiItemBox = nil
 
 function Scene.getSceneObject()
     if Scene.sceneObject ~= nil then
         return Scene.sceneObject
     end
 
-    Scene.sceneObject = sdk.call_native_func(sdk.get_native_singleton("via.SceneManager"), sdk.find_type_definition("via.SceneManager"), "get_CurrentScene()")
+    local mgr = sdk.get_native_singleton("via.SceneManager")
+    if mgr == nil then
+        return nil
+    end
+
+    Scene.sceneObject = sdk.call_native_func(
+        mgr,
+        sdk.find_type_definition("via.SceneManager"),
+        "get_CurrentScene()"
+    )
 
     return Scene.sceneObject
 end
 
 function Scene.getGameMaster()
-    -- local gameMaster = Scene.getSceneObject():findGameObject("30_GameMaster")
-    local masters = Scene.getSceneObject():findGameObjectsWithTag("Masters")
-    local gameMaster = nil
+    return Scene.getMasterObject("30_GameMaster")
+end
 
-    for k, master in pairs(masters) do
-        if master:get_Name() == "30_GameMaster" then
-            gameMaster = master
+function Scene.getGimmickMaster()
+    return Scene.getMasterObject("70_GimmickMaster")
+end
 
-            break
+function Scene.getUIMaster()
+    return Scene.getMasterObject("UIMaster")
+end
+
+function Scene.getMasterObject(objectName)
+    local scene = Scene.getSceneObject()
+    if not scene then
+        return nil
+    end
+
+    local masters = scene:findGameObjectsWithTag("Masters")
+    if not masters then
+        return nil
+    end
+
+    for _, master in pairs(masters) do
+        if master and master:get_Name() == objectName then
+            return master
         end
     end
 
-    return gameMaster
+    return nil
 end
 
 function Scene.getMainFlowManager()
@@ -35,21 +62,58 @@ function Scene.getMainFlowManager()
     end
 
     local gameMaster = Scene.getGameMaster()
+    if not gameMaster then
+        return nil
+    end
 
-    Scene.mainFlowManager = gameMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gamemastering.MainFlowManager")))
+    Scene.mainFlowManager = gameMaster:call(
+        "getComponent(System.Type)",
+        sdk.typeof(sdk.game_namespace("gamemastering.MainFlowManager"))
+    )
 
     return Scene.mainFlowManager
 end
 
+function Scene.getInteractManager()
+    if Scene.interactManager ~= nil then
+        return Scene.interactManager
+    end
+
+    local gimmickMaster = Scene.getGimmickMaster()
+    if not gimmickMaster then
+        return nil
+    end
+
+    Scene.interactManager = gimmickMaster:call(
+        "getComponent(System.Type)",
+        sdk.typeof(sdk.game_namespace("gimmick.action.InteractManager"))
+    )
+
+    return Scene.interactManager
+end
+
 function Scene.getSurvivorType()
     local gameMaster = Scene.getGameMaster()
-    local survivorManager = gameMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("SurvivorManager")))
-    local survivors = survivorManager:get_field("ExistSurvivorInfoList")
+    if not gameMaster then
+        return -1
+    end
 
-    for _, survivor in pairs(survivors:get_field("mItems")) do
+    local survivorManager = gameMaster:call(
+        "getComponent(System.Type)",
+        sdk.typeof(sdk.game_namespace("SurvivorManager"))
+    )
+    if not survivorManager then
+        return -1
+    end
+
+    local survivors = survivorManager:get_field("ExistSurvivorInfoList")
+    if not survivors then
+        return -1
+    end
+
+    for _, survivor in pairs(survivors:get_field("mItems") or {}) do
         if survivor then
             local isActive = survivor:get_field("<IsActivePlayer>k__BackingField")
-
             if isActive then
                 return survivor:get_field("<SurvivorType>k__BackingField")
             end
@@ -64,31 +128,47 @@ function Scene.getGUIItemBox()
         return Scene.guiItemBox
     end
 
-    return Scene.getSceneObject():findGameObject("GUI_ItemBox")
+    local scene = Scene.getSceneObject()
+    if not scene then
+        return nil
+    end
+
+    Scene.guiItemBox = scene:call("findGameObject(System.String)", "GUI_ItemBox")
+    return Scene.guiItemBox
 end
 
+-- Safe wrappers for MainFlowManager checks
 function Scene.isTitleScreen()
-    return Scene.getMainFlowManager():get_IsInTitle()
+    local mfm = Scene.getMainFlowManager()
+    return mfm and mfm:get_IsInTitle() or false
 end
 
 function Scene.isInGame()
-    return Scene.getMainFlowManager():get_IsInGame()
+    local mfm = Scene.getMainFlowManager()
+    return mfm and mfm:get_IsInGame() or false
 end
 
 function Scene.isInPause()
-    return Scene.getMainFlowManager():get_IsInPause()
+    local mfm = Scene.getMainFlowManager()
+    return mfm and mfm:get_IsInPause() or false
 end
 
 function Scene.isInGameOver()
-    return Scene.getMainFlowManager():get_IsInGameOver()
+    local mfm = Scene.getMainFlowManager()
+    return mfm and mfm:get_IsInGameOver() or false
 end
 
 function Scene.goToGameOver()
-    return Scene.getMainFlowManager():call("goGameOverSimple", nil)
+    local mfm = Scene.getMainFlowManager()
+    if not mfm then
+        return false
+    end
+    return mfm:call("goGameOverSimple", nil)
 end
 
 function Scene.isUsingItemBox()
-    return Scene.getGUIItemBox():get_DrawSelf() -- is the ItemBox GUI "drawn"?
+    local guiBox = Scene.getGUIItemBox()
+    return guiBox and guiBox:get_DrawSelf() or false
 end
 
 function Scene.isCharacterJill()
@@ -100,19 +180,23 @@ function Scene.isCharacterCarlos()
 end
 
 function Scene.getCurrentLocation()
-    return Scene.getMainFlowManager():get_LoadLocation()
+    local mfm = Scene.getMainFlowManager()
+    return mfm and mfm:get_LoadLocation() or nil
 end
 
 function Scene.getCurrentArea()
-    return Scene.getMainFlowManager():get_LoadArea()
+    local mfm = Scene.getMainFlowManager()
+    return mfm and mfm:get_LoadArea() or nil
 end
 
 function Scene.getGameGUID()
-    return Scene.getMainFlowManager():get_GameGUID()
+    local mfm = Scene.getMainFlowManager()
+    return mfm and mfm:get_GameGUID() or nil
 end
 
 function Scene.getSaveGUID()
-    return Scene.getMainFlowManager():get_SaveGUID()
+    local mfm = Scene.getMainFlowManager()
+    return mfm and mfm:get_SaveGUID() or nil
 end
 
 return Scene

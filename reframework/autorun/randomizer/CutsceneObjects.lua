@@ -17,6 +17,15 @@ function CutsceneObjects.Init()
     end
 end
 
+function CutsceneObjects.ClockPuzzle()
+    local clockObject = Helpers.gameObject("0201_sm41_415_ES_JewelryBox01A_00_gimmick")
+    if not clockObject then
+        return
+    end
+    local clockComponent = Helpers.component(clockObject, "gimmick.action.EsGimmickJewelryBox")
+    clockComponent:set_field("_Rno", 5)
+end
+
 function CutsceneObjects.Shotgun()
     local shotgunObject = Helpers.gameObject("0503_sm44_404_ES_ShotgunCase01A_gimmick")
     if not shotgunObject then

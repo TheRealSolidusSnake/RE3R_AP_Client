@@ -22,8 +22,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -49,8 +48,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -76,8 +74,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -103,12 +100,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Breakable Box",
+        "name": "Breakable Box by Ticket Gate",
         "region": "Subway Station",
         "original_item": "Red Herb",
         "condition": {},
@@ -130,8 +126,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -161,8 +156,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -177,7 +171,20 @@
         "item_object": "WP6200",
         "parent_object": "ItemPositions_Jewel_1",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area/JewelryBox",
-        "randomized": 0
+        "allow_item": [
+            "Fire Hose",
+            "Lock Pick",
+            "Battery Pack",
+            "Kendo Gate Key",
+            "ID Card",
+            "Locker Room Key",
+            "Tape Player",
+            "Fuse 1",
+            "Fuse 2",
+            "Fuse 3",
+            "Override Key",
+            "Culture Sample"
+        ]
     },
     {
         "name": "Clock Puzzle - 2nd Jewel",
@@ -192,7 +199,20 @@
         "item_object": "sm71_101",
         "parent_object": "ItemPositions_Jewel_2",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area/JewelryBox",
-        "randomized": 0
+        "allow_item": [
+            "Fire Hose",
+            "Lock Pick",
+            "Battery Pack",
+            "Kendo Gate Key",
+            "ID Card",
+            "Locker Room Key",
+            "Tape Player",
+            "Fuse 1",
+            "Fuse 2",
+            "Fuse 3",
+            "Override Key",
+            "Culture Sample"
+        ]
     },
     {
         "name": "Clock Puzzle - 3rd Jewel",
@@ -208,7 +228,20 @@
         "item_object": "sm74_200",
         "parent_object": "ItemPositions_Jewel_3",
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area/JewelryBox",
-        "randomized": 0
+        "allow_item": [
+            "Fire Hose",
+            "Lock Pick",
+            "Battery Pack",
+            "Kendo Gate Key",
+            "ID Card",
+            "Locker Room Key",
+            "Tape Player",
+            "Fuse 1",
+            "Fuse 2",
+            "Fuse 3",
+            "Override Key",
+            "Culture Sample"
+        ]
     },
     {
         "name": "On Barrel in Alley",
@@ -220,7 +253,7 @@
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area"
     },
     {
-        "name": "Breakable Box",
+        "name": "Breakable Box by Police Car",
         "region": "Main Avenue",
         "original_item": "Gunpowder",
         "condition": {},
@@ -247,7 +280,7 @@
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_300_DounutShop_Area/_DounutShop_Inside"
     },
     {
-        "name": "Table By Zombie Couple",
+        "name": "Table by Zombie Couple",
         "region": "Donut Shop",
         "original_item": "Gunpowder",
         "condition": {},
@@ -278,8 +311,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -305,12 +337,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "South Side Breakable Box",
+        "name": "Breakable Box near Side Alley",
         "region": "Business Street",
         "original_item": "Handgun Ammo",
         "condition": {},
@@ -319,7 +350,7 @@
         "folder_path": "RopewayContents/World/Location_DownTown/Environments/st03_0219_0/gimmick"
     },
     {
-        "name": "North Side Breakable Box",
+        "name": "Breakable Box near Pharmacy",
         "region": "Business Street",
         "original_item": "Handgun Ammo",
         "condition": {},
@@ -364,7 +395,7 @@
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_600_ControlStation_Area/I_ControlRoom"
     },
     {
-        "name": "Table By Downed Zombie",
+        "name": "Table by Downed Zombie",
         "region": "Pharmacy",
         "original_item": "Handgun Ammo",
         "condition": {},
@@ -382,7 +413,7 @@
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_600_ControlStation_Area/I_Pharamacy"
     },
     {
-        "name": "Box By Register",
+        "name": "Box by Register",
         "region": "Pharmacy",
         "original_item": "Green Herb",
         "condition": {},
@@ -400,7 +431,7 @@
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/SafeBox"
     },
     {
-        "name": "In Drawer By Safe",
+        "name": "In Drawer by Safe",
         "region": "Drugstore Storage",
         "original_item": "Gunpowder",
         "condition": {},
@@ -467,8 +498,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -511,8 +541,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -537,8 +566,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -563,8 +591,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -589,8 +616,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -615,8 +641,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -641,8 +666,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -667,8 +691,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -692,8 +715,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -717,8 +739,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -742,8 +763,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -771,8 +791,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -809,8 +828,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -838,8 +856,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -870,7 +887,7 @@
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_600_ControlStation_Area/I_Street"
     },
     {
-        "name": "In Case Of Emergency",
+        "name": "In Case of Emergency",
         "region": "Subway Office",
         "original_item": "M3 Shotgun",
         "condition": {
@@ -936,7 +953,7 @@
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/KeyItem"
     },
     {
-        "name": "North East Shelves",
+        "name": "Shelves in the Back",
         "region": "Supermarket",
         "original_item": "First Aid Spray",
         "condition": {},
@@ -1001,8 +1018,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1026,8 +1042,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1051,8 +1066,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1076,8 +1090,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1101,8 +1114,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1126,8 +1138,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1151,12 +1162,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Floor By Lockers",
+        "name": "Floor by Lockers",
         "region": "Sewer Laboratory",
         "original_item": "Green Herb",
         "condition": {},
@@ -1176,8 +1186,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1201,8 +1210,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1226,8 +1234,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1251,8 +1258,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1276,8 +1282,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1301,8 +1306,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1326,12 +1330,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Table 1",
+        "name": "Left Side of Table",
         "region": "Security Room",
         "original_item": "Explosive A",
         "condition": {},
@@ -1350,12 +1353,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Table 2",
+        "name": "Middle of Table",
         "region": "Security Room",
         "original_item": "Hip Pouch",
         "condition": {},
@@ -1374,12 +1376,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Table 3",
+        "name": "Right Side of Table",
         "region": "Security Room",
         "original_item": "Gunpowder",
         "condition": {},
@@ -1398,8 +1399,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1422,12 +1422,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Floor Near Ladder",
+        "name": "Floor near Ladder",
         "region": "Demolition Site Storage",
         "original_item": "Green Herb",
         "condition": {},
@@ -1446,8 +1445,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1470,8 +1468,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1494,8 +1491,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1518,8 +1514,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1542,12 +1537,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Box By Portable Generator 1",
+        "name": "Box by Portable Generator 1",
         "region": "Demolition Site Roof",
         "original_item": "Explosive Rounds",
         "condition": {},
@@ -1566,12 +1560,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Box By Portable Generator 2",
+        "name": "Box by Portable Generator 2",
         "region": "Demolition Site Roof",
         "original_item": "Handgun Ammo",
         "condition": {},
@@ -1590,8 +1583,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1614,8 +1606,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1628,7 +1619,7 @@
         "folder_path": "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_1100_Kendo_Area/I_RPD_Street"
     },
     {
-        "name": "Case Near RPD Garage",
+        "name": "Case near RPD Garage",
         "region": "Outside Gun Shop",
         "original_item": "Handgun Ammo",
         "condition": {},
@@ -1647,8 +1638,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1671,8 +1661,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1695,8 +1684,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1719,8 +1707,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1743,8 +1730,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1767,8 +1753,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1791,8 +1776,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1815,8 +1799,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1838,8 +1821,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1865,12 +1847,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Breakable Box",
+        "name": "Breakable Box near Scaffolding",
         "region": "Scaffolding",
         "original_item": "First Aid Spray",
         "condition": {},
@@ -1914,8 +1895,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1937,8 +1917,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -1960,12 +1939,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Crates Near Medallion Statue",
+        "name": "Crates near Medallion Statue",
         "region": "Main Lobby",
         "original_item": "Green Herb",
         "condition": {},
@@ -1983,8 +1961,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2006,8 +1983,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2032,8 +2008,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2055,8 +2030,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2078,8 +2052,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2101,8 +2074,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2127,8 +2099,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2150,12 +2121,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Desk Near Safe",
+        "name": "Desk near Safe",
         "region": "West Office",
         "original_item": "Handgun Ammo",
         "condition": {},
@@ -2173,8 +2143,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2196,12 +2165,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Cabinet Near Reception Window",
+        "name": "Cabinet near Reception Window",
         "region": "West Office",
         "original_item": "Red Herb",
         "condition": {},
@@ -2219,8 +2187,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2242,8 +2209,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2265,8 +2231,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2288,8 +2253,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2311,8 +2275,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2334,8 +2297,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2377,8 +2339,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2410,8 +2371,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2433,8 +2393,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2456,8 +2415,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2498,6 +2456,15 @@
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/GeneralPurposeGimmicks/OpenLocker"
     },
     {
+        "name": "Breakable Box",
+        "region": "West Hallway 2F",
+        "original_item": "Handgun Ammo",
+        "condition": {},
+        "item_object": "sm70_100",
+        "parent_object": "ItemPositions",
+        "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0412_0/gimmick_Escape"
+    },
+    {
         "name": "By Linen Room",
         "region": "West Hallway 2F",
         "original_item": "Assault Rifle Ammo",
@@ -2520,7 +2487,7 @@
         "folder_path": "RopewayContents/World/Location_RPD/Environments/st02_0404_0/gimmick_Escape"
     },
     {
-        "name": "Desk By Armory",
+        "name": "Desk by Armory",
         "region": "STARS Office",
         "original_item": "Flash Grenade",
         "condition": {},
@@ -2538,7 +2505,7 @@
         "folder_path": "RopewayContents/World/Location_RPD/LocationLevel_RPD/Item/common/ES_common"
     },
     {
-        "name": "Box By Entrance",
+        "name": "Box by Entrance",
         "region": "STARS Office",
         "original_item": "Red Herb",
         "condition": {},
@@ -2565,8 +2532,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2588,8 +2554,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2611,8 +2576,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2634,8 +2598,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2657,12 +2620,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Bench By Waterside",
+        "name": "Bench by Waterside",
         "region": "Promenade",
         "original_item": "Handgun Ammo",
         "condition": {},
@@ -2680,12 +2642,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Bench Near Statues",
+        "name": "Bench near Statues",
         "region": "Promenade",
         "original_item": "Green Herb",
         "condition": {},
@@ -2703,8 +2664,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -2730,7 +2690,7 @@
         ]
     },
     {
-        "name": "Breakable Box By School Bus",
+        "name": "Breakable Box by School Bus",
         "region": "Plaza",
         "original_item": "Red Herb",
         "condition": {},
@@ -2739,7 +2699,7 @@
         "folder_path": "RopewayContents/World/Location_ClockTower/Environments/st03_0806_0/gimmick"
     },
     {
-        "name": "Breakable Box By City Bus",
+        "name": "Breakable Box by City Bus",
         "region": "Plaza",
         "original_item": "Green Herb",
         "condition": {},
@@ -2874,7 +2834,7 @@
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0105"
     },
     {
-        "name": "Breakable Box Near Operating Room",
+        "name": "Breakable Box near Operating Room",
         "region": "Emergency Entrance",
         "original_item": "Handgun Ammo",
         "condition": {},
@@ -2991,7 +2951,7 @@
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/Item/st04_0113"
     },
     {
-        "name": "Northwest Corner 1",
+        "name": "Near Courtyard Exit 1",
         "region": "Courtyard",
         "original_item": "Green Herb",
         "condition": {},
@@ -3000,7 +2960,7 @@
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0113"
     },
     {
-        "name": "Northwest Corner 2",
+        "name": "Near Courtyard Exit 2",
         "region": "Courtyard",
         "original_item": "Locker Room Key",
         "condition": {},
@@ -3009,7 +2969,7 @@
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/ES_common/KeyItem"
     },
     {
-        "name": "Near Courtyard Exit",
+        "name": "Near Courtyard Exit 3",
         "region": "Main Corridor",
         "original_item": "Assault Rifle Ammo",
         "condition": {},
@@ -3146,10 +3106,15 @@
         "folder_path": "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/Item/common/st04_0108"
     },
     {
-        "name": "Breakable Box Near Locker",
+        "name": "Breakable Box near Locker",
         "region": "Emergency Entrance",
         "original_item": "Assault Rifle Ammo",
-        "condition": {},
+        "condition": {
+            "items": [
+                "Hospital ID Card", 
+		"Cassette Tape"
+            ]
+        },
         "item_object": "sm70_102",
         "parent_object": "ItemPositions",
         "folder_path": "RopewayContents/World/Location_Hospital/Environments/st04_0107_0/gimmick"
@@ -3249,8 +3214,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3275,12 +3239,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Breakable Box Near Sickroom",
+        "name": "Breakable Box near Sickroom",
         "region": "Hospital Lobby",
         "original_item": "Handgun Ammo",
         "condition": {
@@ -3301,12 +3264,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Breakable Box Near Reception",
+        "name": "Breakable Box near Reception",
         "region": "Hospital Lobby",
         "original_item": "Handgun Ammo",
         "condition": {
@@ -3327,8 +3289,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3353,8 +3314,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3379,8 +3339,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3405,8 +3364,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3431,8 +3389,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3457,8 +3414,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3483,8 +3439,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3509,8 +3464,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3535,8 +3489,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3556,8 +3509,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3577,8 +3529,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3598,8 +3549,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3619,8 +3569,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3640,8 +3589,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3661,8 +3609,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3682,8 +3629,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3703,8 +3649,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3724,12 +3669,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Case By Lift",
+        "name": "Case by Lift",
         "region": "Warehouse",
         "original_item": "Shell Holder - M3",
         "condition": {},
@@ -3745,8 +3689,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3766,8 +3709,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3787,12 +3729,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "In Container By Fuse 1",
+        "name": "In Container by Fuse 1",
         "region": "Warehouse",
         "original_item": "Gunpowder",
         "condition": {},
@@ -3808,12 +3749,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "In Container By Fuse 2",
+        "name": "In Container by Fuse 2",
         "region": "Warehouse",
         "original_item": "Gunpowder",
         "condition": {},
@@ -3829,12 +3769,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "In Container By Fuse 3",
+        "name": "In Container by Fuse 3",
         "region": "Warehouse",
         "original_item": "High-Grade Gunpowder",
         "condition": {},
@@ -3850,12 +3789,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "In Container By Fuse 4",
+        "name": "In Container by Fuse 4",
         "region": "Warehouse",
         "original_item": "Green Herb",
         "condition": {},
@@ -3871,12 +3809,11 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
-        "name": "Boxes Near Fusebox",
+        "name": "Boxes near Fusebox",
         "region": "Warehouse",
         "original_item": "Gunpowder",
         "condition": {},
@@ -3892,8 +3829,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3913,8 +3849,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3934,8 +3869,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3955,8 +3889,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3976,8 +3909,7 @@
             "Fuse 2",
             "Fuse 3",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -3994,8 +3926,7 @@
             "Green Jewel",
             "ID Card",
             "Override Key",
-            "Culture Sample",
-            "Liquid-Filled Test Tube"
+            "Culture Sample"
         ]
     },
     {
@@ -4026,7 +3957,7 @@
         "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/99_ReliefWeapon"
     },
     {
-        "name": "Floor By Door",
+        "name": "Floor by Door",
         "region": "Laboratory Storage",
         "original_item": "Green Herb",
         "condition": {},
@@ -4134,7 +4065,7 @@
         "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory"
     },
     {
-        "name": "Cart Near Corpse",
+        "name": "Cart near Corpse",
         "region": "Server Room 2F",
         "original_item": "Gunpowder",
         "condition": {},
@@ -4143,7 +4074,7 @@
         "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory"
     },
     {
-        "name": "Case Near Servers",
+        "name": "Case near Servers",
         "region": "Server Room 2F",
         "original_item": "Gunpowder",
         "condition": {},
@@ -4152,7 +4083,7 @@
         "folder_path": "RopewayContents/World/Location_Laboratory/LocationLevel_Laboratory/Item/common/ES_Common/02_Laboratory"
     },
     {
-        "name": "Case By Zombie",
+        "name": "Case by Zombie",
         "region": "Server Room",
         "original_item": "First Aid Spray",
         "condition": {},
@@ -4444,7 +4375,10 @@
                 "Override Key",
                 "Culture Sample",
                 "Liquid-Filled Test Tube",
-                "Vaccine"
+                "Vaccine",
+                "Red Jewel",
+                "Green Jewel",
+                "Blue Jewel"
             ]
         },
         "item_object": "sm49_501_ES_G19",

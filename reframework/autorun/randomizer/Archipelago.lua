@@ -1,7 +1,9 @@
 local Archipelago = {}
 Archipelago.seed = nil
 Archipelago.slot = nil
+Archipelago.apworld_version = nil -- comes over in slot data
 Archipelago.ammo_pack_modifier = nil -- comes over in slot data
+Archipelago.ammo_pack_type_amount = {} -- used if pack modifier is "random by type"
 Archipelago.damage_traps_can_kill = false -- comes over in slot data
 Archipelago.death_link = false -- comes over in slot data
 Archipelago.hasConnectedPrior = false -- keeps track of whether the player has connected at all so players don't have to remove AP mod to play vanilla
@@ -90,6 +92,9 @@ function Archipelago.SlotDataHandler(slot_data)
     Archipelago.seed = player["seed"]
     Archipelago.slot = player["slot"]
 
+    if slot_data.apworld_version ~= nil then
+        Archipelago.apworld_version = slot_data.apworld_version
+    end
     if slot_data.ammo_pack_modifier ~= nil then
         Archipelago.ammo_pack_modifier = slot_data.ammo_pack_modifier
     end

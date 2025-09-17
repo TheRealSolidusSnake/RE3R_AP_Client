@@ -56,20 +56,25 @@ function GUI.CheckForAndDisplayMessages()
     imgui.end_window()
 end
 
-function GUI.AddText(message, color)
+function GUI.AddText(message, color, index)
     local textObject = {}
     textObject.message = message
-    
+       
     -- convert legacy colors to a system yellow
     if color ~= nil and color ~= "" then
         textObject.color = AP_REF.HexToImguiColor("d9d904")
     end
-        
-    table.insert(GUI.textList, {textObject})
+    
+    if index ~= nil then
+        table.insert(GUI.textList, index, {textObject})
+    else
+        table.insert(GUI.textList, {textObject})
+    end
+
     GUI.lastText = os.time()
 end
 
-function GUI.AddTexts(textObjects)
+function GUI.AddTexts(textObjects, index)
     for k, textObject in pairs(textObjects) do   
         -- convert legacy colors to a system yellow
         if textObject.color == "green" then
@@ -77,7 +82,12 @@ function GUI.AddTexts(textObjects)
         end
     end
 
-    table.insert(GUI.textList, textObjects)
+    if index ~= nil then
+        table.insert(GUI.textList, index, textObjects)
+    else
+        table.insert(GUI.textList, textObjects)
+    end
+
     GUI.lastText = os.time()
 end
 

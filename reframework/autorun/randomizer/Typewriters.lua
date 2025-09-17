@@ -19,15 +19,11 @@ function Typewriters.AddUnlockedText(name, item_name, no_save_warning)
     end
 
     if #typewriterText > 0 then     
-        if typewriterText == "RPD - Lobby" and string.lower(Lookups.scenario) == "a" and not Storage.talkedToMarvin then
-            GUI.AddText("Lobby Typewriter will unlock after you talk to Marvin for the first time.")
-        else
-            GUI.AddTexts({
-                { message="Unlocked " },
-                { message=typewriterText, color="green" },
-                { message=" typewriter!" .. (not no_save_warning and " Don't forget to save!!" or "") }
-            }) 
-        end
+        GUI.AddTexts({
+	    { message="Unlocked " },
+	    { message=typewriterText, color="green" },
+	    { message=" typewriter!" .. (not no_save_warning and " Don't forget to save!!" or "") }
+	})
     end
 end
 
@@ -70,13 +66,13 @@ function Typewriters.GetAllUnlocked()
 end
 
 function Typewriters.DisplayWarpMenu()
-    imgui.begin_window("Fast Travel - Typewriters", nil,
+    imgui.begin_window("Fast Travel - Typewriter Teleports", nil,
         8 -- NoScrollbar
         | 64 -- AlwaysAutoResize
     )
 
     if #Lookups.typewriters == 0 then
-        imgui.text("Connect to AP to see typewriter locations.")
+        imgui.text("Connect to AP to see typewriter teleport locations.")
         imgui.end_window()
         
         return
@@ -87,6 +83,8 @@ function Typewriters.DisplayWarpMenu()
     if (font ~= nil) then
         imgui.push_font(font)
     end
+
+    imgui.text_colored("Use typewriter teleports to visit areas that you previously visited. If you skip ahead, YOU MIGHT SOFTLOCK.", AP_REF.HexToImguiColor("AAAAAA"))
 
     for t, typewriter in pairs(Lookups.typewriters) do
         local typewriter_disabled = false
@@ -130,7 +128,9 @@ function Typewriters.DisplayWarpMenu()
     imgui.new_line()
     imgui.new_line()
 
-    if imgui.button("Unlock All Typewriters") then
+    imgui.text_colored("This button is here in case you missed a typewriter in an area you passed through. You should rarely need to use this.", AP_REF.HexToImguiColor("AAAAAA"))
+
+    if imgui.button("Unlock All Typewriter Teleports") then
         Typewriters.UnlockAll()
     end
   
