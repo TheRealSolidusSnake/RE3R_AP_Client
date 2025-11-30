@@ -53,7 +53,6 @@ function GUI.CheckForAndDisplayMessages()
     imgui.pop_style_var(1)
     imgui.pop_font()
     imgui.end_window()
-    imgui.end_window()
 end
 
 function GUI.AddText(message, color, index)
