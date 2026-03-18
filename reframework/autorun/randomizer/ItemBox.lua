@@ -1,22 +1,28 @@
 local ItemBox = {}
+ItemBox.waiting_to_dedupe = {}
 
 function ItemBox.GetAnyAvailable()
     local gimmick_objects = scene:call("findGameObjectsWithTag(System.String)", "Gimmick")
-
+    
+    -- there's occasionally an error about trying to loop an REManagedObject, so don't do that
     if type(gimmick_objects) ~= "table" then
         if gimmick_objects.get_elements then
             gimmick_objects = gimmick_objects:get_elements()
         else
-            return nil
+            return nil -- if it's not something that we can call "get_elements" on, then it might as well be nil
         end
     end
 
     for k, gimmick in pairs(gimmick_objects) do
         gimmickName = gimmick:call("get_Name()")
 
+        -- if the gimmick contains "ItemLocker" and contains "_control", it's an item box
+        -- not checking if it *starts* with "ItemLocker" because Capcom likes to add crap to the beginning of the names (looking at you RE3R)
+        -- (also, Lua is a terrible language with no modern features)
         if string.find(gimmickName, "ItemLocker") and string.find(gimmickName, "_control") then
             local compGimmickControl = gimmick:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickControl")))
 
+            -- now, check if the item box has a map assigned and that map is active
             if compGimmickControl ~= nil and compGimmickControl:get_field("_IsPairComplete") then
                 return gimmick
             end
@@ -118,7 +124,7 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count)
                         item:setWeapon(weaponId, 0, count, tonumber(bulletId), 0)
                     else
                         item:set_ItemId(itemId)
-                        item:set_Count(count)
+                    item:set_Count(count) -- love the consistency with player inv
                     end
                     return -- Exit after adding the item
                 end
@@ -132,6 +138,45 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count)
         else
             addItemToStorage(targetStorage)
         end
+    end
+end
+
+function ItemBox.DedupeItem(itemName, found)
+    table.insert(ItemBox.waiting_to_dedupe, { itemName=itemName, found=found })
+end
+
+function ItemBox.DedupeCheck()
+    if #ItemBox.waiting_to_dedupe == 0 then
+        return
+    end
+
+    local itemName = ItemBox.waiting_to_dedupe
+    local found = ItemBox.found_dedupe
+    local itemLocker = ItemBox.GetAnyAvailable()
+
+    if itemLocker ~= nil then
+        for d, dedupe in pairs(ItemBox.waiting_to_dedupe) do
+            local itemName = dedupe["itemName"]
+            local found = dedupe["found"]
+
+            local gimmickItemLockerControlComponent = itemLocker:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickItemLockerControl")))
+            local storageItems = gimmickItemLockerControlComponent:get_field("StorageItems")
+            local mItems = storageItems:get_field("mItems")
+
+            for k, v in pairs(mItems) do
+                if v ~= nil then
+                    if v:getName() == itemName then
+                        if found or firstIndex ~= nil then
+                            v:setBlank()
+                        else
+                            firstIndex = k
+                        end
+                    end
+                end   
+            end
+        end
+
+        ItemBox.waiting_to_dedupe = {}
     end
 end
 

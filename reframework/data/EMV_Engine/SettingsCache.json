@@ -89,6 +89,7 @@
         "offline.gimmick.action.TriggerUseItem.ItemWork[]": "get_Count",
         "offline.gimmick.option.AddItemsToInventorySettings.Param[]": "get_Count",
         "offline.gimmick.option.CheckFlagSettings.Param[]": "get_Count",
+        "offline.gui.EsInventoryBehavior": "get_BlurCount",
         "offline.gui.GUIMaster": "getOpenedLevelMapNum",
         "offline.survivor.Inventory[]": "get_Count",
         "offline.survivor.player.PlayerCondition": "get_MotionFsmLayerNum",
@@ -135,6 +136,7 @@
         "MeshMaterialResourceHolder": "mdf2",
         "MeshResourceHolder": "mesh",
         "MotionBankResourceHolder": "motbank",
+        "RenderTargetTextureResourceHolder": "rtex",
         "TextureResourceHolder": "tex"
     },
     "update_module_idx": 1,

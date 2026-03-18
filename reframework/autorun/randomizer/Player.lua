@@ -70,9 +70,9 @@ function Player.Kill()
     burn:set_field("bRequestBurnUp", true)
 end
 
--- The game sets an invincible flag on the player when picking up an item,
--- which normally gets unset by the item itself.
--- Since we're vanishing items, we need to manually unset the invincible flag.
+-- the game sets an invincble flag on the player when picking up an item,
+--    which apparently normally gets unset by something on the item itself
+-- since we're vanishing items, we need to manually unset the invincible flag
 function Player.TurnOffInvincibility()
     local playerObj = Player.GetGameObject()
     if playerObj then
