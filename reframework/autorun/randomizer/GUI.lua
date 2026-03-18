@@ -1,6 +1,8 @@
 local GUI = {}
 GUI.textList = {}
 GUI.lastText = os.time()
+GUI.lastDifficultyCheck = nil
+GUI.lastVersionCheck = nil
 GUI.logo = nil
 GUI.font = "Prompt-Medium.ttf"
 GUI.font_size = 24
@@ -11,7 +13,7 @@ function GUI.CheckForAndDisplayMessages()
     end
 
     -- if the last text addition was X time ago or more, clear the text
-    if os.time() - GUI.lastText > 15 then -- 15 seconds
+    if os.time() - GUI.lastText > 3 then -- 3 seconds
         GUI.textList = {} -- clear all the messages
     end
 
@@ -59,9 +61,8 @@ function GUI.AddText(message, color, index)
     local textObject = {}
     textObject.message = message
        
-    -- convert legacy colors to a system yellow
     if color ~= nil and color ~= "" then
-        textObject.color = AP_REF.HexToImguiColor("d9d904")
+        textObject.color = GUI.ConvertColorFromText(color)
     end
     
     if index ~= nil then
@@ -75,10 +76,7 @@ end
 
 function GUI.AddTexts(textObjects, index)
     for k, textObject in pairs(textObjects) do   
-        -- convert legacy colors to a system yellow
-        if textObject.color == "green" then
-            textObject.color = AP_REF.HexToImguiColor("d9d904")
-        end
+        textObject.color = GUI.ConvertColorFromText(textObject.color)
     end
 
     if index ~= nil then
@@ -100,6 +98,7 @@ function GUI.AddReceivedItemText(item_name, item_color, sendingPlayer, selfPlaye
         table.insert(textObjects, { message="Received " })
     end
     
+    -- item name comes in sanitized here, so no AP_REF.Sanitize() call needed
     table.insert(textObjects, { message=item_name, color=AP_REF.HexToImguiColor(item_color) })
     
     if sendingPlayer and sendingPlayer ~= selfPlayer then
@@ -119,11 +118,90 @@ end
 function GUI.AddSentItemText(player_sender, item_name, item_color, player_receiver, location)
     GUI.AddTexts({
         { message=player_sender .. " sent " },
-        { message=item_name, color=AP_REF.HexToImguiColor(item_color) },
+        { message=AP_REF.Sanitize(item_name), color=AP_REF.HexToImguiColor(item_color) },
         { message=" to " .. player_receiver .. "!" }
     })
 end
 
+function GUI.CheckDifficultyWarning()
+    if not Archipelago.IsConnected() then
+        return
+    end
+
+    if GUI.lastDifficultyCheck ~= nil and os.time() - GUI.lastDifficultyCheck < 10 then -- 10 seconds
+        return
+    end
+
+    local currentDifficulty = string.lower(Lookups.difficulty)
+    local isCorrectDifficulty = true
+
+    if currentDifficulty == "assisted" then
+        isCorrectDifficulty = Scene.isDifficultyAssisted()
+    elseif currentDifficulty == "standard" then
+        isCorrectDifficulty = Scene.isDifficultyStandard()
+    elseif currentDifficulty == "hardcore" then
+        isCorrectDifficulty = Scene.isDifficultyHardcore()
+    end
+
+    if not isCorrectDifficulty then
+        local intendedDifficulty = currentDifficulty:gsub("^%l", string.upper)
+
+        GUI.AddTexts({
+            { message="Wrong difficulty.", color=AP_REF.HexToImguiColor('fa3d2f') },
+            { message=" Your YAML was set up to play " },
+            { message=intendedDifficulty, color=AP_REF.HexToImguiColor("d9d904") },
+            { message="." }
+        }, 1) -- add to the front of the messages, at index 1
+    end
+
+    GUI.lastDifficultyCheck = os.time()
+end
+
+function GUI.CheckVersionWarning()
+    if not Archipelago.IsConnected() or Archipelago.apworld_version == nil then
+        return
+    end
+
+    if GUI.lastVersionCheck ~= nil and os.time() - GUI.lastVersionCheck < 10 then -- 10 seconds
+        return
+    end
+
+    local isCorrectVersion = Manifest.version == Archipelago.apworld_version
+
+    if not isCorrectVersion then
+        GUI.AddTexts({
+            { message="Your apworld version and client version do not match.", color=AP_REF.HexToImguiColor('fa3d2f') },
+            { message="Your apworld version is " },
+            { message=Archipelago.apworld_version, color=AP_REF.HexToImguiColor("d9d904") },
+            { message=". " },
+            { message="Your client version is " },
+            { message=Manifest.version, color=AP_REF.HexToImguiColor("d9d904") },
+            { message="." }
+        })
+    end
+
+    GUI.lastVersionCheck = os.time()
+end
+
+function GUI.ConvertColorFromText(color)
+    if color == "green" then
+        color = "yellow" -- greens were converted to yellows previously, need to replace those with yellow at some point to not do this
+    end
+
+    if color == "red" then
+        color = AP_REF.HexToImguiColor('fa3d2f')
+    end
+
+    if color == "yellow" then
+        color = AP_REF.HexToImguiColor("d9d904")
+    end
+
+    if color == "gray" then
+        color = AP_REF.HexToImguiColor("AAAAAA")
+    end
+
+    return color
+end
 function GUI.ClearText()
     GUI.textList = {}
 end

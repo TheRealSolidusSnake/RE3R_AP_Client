@@ -98,7 +98,6 @@ end
 function Inventory.AddItem(itemId, weaponId, weaponParts, bulletId, count)
     local playerInventory = Inventory.GetPlayerInventory()
     local playerInventorySlots = playerInventory:get_field("_Slots")
-    local mItems = playerInventorySlots:get_field("mItems")
     local slotEmpty = playerInventory:getSlotEmpty()
     
     if slotEmpty ~= nil then
@@ -119,6 +118,30 @@ function Inventory.AddItem(itemId, weaponId, weaponParts, bulletId, count)
     end
 
     return false
+end
+
+function Inventory.DedupeItem(itemName, found)
+    local playerInventory = Inventory.GetPlayerInventory()
+    local playerInventorySlots = playerInventory:get_field("_Slots")
+    local firstIndex = nil
+
+    for k, v in pairs(playerInventorySlots:get_field("mItems")) do
+        if v ~= nil then
+            if v:get_Name() == itemName then
+                if found or firstIndex ~= nil then
+                    v:remove()
+                else
+                    firstIndex = v:get_Index()
+                end
+            end
+        end
+    end
+
+    if firstIndex ~= nil then
+        return true
+    end
+
+    return false -- returns whether the item was found or not
 end
 
 function Inventory.SwapItem(fromItemIds, fromWeaponIds, itemId, weaponId, weaponParts, bulletId, count)

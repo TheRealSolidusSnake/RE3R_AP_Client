@@ -6,6 +6,8 @@ Archipelago.ammo_pack_modifier = nil -- comes over in slot data
 Archipelago.ammo_pack_type_amount = {} -- used if pack modifier is "random by type"
 Archipelago.damage_traps_can_kill = false -- comes over in slot data
 Archipelago.death_link = false -- comes over in slot data
+Archipelago.enemy_behavior = false -- comes over in slot data
+Archipelago.enemy_kills = false -- comes over in slot data
 Archipelago.hasConnectedPrior = false -- keeps track of whether the player has connected at all so players don't have to remove AP mod to play vanilla
 Archipelago.isInit = false -- keeps track of whether init things like handlers need to run
 Archipelago.waitingForSync = false -- randomizer calls APSync when "waiting for sync"; i.e., when you die
@@ -16,6 +18,7 @@ Archipelago.didGameOver = false -- this gets set to true when we're killed, so t
 
 Archipelago.itemsQueue = {}
 Archipelago.isProcessingItems = false -- this is set to true when the queue is being processed so we don't over-give
+Archipelago.hasReceivedItemsBefore = false -- this is set to true when the items received handler is called for the first time on the current connection
 
 -- set the game name in apclientpp
 AP_REF.APGameName = "Resident Evil 3 Remake"
@@ -51,6 +54,7 @@ function Archipelago.Sync()
         return
     end
 
+    SaveData.lastSyncTimestamp = os.time()
     AP_REF.APClient:Sync()
 end
 
@@ -105,14 +109,34 @@ function Archipelago.SlotDataHandler(slot_data)
     if slot_data.death_link ~= nil then
         Archipelago.death_link = slot_data.death_link
     end
+    if slot_data.enemy_behavior ~= nil then
+        Archipelago.enemy_behavior = slot_data.enemy_behavior
+    end
+    if slot_data.enemy_kills ~= nil then
+        Archipelago.enemy_kills = slot_data.enemy_kills
+    end
 
-    Lookups.Load(slot_data.character, slot_data.scenario, string.lower(slot_data.difficulty))
+    Lookups.Load(string.lower(slot_data.difficulty))
     Storage.Load()
 
     GUI.AddTexts({
-        { message='AP Scenario: ' },
-        { message=Lookups.character:gsub("^%l", string.upper) .. ' ' .. string.upper(Lookups.scenario) .. ' ' .. string.upper(Lookups.difficulty), color="green" }
+        { message='AP Difficulty: ' },
+        { message=string.upper(Lookups.difficulty or 'standard'), color='green' }
     })
+
+    if Archipelago.enemy_behavior then
+        GUI.AddTexts({
+            { message='Enemy Behavior: ' },
+            { message=string.upper(Archipelago.enemy_behavior), color='yellow' }
+        })
+    end
+
+    if Archipelago.enemy_kills then
+        GUI.AddTexts({
+            { message='Enemy Kills: ' },
+            { message=string.upper(tostring(Archipelago.enemy_kills)), color='yellow' }
+        })
+    end
 
     for t, typewriter_name in pairs(slot_data.unlocked_typewriters) do
         Typewriters.AddUnlockedText(typewriter_name, "", true) -- true for "no_save_warning"
@@ -136,6 +160,7 @@ function Archipelago.ItemsReceivedHandler(items_received)
         -- because ONLY non-randomized items escape the queue; everything else gets queued
         if row["index"] ~= nil and (not Storage.lastSavedItemIndex or row["index"] > Storage.lastSavedItemIndex) then
             local item_data = Archipelago._GetItemFromItemsData({ id = row["item"] })
+            local item_name = AP_REF.Sanitize(item_data["name"])
             local location_data = nil
             local is_randomized = 1
 
@@ -147,23 +172,23 @@ function Archipelago.ItemsReceivedHandler(items_received)
                 end
             end
 
-            if item_data["name"] == "Victory" then
-                    Archipelago.ReceiveItem(item_data["name"])
+            if item_name == "Victory" then
+                Archipelago.ReceiveItem(item_name)
             end
 
-            if item_data["name"] and 
-                not (item_data["name"] == "Victory") and 
-                not (item_data["name"] == "Damage Trap" and damageTrapReceived) 
+            if item_name and
+                not (item_name == "Victory") and 
+                not (item_name == "Damage Trap" and damageTrapReceived) 
             then
-            	if item_data["name"] == "Damage Trap" then
+                if item_name == "Damage Trap" then
                     damageTrapReceived = true
                 end
 
-                if item_data["name"] and row["player"] ~= nil and is_randomized == 0 then
-                    Archipelago.ReceiveItem(item_data["name"], row["player"], is_randomized)
+                if item_name and row["player"] ~= nil and is_randomized == 0 then
+                    Archipelago.ReceiveItem(AP_REF.Sanitize(item_name), row["player"], is_randomized)
                 else
                     table.insert(Archipelago.itemsQueue, row)
-                    table.insert(itemsWaiting, item_data['name'])
+                    table.insert(itemsWaiting, item_name)
                 end
             end
         end
@@ -175,10 +200,12 @@ function Archipelago.ItemsReceivedHandler(items_received)
         	{ message=table.concat(itemsWaiting, ", "), color=AP_REF.HexToImguiColor("AAAAAA") }
         })
     end
+
+    Archipelago.hasReceivedItemsBefore = true
 end
 
 function Archipelago.CanReceiveItems()
-    -- wait until the player is in game, with AP connected, and with an available item box (that's not in use)
+    -- wait until the player is in game, with AP connected, and with an available item box (that's not in use), and with a reachable inventory
     -- before sending any items over
     return Scene.isInGame() and Archipelago.IsConnected() and ItemBox.GetAnyAvailable() ~= nil and not Scene.isUsingItemBox() 
         and Inventory.GetPlayerInventory() ~= nil
@@ -208,6 +235,7 @@ function Archipelago.ProcessItemsQueue()
         -- if the index of the incoming item is greater than the index of our last item at save, accept it
         if row["index"] ~= nil and (not Storage.lastSavedItemIndex or row["index"] > Storage.lastSavedItemIndex) then
             local item_data = Archipelago._GetItemFromItemsData({ id = row["item"] })
+            local item_name = AP_REF.Sanitize(item_data["name"])
             local location_data = nil
             local is_randomized = 1
 
@@ -219,12 +247,12 @@ function Archipelago.ProcessItemsQueue()
                 end
             end
 
-            if item_data["name"] and row["player"] ~= nil then
+            if item_name and row["player"] ~= nil then
                 -- if the player game over'd and they're being sent a damage trap right after respawn, ignore / don't receive it
-                if Archipelago.didGameOver and item_data["name"] == "Damage Trap" then
+                if Archipelago.didGameOver and item_name == "Damage Trap" then
                     GUI.AddText("Received Damage Trap, but currently respawning. Ignoring.")
                 else
-                    Archipelago.ReceiveItem(item_data["name"], row["player"], is_randomized)
+                    Archipelago.ReceiveItem(item_name, row["player"], is_randomized)
                 end
             end
 
@@ -373,6 +401,7 @@ function Archipelago.BouncedHandler(json_rows)
 end
 
 function Archipelago.IsItemLocation(location_data)
+    location_data = Archipelago.SanitizeLocationData(location_data)
     local location = Archipelago._GetLocationFromLocationData(location_data, true) -- include_sent_locations
 
     if not location then
@@ -383,6 +412,7 @@ function Archipelago.IsItemLocation(location_data)
 end
 
 function Archipelago.IsLocationRandomized(location_data)
+    location_data = Archipelago.SanitizeLocationData(location_data)
     local location = Archipelago._GetLocationFromLocationData(location_data, true) -- include_sent_locations
 
     if not location then
@@ -397,6 +427,7 @@ function Archipelago.IsLocationRandomized(location_data)
 end
 
 function Archipelago.GetLocationName(location_data)
+    location_data = Archipelago.SanitizeLocationData(location_data)
     local location = Archipelago._GetLocationFromLocationData(location_data, true) -- include_sent_locations
 
     if not location then
@@ -407,6 +438,7 @@ function Archipelago.GetLocationName(location_data)
 end
 
 function Archipelago.CheckForVictoryLocation(location_data)
+    location_data = Archipelago.SanitizeLocationData(location_data)
     local location = Archipelago._GetLocationFromLocationData(location_data)
 
     if location ~= nil and location["raw_data"]["victory"] then
@@ -418,27 +450,76 @@ function Archipelago.CheckForVictoryLocation(location_data)
     return false
 end
 
-function Archipelago.SendLocationCheck(location_data)
+function Archipelago.SanitizeLocationData(location_data)
+    -- remove any character in an item or parent name that is not a letter, number, space, or a handful of symbols
+    location_data['item_object'] = location_data['item_object']:gsub("[^A-Za-z0-9()'-_ ]", "")
+    location_data['parent_object'] = location_data['parent_object']:gsub("[^A-Za-z0-9()'-_ ]", "")
+
+    return location_data
+end
+
+-- Returns:
+--   - true if location was sent with no issues
+--   - false if location was not sent because it has been sent prior
+--   - nil if location was not sent because the AP call failed
+function Archipelago.SendLocationCheck(location_data, warn_existing_location)
+    if warn_existing_location == nil then
+        warn_existing_location = true
+    end
+
+    location_data = Archipelago.SanitizeLocationData(location_data)
     local location = Archipelago._GetLocationFromLocationData(location_data)
     local location_ids = {}
 
-    if not location then
+    if not location or not location['id'] or (location['id'] ~= nil and tonumber(location['id']) < 0) then
+        -- if location wasn't found in session unsent locations, check all locations to make sure it's not a wrongly named location (indicating a version mismatch)
+        -- if so, show a message; if not, just bail out of here since there's nothing to send
+        local location_existing = Archipelago._GetLocationFromLocationData(location_data, true)
+
+        if not location_existing['id'] or (location_existing['id'] ~= nil and tonumber(location_existing['id']) < 0) then
+            GUI.AddTexts({
+                { message="Invalid location.", color=AP_REF.HexToImguiColor('fa3d2f') },
+                { message=" You tried to check " },
+                { message=location_existing['name'], color=AP_REF.HexToImguiColor("d9d904") },
+                { message=", but it does not exist in the multiworld. " }
+            })
+
+            GUI.AddTexts({
+                { message="Your apworld version and client version must match.", color=AP_REF.HexToImguiColor('fa3d2f') }
+            })
+        elseif warn_existing_location then -- enemy kills don't warn because dead enemies respawn and "die" when in range
+            GUI.AddTexts({
+                { message="Location already checked or collected: ", color=AP_REF.HexToImguiColor("AAAAAA") },
+                { message=location_existing['name'] },
+                { message=".", color=AP_REF.HexToImguiColor("AAAAAA") }
+            })
+        end
+
         return false
     end
 
     location_ids[1] = location["id"]
 
-    local result = AP_REF.APClient.LocationChecks(AP_REF.APClient, location_ids)
-    local sent_loc = location['raw_data']
+    local result = nil
+
+    if Archipelago.IsConnected() then
+        result = AP_REF.APClient.LocationChecks(AP_REF.APClient, location_ids)
+    end
+
+    if not result then
+        return nil
+    end
+
+    local sent_loc = location['raw_data']    
 
     for k, loc in pairs(Lookups.locations) do
         local exact_match = true
 
-        -- Check that the location is an exact match of the location's raw data from the lookup
+        -- check that the location is an exact match of the location's raw data that came back from the lookup
         for lk, lv in pairs(sent_loc) do
             if not loc[lk] or loc[lk] ~= sent_loc[lk] then
                 exact_match = false
-                break -- Skip if not an exact match
+                break -- if not, skip
             end
         end
 
@@ -482,14 +563,14 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
     end
 
     for k, item in pairs(Lookups.items) do
-        if item.name == item_name then
+        if AP_REF.Sanitize(item.name) == item_name then
             item_ref = item
             item_number = item.decimal
             
             -- if it's a weapon, look up its ammo as well and set to item_ammo
             if item.type == "Weapon" and item.ammo ~= nil then
                 for k2, item2 in pairs(Lookups.items) do
-                    if item2.name == item.ammo then
+                    if AP_REF.Sanitize(item2.name) == item.ammo then
                         item_ammo = item2.decimal
 
                         break
@@ -602,11 +683,11 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
             -- Define included types for inventory (currently empty, meaning nothing goes to inventory)
             local includedTypes = {}
 
-            -- Check if the item type is included for inventory addition
+            -- Check if the item type is included for inventory addition, which it isn't
             if includedTypes[item_ref.type] and Inventory.HasSpaceForItem() then
                 local addedToInv = Inventory.AddItem(tonumber(itemId), tonumber(weaponId), weaponParts, bulletId, tonumber(count))
 
-                -- if adding to inventory failed, add it to the box as a backup
+                -- if adding to inventory failed, which it will, we add to the box
                 if addedToInv then
                     sentToBox = false
                 else
@@ -614,7 +695,7 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
                     sentToBox = true    
                 end
             else
-                -- Always send to the box
+                -- Always send to the box, because we need to filter Jill/Carlos items
                 ItemBox.AddItem(tonumber(itemId), tonumber(weaponId), weaponParts, bulletId, tonumber(count))
                 sentToBox = true
             end
@@ -646,52 +727,68 @@ end
 
 function Archipelago._GetLocationFromLocationData(location_data, include_sent_locations)
     local player = Archipelago.GetPlayer()
+
     include_sent_locations = include_sent_locations or false
 
     local translated_location = {}
-    local scenario_suffixes = {
-        standard = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. ")",
-        hardcore = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "H)",
-        nightmare = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "N)",
-        inferno = " (" .. string.upper(string.sub(Lookups.character, 1, 1) .. Lookups.scenario) .. "I)"
-    }
+
+    local scenario_suffix = ""
+    local scenario_suffix_assisted = " (A)"
+    local scenario_suffix_hardcore = " (H)"
+    local scenario_suffix_nightmare = " (N)"
+    local scenario_suffix_inferno = " (I)"
 
     if location_data['id'] and not location_data['name'] then
         location_data['name'] = AP_REF.APClient:get_location_name(location_data['id'], player['game'])
     end
 
-    local function match_location(loc, difficulty_suffix)
-        local location_name_with_region = loc['region'] .. difficulty_suffix .. " - " .. loc['name']
+    local function try_match(filter_fn, suffix)
+        for _, loc in pairs(Lookups.locations) do
+            if filter_fn(loc) then
+                local location_name_with_region = loc['region'] .. suffix .. " - " .. loc['name']
 
-        if location_data['name'] == location_name_with_region then
-            return location_name_with_region, loc
-        end
+                if location_data['name'] == location_name_with_region then
+                    translated_location['name'] = location_name_with_region
+                    translated_location['raw_data'] = loc
+                    return true
+                end
 
-        if include_sent_locations or not loc['sent'] then
-            if loc['item_object'] == location_data['item_object'] and loc['parent_object'] == location_data['parent_object'] and loc['folder_path'] == location_data['folder_path'] then
-                return location_name_with_region, loc
-            end
-        end
-
-        return nil, nil
-    end
-
-    local difficulties = {"inferno", "nightmare", "hardcore", "standard"}
-
-    for _, difficulty in ipairs(difficulties) do
-        if Lookups.difficulty == difficulty or difficulty == "standard" then
-            for _, loc in pairs(Lookups.locations) do
-                if difficulty == "standard" or (loc[difficulty] ~= nil and loc[difficulty]) then
-                    local name, raw_data = match_location(loc, scenario_suffixes[difficulty])
-                    if name then
-                        translated_location['name'] = name
-                        translated_location['raw_data'] = raw_data
-                        break
+                if include_sent_locations or not loc['sent'] then
+                    if (loc['item_object'] == location_data['item_object']
+                        and loc['parent_object'] == location_data['parent_object']
+                        and loc['folder_path'] == location_data['folder_path'])
+                    then
+                        translated_location['name'] = location_name_with_region
+                        translated_location['raw_data'] = loc
+                        return true
                     end
                 end
             end
-            if translated_location['name'] then break end
         end
+        return false
+    end
+
+    local difficulty_map = {
+        inferno = { flag = 'inferno', suffix = scenario_suffix_inferno },
+        nightmare = { flag = 'nightmare', suffix = scenario_suffix_nightmare },
+        hardcore = { flag = 'hardcore', suffix = scenario_suffix_hardcore },
+        assisted = { flag = 'assisted', suffix = scenario_suffix_assisted },
+    }
+
+    local diff = difficulty_map[Lookups.difficulty]
+
+    -- 1) First pass: match the looked-up difficulty's exclusive locations
+    if diff then
+        try_match(function(loc)
+            return loc[diff.flag] ~= nil and loc[diff.flag]
+        end, diff.suffix)
+    end
+
+    -- 2) Fallback: if not found, treat it as STANDARD
+    if not translated_location['name'] then
+        try_match(function(loc)
+            return not (loc['assisted'] or loc['hardcore'] or loc['nightmare'] or loc['inferno'])
+        end, scenario_suffix)
     end
 
     if not translated_location['name'] then
@@ -699,6 +796,7 @@ function Archipelago._GetLocationFromLocationData(location_data, include_sent_lo
     end
 
     translated_location['id'] = AP_REF.APClient:get_location_id(translated_location['name'], player['game'])
+
     return translated_location
 end
 
@@ -708,6 +806,7 @@ function Archipelago.Reset()
     Archipelago.damage_traps_can_kill = false
     Archipelago.death_link = false
     Archipelago.itemsQueue = {}
+    Archipelago.hasReceivedItemsBefore = false
 end
 
 return Archipelago
