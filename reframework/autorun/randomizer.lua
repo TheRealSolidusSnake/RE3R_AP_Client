@@ -101,7 +101,7 @@ re.on_pre_application_entry("UpdateBehavior", function()
         EnemyBehavior.persistentColliderObject = nil
         EnemyBehavior.pendingActions = {}
         EnemyBehavior.currentSceneAddress = nil
-        EnemyBehavior.nemesisZonesDisabledUntil = nil
+        EnemyBehavior.nemesisZonesDisabled = nil
         EnemyBehavior.disabledNemesisZones = nil
     end
 
