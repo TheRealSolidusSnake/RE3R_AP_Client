@@ -60,7 +60,6 @@ re.on_pre_application_entry("UpdateBehavior", function()
         FixBoxes.Init()
         GUIInventory.Init()
         Items.Init()
-        ItemDuplicates.Init()
         ItemResend.Init()
         SaveData.Init()
 
