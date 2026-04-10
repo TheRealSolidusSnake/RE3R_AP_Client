@@ -309,9 +309,7 @@
 	{ 
         "from": "Main Lobby",
         "to": "RPD Reception",
-        "condition": {
-            "items": ["ID Card"]
-        }
+        "condition": {}
     },
 	{ 
         "from": "RPD Reception",
