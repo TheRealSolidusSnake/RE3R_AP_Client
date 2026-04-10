@@ -4,40 +4,40 @@ Scene.sceneObject = nil
 Scene.mainFlowManager = nil
 Scene.interactManager = nil
 Scene.guiItemBox = nil
+Scene.guiInventory = nil
+Scene.saveDataManager = nil
+Scene.recordManager = nil
+
+local function invalidateSceneCaches()
+    Scene.mainFlowManager = nil
+    Scene.interactManager = nil
+    Scene.guiItemBox = nil
+    Scene.guiInventory = nil
+    Scene.saveDataManager = nil
+    Scene.recordManager = nil
+end
 
 function Scene.getSceneObject()
-    if Scene.sceneObject ~= nil then
-        return Scene.sceneObject
-    end
+    local ok, currentScene = pcall(function()
+        return sdk.call_native_func(
+            sdk.get_native_singleton("via.SceneManager"),
+            sdk.find_type_definition("via.SceneManager"),
+            "get_CurrentScene()"
+        )
+    end)
 
-    local mgr = sdk.get_native_singleton("via.SceneManager")
-    if mgr == nil then
+    if not ok or currentScene == nil then
+        Scene.sceneObject = nil
+        invalidateSceneCaches()
         return nil
     end
 
-    Scene.sceneObject = sdk.call_native_func(
-        mgr,
-        sdk.find_type_definition("via.SceneManager"),
-        "get_CurrentScene()"
-    )
-
-    return Scene.sceneObject
-end
-
-function Scene.getMasterObject(objectName)
-    local scene = Scene.getSceneObject()
-    if not scene then return nil end
-
-    local masters = scene:findGameObjectsWithTag("Masters")
-    if not masters then return nil end
-
-    for _, master in pairs(masters) do
-        if master and master:get_Name() == objectName then
-            return master
-        end
+    if currentScene ~= Scene.sceneObject then
+        Scene.sceneObject = currentScene
+        invalidateSceneCaches()
     end
 
-    return nil
+    return Scene.sceneObject
 end
 
 function Scene.getGameMaster()
@@ -50,6 +50,26 @@ end
 
 function Scene.getUIMaster()
     return Scene.getMasterObject("UIMaster")
+end
+
+function Scene.getMasterObject(objectName)
+    local scene = Scene.getSceneObject()
+    if not scene then
+        return nil
+    end
+
+    local masters = scene:findGameObjectsWithTag("Masters")
+    local foundMaster = nil
+
+    for k, master in pairs(masters) do
+        if master:get_Name() == objectName then
+            foundMaster = master
+
+            break
+        end
+    end
+
+    return foundMaster
 end
 
 function Scene.getMainFlowManager()
@@ -84,6 +104,32 @@ function Scene.getInteractManager()
     return Scene.interactManager
 end
 
+function Scene.getSaveDataManager()
+    if Scene.saveDataManager ~= nil then
+        return Scene.saveDataManager
+    end
+
+    local gameMaster = Scene.getGameMaster()
+    if not gameMaster then return nil end
+
+    Scene.saveDataManager = gameMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gamemastering.SaveDataManager")))
+
+    return Scene.saveDataManager
+end
+
+function Scene.getRecordManager()
+    if Scene.recordManager ~= nil then
+        return Scene.recordManager
+    end
+
+    local gameMaster = Scene.getGameMaster()
+    if not gameMaster then return nil end
+
+    Scene.recordManager = gameMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gamemastering.RecordManager")))
+
+    return Scene.recordManager
+end
+
 function Scene.getSurvivorType()
     local gameMaster = Scene.getGameMaster()
     if not gameMaster then return -1 end
@@ -97,7 +143,7 @@ function Scene.getSurvivorType()
     local survivors = survivorManager:get_field("ExistSurvivorInfoList")
     if not survivors then return -1 end
 
-    for _, survivor in pairs(survivors:get_field("mItems") or {}) do
+    for _, survivor in pairs(survivors:get_field("mItems")) do
         if survivor then
             local isActive = survivor:get_field("<IsActivePlayer>k__BackingField")
             if isActive then
@@ -141,31 +187,83 @@ function Scene.isUsingItemBox()
     return result
 end
 
+function Scene.getGUIInventory()
+    if Scene.guiInventory ~= nil then
+        return Scene.guiInventory
+    end
+
+    local scene = Scene.getSceneObject()
+    if not scene then return nil end
+
+    Scene.guiInventory = scene:findGameObject("GUI_Inventory")
+    return Scene.guiInventory
+end
+
+function Scene.isUsingInventory()
+    local guiInv = Scene.getGUIInventory()
+    if not guiInv then
+        return false
+    end
+
+    -- RTX is weird and doesn't use UIMaster? or it does but not in the way we touch it already?
+    -- so pcall since it works and we'd like this to not throw errors in scriptrunner 
+    -- otherwise I'll get people taking screenshots of it later and asking wtf is going on
+    local ok, drawn = pcall(function()
+        return guiInv:get_DrawSelf()
+    end)
+
+    if not ok then
+        Scene.guiInventory = nil
+        return false
+    end
+
+    return drawn
+end
+
+function Scene.getDifficulty()
+    local mainFlowManager = Scene.getMainFlowManager();
+    
+    if mainFlowManager ~= nil then
+        local difficultySetting = mainFlowManager:call("get_CurrentDifficulty")
+
+        if difficultySetting ~= nil then
+            return difficultySetting
+        end
+
+        return -1
+    end
+
+    return -1
+end
 
 function Scene.isTitleScreen()
-    local mfm = Scene.getMainFlowManager()
-    return mfm and mfm:get_IsInTitle() or false
+    return Scene.getMainFlowManager():get_IsInTitle()
 end
 
 function Scene.isInGame()
-    local mfm = Scene.getMainFlowManager()
-    return mfm and mfm:get_IsInGame() or false
+    local mainFlowManager = Scene.getMainFlowManager()
+    if mainFlowManager == nil then
+        return false
+    end
+
+    return mainFlowManager:get_IsInGame() or false
 end
 
 function Scene.isInPause()
-    local mfm = Scene.getMainFlowManager()
-    return mfm and mfm:get_IsInPause() or false
+    return Scene.getMainFlowManager():get_IsInPause()
 end
 
 function Scene.isInGameOver()
-    local mfm = Scene.getMainFlowManager()
-    return mfm and mfm:get_IsInGameOver() or false
+    local mainFlowManager = Scene.getMainFlowManager()
+    if mainFlowManager == nil then
+        return false
+    end
+
+    return Scene.getMainFlowManager():get_IsInGameOver()
 end
 
 function Scene.goToGameOver()
-    local mfm = Scene.getMainFlowManager()
-    if not mfm then return false end
-    return mfm:call("goGameOverSimple", nil)
+    return Scene.getMainFlowManager():call("goGameOverSimple", nil)
 end
 
 function Scene.isCharacterJill()
@@ -176,24 +274,40 @@ function Scene.isCharacterCarlos()
     return Scene.getSurvivorType() == 1
 end
 
+function Scene.isDifficultyAssisted()
+    return Scene.getDifficulty() == 0
+end
+
+function Scene.isDifficultyStandard()
+    return Scene.getDifficulty() == 1
+end
+
+function Scene.isDifficultyHardcore()
+    return Scene.getDifficulty() == 2
+end
+
+function Scene.isDifficultyNightmare()
+    return Scene.getDifficulty() == 3
+end
+
+function Scene.isDifficultyInferno()
+    return Scene.getDifficulty() == 4
+end
+
 function Scene.getCurrentLocation()
-    local mfm = Scene.getMainFlowManager()
-    return mfm and mfm:get_LoadLocation() or nil
+    return Scene.getMainFlowManager():get_LoadLocation()
 end
 
 function Scene.getCurrentArea()
-    local mfm = Scene.getMainFlowManager()
-    return mfm and mfm:get_LoadArea() or nil
+    return Scene.getMainFlowManager():get_LoadArea()
 end
 
 function Scene.getGameGUID()
-    local mfm = Scene.getMainFlowManager()
-    return mfm and mfm:get_GameGUID() or nil
+    return Scene.getMainFlowManager():get_GameGUID()
 end
 
 function Scene.getSaveGUID()
-    local mfm = Scene.getMainFlowManager()
-    return mfm and mfm:get_SaveGUID() or nil
+    return Scene.getMainFlowManager():get_SaveGUID()
 end
 
 return Scene

@@ -1,6 +1,11 @@
 local Helpers = {}
 
 function Helpers.gameObject(obj_name)
+    local scene = Scene.getSceneObject()
+    if not scene then
+        return nil
+    end
+
     return scene:call("findGameObject(System.String)", obj_name)
 end
 

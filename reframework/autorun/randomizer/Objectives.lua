@@ -10,6 +10,11 @@ function Objectives.Init()
 end
 
 function Objectives.GetPurposeGUI()
+    local scene = Scene.getSceneObject()
+    if not scene then
+        return nil
+    end
+
     local guiPurpose = scene:call("findGameObject(System.String)", "GUI_Purpose")
 
     return guiPurpose

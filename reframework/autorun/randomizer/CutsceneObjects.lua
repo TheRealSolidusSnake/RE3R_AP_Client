@@ -11,8 +11,8 @@ function CutsceneObjects.Init()
         CutsceneObjects.CultureSample()
     end
 
-    -- if the last check for cutscene objects was X time ago or more, trigger another removal
-    if os.time() - CutsceneObjects.lastStop > 15 then -- 15 seconds
+    -- if the last check for cutscene objects was X time ago or more, try again
+    if os.time() - CutsceneObjects.lastStop > 5 then -- 5 seconds
         CutsceneObjects.isInit = false
     end
 end
@@ -20,10 +20,27 @@ end
 function CutsceneObjects.ClockPuzzle()
     local clockObject = Helpers.gameObject("0201_sm41_415_ES_JewelryBox01A_00_gimmick")
     if not clockObject then
-        return
+        return false
     end
+
     local clockComponent = Helpers.component(clockObject, "gimmick.action.EsGimmickJewelryBox")
-    clockComponent:set_field("_Rno", 5)
+    if not clockComponent then
+        return false
+    end
+
+    local ok, currentRno = pcall(function()
+        return clockComponent:get_field("_Rno")
+    end)
+
+    if not ok then
+        return false
+    end
+
+    if currentRno ~= 5 then
+        clockComponent:set_field("_Rno", 5)
+    end
+
+    return true
 end
 
 function CutsceneObjects.Shotgun()

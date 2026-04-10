@@ -47,7 +47,7 @@ AP_REF.APLocationColor = "00FF7F"
 AP_REF.APEntranceColor = "6495ED"
 
 -- connection config settings
-AP_REF.APHost = "localhost:38281"
+AP_REF.APHost = "archipelago.gg:12345"
 AP_REF.APSlot = "Player1"
 AP_REF.APPassword = ""
 
@@ -72,6 +72,11 @@ function AP_REF.DisableInGameClient(disable_message)
     if disable_message then
         AP_REF.clientDisabledMessage = disable_message
     end
+end
+
+function AP_REF.Sanitize(val)
+    -- replace a single % in a string (which is reserved in Lua) with a properly-escaped %. so %%, but we have to escape both, so %%%%
+    return val:gsub("%%", "%%%%")
 end
 
 -----------------------------------
@@ -123,8 +128,10 @@ local function parse_json_msg(val)
 		local text_type = val["type"]
 		local text = val["text"]
 		local color = "FFFFFF"
+
 		if text_type == "color" then
 			color = AP_REF.HexToImguiColor(AP_REF.APColors[val["color"]])
+
 		elseif text_type == "player_id" then
 			if tonumber(val["text"]) == AP_REF.APClient:get_player_number() then
 				color = AP_REF.APCurrentPlayerColor
@@ -133,45 +140,63 @@ local function parse_json_msg(val)
 			end
 			text = AP_REF.APClient:get_player_alias(tonumber(val["text"]))
 			color = AP_REF.HexToImguiColor(color)
+
 		elseif text_type == "player_name" then
 			-- according to network docs, this only appears when individual is not slot-resolvable?
 			color = AP_REF.HexToImguiColor(AP_REF.APOtherPlayerColor)
+
 		elseif text_type == "item_id" then
-			-- resolve item flags
-			if (val["flags"] & 1) > 0 then
+			local flags = tonumber(val["flags"]) or 0
+
+			if (flags & 1) > 0 then
 				color = AP_REF.APProgessionColor
-			elseif (val["flags"] & 2) > 0 then
+			elseif (flags & 2) > 0 then
 				color = AP_REF.APUsefulColor
-			elseif (val["flags"] & 4) > 0 then
+			elseif (flags & 4) > 0 then
 				color = AP_REF.APTrapColor
 			else
 				color = AP_REF.APFillerColor
 			end
-			text = AP_REF.APClient:get_item_name(tonumber(val["text"]), AP_REF.APClient:get_player_game(tonumber(val["player"])))
+
+			text = AP_REF.APClient:get_item_name(
+				tonumber(val["text"]),
+				AP_REF.APClient:get_player_game(tonumber(val["player"]))
+			)
 			color = AP_REF.HexToImguiColor(color)
+
 		elseif text_type == "item_name" then
-			-- resolve item flags
-			if val["flags"] & 1 then
+			local flags = tonumber(val["flags"]) or 0
+
+			if (flags & 1) > 0 then
 				color = AP_REF.APProgessionColor
-			elseif val["flags"] & 2 then
+			elseif (flags & 2) > 0 then
 				color = AP_REF.APUsefulColor
-			elseif val["flags"] & 4 then
+			elseif (flags & 4) > 0 then
 				color = AP_REF.APTrapColor
 			else
 				color = AP_REF.APFillerColor
 			end
+
 			color = AP_REF.HexToImguiColor(color)
+
 		elseif text_type == "location_id" then
 			-- TODO: become 1933 compliant once a new version of lua-AP_REF.APClientpp releases
-			text = AP_REF.APClient:get_location_name(tonumber(val["text"]), AP_REF.APClient:get_player_game(tonumber(val["player"])))
+			text = AP_REF.APClient:get_location_name(
+				tonumber(val["text"]),
+				AP_REF.APClient:get_player_game(tonumber(val["player"]))
+			)
 			color = AP_REF.HexToImguiColor(AP_REF.APLocationColor)
+
 		elseif text_type == "location_name" then
 			color = AP_REF.HexToImguiColor(AP_REF.APLocationColor)
+
 		elseif text_type == "entrance_name" then
 			color = AP_REF.HexToImguiColor(AP_REF.APEntranceColor)
+
 		else
 			color = AP_REF.HexToImguiColor(color)
 		end
+
 		return {text = text, color = color}
 	else
 		return {text = val["text"]}
@@ -222,7 +247,7 @@ local function set_room_info_handler(callback)
 		debug_print("Room info")
 		callback()
 		
-		AP_REF.APClient:ConnectSlot(AP_REF.APSlot, AP_REF.APPassword, AP_REF.APItemsHandling, {"Lua-APClientPP"}, {0, 6, 3})
+		AP_REF.APClient:ConnectSlot(AP_REF.APSlot, AP_REF.APPassword, AP_REF.APItemsHandling, {"Lua-APClientPP"}, {0, 6, 5})
 	end
 	AP_REF.APClient:set_room_info_handler(room_info_handler)
 end
@@ -431,7 +456,7 @@ local function main_menu()
                 if val["color"] == nil then
                     val["color"] = AP_REF.HexToImguiColor("FFFFFF")
                 end
-                imgui.text_colored(val["text"], val["color"])
+                imgui.text_colored(AP_REF.Sanitize(val["text"]), val["color"])
 				imgui.same_line()
 			end
 			imgui.new_line()

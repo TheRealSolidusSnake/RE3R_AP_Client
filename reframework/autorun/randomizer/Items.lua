@@ -10,6 +10,7 @@ function Items.Init()
         Items.isInit = true
 
         Items.SetupInteractHook()
+        -- Items.SetupDisconnectWaitHook()
         Items.SetupSafeUIHook()
         Items.SetupStatueUIHook()
     end
@@ -53,7 +54,9 @@ function Items.SetupInteractHook()
                     end
 
                     Typewriters.Unlock("", item_name)
-                    Storage.UpdateLastSavedItems()
+
+                    -- this used to update on touching the typewriter (assuming the player *would* save), but is now handled by a hook
+                    --Storage.UpdateLastSavedItems()
                 end
             end
         end
@@ -64,6 +67,7 @@ function Items.SetupInteractHook()
 
             if Archipelago.hasConnectedPrior then
                 GUI.AddText("Archipelago is not connected.")
+                -- Items.cancelNextUI = true
             end
 
             return
@@ -78,18 +82,22 @@ function Items.SetupInteractHook()
 
             -- If we're interacting with the victory location, send victory and bail
             if Archipelago.CheckForVictoryLocation(location_to_check) then
-                Archipelago.SendLocationCheck(location_to_check)
+                Archipelago.SendLocationCheck(location_to_check) -- doesn't check for fail, but game is over, so release if needed, can fix later
                 GUI.AddText("Goal Completed!")
 
                 return
             end
 
-            -- If we run through a trigger named "AutoSaveArea", the game just auto-saved. So update last saved to last received.
+            -- If we run through a trigger with "AutoSaveArea" or "CheckPoint" in the name, the game just auto-saved. 
+            --    So a save point and not an item, so return out. 
+            --    (Used to update last saved to last received, but handled in SaveData hooks now.)
             if string.find(item_name, "AutoSaveArea") then
-                Storage.UpdateLastSavedItems()
+                -- Storage.UpdateLastSavedItems()
 
                 return
             end
+
+            -- In-Game messages to warn the players if they are about to f themselves by going through a "one way"
 
             if item_name == "sm42_505_ES_C4Bomb01A_CH2_gimmick" and item_folder_path == "RopewayContents/World/Location_RPD/LocationLevel_RPD/Scenario/S02_0300/ES_S02_0300/ShowerRoomBlownUp" then
 
@@ -105,18 +113,67 @@ function Items.SetupInteractHook()
                 GUI.AddText("It is recommended that you complete all checks in the Hospital prior to curing Jill.")
             end
 
-            -- attempt to close the Clock Puzzle door after interaction so we can randomize the locations
-            if item_name == "WP6200" and item_folder_path == "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area/JewelryBox"
-                or item_name == "sm71_101" and item_folder_path == "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area/JewelryBox"
-                or item_name == "sm74_200" and item_folder_path == "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area/JewelryBox"
-            then
-                CutsceneObjects.ClockPuzzle()
+            -- We check if we've seen the cutscenes/physical location of the item to determine if we should be giving it back to the player or not
+
+            if item_name == "EventPlay_EV325_obj" and
+            item_folder_path == "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/Scenario/S03_1000/ES_S03_1000" then
+                if not Storage.seenLockPick then
+                    Storage.seenLockPick = true
+                    Storage.Update()
+                end
+            end
+
+            if item_name == "sm73_305" and
+            item_folder_path == "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/KeyItem" then
+                if not Storage.seenBatteryPack then
+                    Storage.seenBatteryPack = true
+                    Storage.Update()
+                end
+            end
+
+            -- attempt to close the Clock Puzzle door after interaction so we can randomize the locations (left a button just in case)
+
+            if (
+                item_name == "WP6200" and item_folder_path == "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area/JewelryBox"
+            ) or (
+                item_name == "sm71_101" and item_folder_path == "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area/JewelryBox"
+            ) or (
+                item_name == "sm74_200" and item_folder_path == "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/Item/ES_S03_1000/I_100_Subway_Area/JewelryBox"
+            ) then
+                if not Storage.clockDoorFixed then
+                    local clockPuzzleFixed = CutsceneObjects.ClockPuzzle()
+                    if clockPuzzleFixed then
+                        Storage.clockDoorFixed = true
+                    end
+                end
+            end
+
+            -- attempt to destroy the safe items, so that we can use the "map clearing" way of doing the safes that RE2 has
+            if item_name == "0232_sm42_019_SafeBoxDial01A_00_control" and 
+            item_folder_path == "RopewayContents/World/Location_DownTown/LocationLevel_DownTown/LocationFsm_DownTown/S03_1000/ES_S03_1000/SafeBox" then
+                Storage.dotSightSafe = true
+            end
+
+            if item_name == "sm42_019_SafeBoxDial01A_OfficeW_control" and 
+            item_folder_path == "RopewayContents/World/Location_RPD/LocationLevel_RPD/LocationFsm_RPD/common/ES_common/1FW/WestOffice/IronSafe_1FWOffice" then
+                Storage.hipPouchSafe = true
+            end
+
+            if item_name == "0101_sm42_019_SafeBoxDial01A_control" and 
+            item_folder_path == "RopewayContents/World/Location_Hospital/LocationLevel_Hospital/LocationFsm_Hospital/common/ES_common/SafeBox" then
+                Storage.dualMagSafe = true
             end
 
             local isLocationRandomized = Archipelago.IsLocationRandomized(location_to_check)
 
-            if Archipelago.IsItemLocation(location_to_check) and (Archipelago.SendLocationCheck(location_to_check) and not CutsceneObjects[item_name] or Archipelago.IsConnected()) then
+            if Archipelago.IsItemLocation(location_to_check) then
+                local locationSentSuccess = Archipelago.SendLocationCheck(location_to_check)
                 Archipelago.waitingForInvincibilityOff = true
+                if locationSentSuccess == nil then -- both true and false responses are valid for removing the location, nil is not
+                    GUI.AddText("Location did not send because of a connection issue. Please verify that your AP room is up and try again.")
+                    Items.cancelNextUI = true
+                    return
+                end
                 -- if it's an item, call vanish and save to get rid of it
                 if item_positions and isLocationRandomized then
                     item_positions:call('vanishItemAndSave()')
@@ -129,11 +186,30 @@ function Items.SetupInteractHook()
                     Items.cancelNextStatueUI = true
                     Items.lastInteractable = feedbackParent
                 end
+                -- local inputSystem = sdk.get_managed_singleton(sdk.game_namespace("InputSystem"))
+                -- inputSystem:MouseCancelPC() -- this is so hacky, lol
             end
-        Archipelago.waitingForInvincibilityOff = true
         end
+
+        Archipelago.waitingForInvincibilityOff = true
     end)
 end
+
+-- function Items.SetupDisconnectWaitHook()
+    -- local guiNewInventoryTypeDef = sdk.find_type_definition(sdk.game_namespace("gui.EsInventoryBehavior"))
+    -- local guiNewInventoryMethod = guiNewInventoryTypeDef:get_method("setCaptionState")
+
+    -- small hook that handles cancelling inventory UIs when having connected before and being not reconnected
+    -- sdk.hook(guiNewInventoryMethod, function (args)
+        -- if Items.cancelNextUI then
+            -- local uiMaster = Scene.getSceneObject():findGameObject("UIMaster")
+            -- local compGuiMaster = uiMaster:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gui.GUIMaster")))
+
+            -- Items.cancelNextUI = false
+            -- compGuiMaster:forceClose()
+        -- end
+    -- end)
+-- end
 
 function Items.SetupStatueUIHook()
     local gimmickStatueBehavior = sdk.find_type_definition(sdk.game_namespace("gimmick.action.GimmickDialLockBehavior"))
@@ -174,14 +250,59 @@ function Items.SetupSafeUIHook()
             local safeBoxObject = compFromHook:call('get_GameObject()') -- the dial gimmick
             local compGimmickGUI = safeBoxObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gui.RopewayGimmickAttachmentGUI")))
             local compGimmickBody = safeBoxObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickBody")))
+            local compFsmState = safeBoxObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("FsmStateController")))
             local safeBoxControlObject = compGimmickBody:get_field("_GimmickControl"):call("get_GameObject()")
+            local safeBoxControlParent = safeBoxControlObject:get_Transform():get_Parent():get_GameObject()
             local compInteractBehavior = safeBoxControlObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.InteractBehavior")))
+            local compDialSettings = safeBoxControlObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.option.AttachmentSafeBoxDialSettings")))
+            local compAddItem = safeBoxControlParent:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.option.AddItemToInventorySettings")))
+            local itemPosObject = compAddItem:get_field("ItemPositions")
+            local itemPositions = itemPosObject:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("item.ItemPositions")))
 
             Items.cancelNextSafeUI = false
-            compGimmickGUI:call("SetCancel()") -- closes the safe interaction view / returns to player
-            compInteractBehavior:get_field("MyInteract"):call("clear()") -- makes the safe no longer interactable via "use key"
+            itemPositions:vanishItemAndSave()
+            compGimmickGUI:call("SetSatisfy()")
+            compAddItem:set_field("Enable", false) -- I guess set_Enabled is only for gameobjects and not components? smh
+            compDialSettings:call("TransmitCorrectAnswer", compGimmickGUI)
         end
     end)
 end
+
+-- this was a test to swap items to a different visual item. might not work anymore.
+-- function Items.SwapAllItemsTo(item_name)
+    -- scene = sdk.call_native_func(sdk.get_native_singleton("via.SceneManager"), sdk.find_type_definition("via.SceneManager"), "get_CurrentScene()")
+    -- item_objects = scene:call("findGameObjectsWithTag(System.String)", "Item")
+
+    -- for k, item in pairs(item_objects:get_elements()) do
+        -- item_name = item:call("get_Name()")
+        -- item_folder = item:call("get_Folder()")
+        -- item_folder_path = item_folder:call("get_Path()")
+        -- item_component = item:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("item.ItemPositions")))
+
+        -- if item_component then
+            -- item_id = item_component:get_field("InitializeItemId")
+
+            -- if item_id then -- all item_numbers are hex to decimal, use decimal here
+                -- if new_item_name == "spray" then
+                    -- item_number = 1
+                    -- item_count = 1
+                -- elseif new_item_name == "handgun ammo" then
+                    -- item_number = 15
+                    -- item_count = 30
+                -- elseif new_item_name == "wood crate" then
+                    -- item_number = 294
+                    -- item_count = 1
+                -- elseif new_item_name == "picture block" then
+                    -- item_number = 98
+                    -- item_count = 1
+                -- end
+
+                -- item_component:set_field("InitializeItemId", item_number)
+                -- item_component:set_field("InitializeCount", item_count)
+                -- item_component:call("createInitializeItem()")
+            -- end
+        --end
+    -- end
+-- end
 
 return Items

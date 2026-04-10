@@ -2,12 +2,12 @@
     "APCurrentPlayerColor": "EE00EE",
     "APEntranceColor": "6495ED",
     "APFillerColor": "00EEEE",
-    "APHost": "localhost:38281",
+    "APHost": "localhost",
     "APLocationColor": "00FF7F",
     "APOtherPlayerColor": "FAFAD2",
     "APPassword": "",
     "APProgessionColor": "AF99EF",
-    "APSlot": "Player1",
+    "APSlot": "Solidus",
     "APTrapColor": "FA8072",
     "APUsefulColor": "6D8BE8"
 }
