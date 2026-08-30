@@ -17,6 +17,30 @@ local function debug_item_log(message)
     end
 end
 
+local function apply_trap(name)
+    if name == "Parasite Trap" then
+        return Player.Parasite()
+    end
+
+    return Player.Puke()
+end
+
+-- Traps that landed while Carlos was out. Jill owes us one, so hand it over
+-- now that she's back. One per tick, otherwise a parasite and its cure both
+-- land on the same frame and only the cure sticks.
+function Archipelago.ProcessPendingTraps()
+    local pending = Storage.pendingTraps
+    if pending == nil or #pending == 0 or not Scene.isCharacterJill() then
+        return
+    end
+
+    local name = table.remove(pending, 1)
+    Storage.Update()
+
+    apply_trap(name)
+    GUI.AddText("Delivering the " .. name .. " Carlos dodged earlier.")
+end
+
 local function rebuild_collected_counts()
     local counts = {}
     for _, name in pairs(Archipelago.collectedItemByIndex) do
@@ -610,18 +634,19 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
             end
 
             -- Parasite/Puke only work on Jill. Carlos has no parasite state, so
-            -- these get burned with a note instead of being applied to him.
+            -- park it and let it off the next time she's the one playing.
             if item_name == "Parasite Trap" or item_name == "Puke Trap" then
                 if not Scene.isCharacterJill() then
-                    GUI.AddText("Received " .. item_name .. ", but only Jill can be affected. Ignoring.")
+                    Storage.pendingTraps = Storage.pendingTraps or {}
+                    table.insert(Storage.pendingTraps, item_name)
+                    Storage.Update()
+
+                    GUI.AddText("Received " .. item_name .. ", holding it until Jill is back.")
+
                     return
                 end
 
-                if item_name == "Parasite Trap" then
-                    Player.Parasite()
-                else
-                    Player.Puke()
-                end
+                apply_trap(item_name)
 
                 GUI.AddReceivedItemText(item_name, item_color, tostring(AP_REF.APClient:get_player_alias(sender)), tostring(player_self.alias), sent_to_box)
 
@@ -677,11 +702,11 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
                 .. " toInventory=" .. tostring(added_to_inventory))
 
             if added_to_inventory then
-                -- Inventory only reaches whoever is active. A shared item still
-                -- owes the other survivor a copy, so drop it in their box.
-                -- AddStrage writes persistent storage, so this works with no
-                -- locker loaded.
-                if item_owner == "shared" then
+                -- Inventory only reaches the active survivor. With separate
+                -- boxes, mirror a shared item into the other character's box
+                -- so they still have a copy. With the common box, one physical
+                -- store is shared — mirroring would double the AP grant.
+                if item_owner == "shared" and not ItemBox.IsCommonBox() then
                     local other_owner = (active_owner == "jill") and "carlos" or "jill"
                     local mirrored = ItemBox.AddItem(
                         tonumber(item_id),

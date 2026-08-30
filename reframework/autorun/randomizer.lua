@@ -99,6 +99,8 @@ re.on_pre_application_entry("UpdateBehavior", function()
                 Archipelago.ProcessItemsQueue()
             end
 
+            Archipelago.ProcessPendingTraps()
+
             -- Carlos's inventory is often created later; keep both survivors synced.
             Inventory.SyncHipPouchSlots()
 

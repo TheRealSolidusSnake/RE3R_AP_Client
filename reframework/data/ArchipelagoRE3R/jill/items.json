@@ -224,21 +224,24 @@
     "name": "High-Grade Gunpowder",
     "decimal": "62",
     "count": 1,
-    "progression": 0
+    "progression": 0,
+    "owner": "shared"
   },
   {
     "type": "Crafting",
     "name": "Explosive A",
     "decimal": "63",
     "count": 1,
-    "progression": 0
+    "progression": 0,
+    "owner": "shared"
   },
   {
     "type": "Crafting",
     "name": "Explosive B",
     "decimal": "64",
     "count": 1,
-    "progression": 0
+    "progression": 0,
+    "owner": "shared"
   },
 
   {
