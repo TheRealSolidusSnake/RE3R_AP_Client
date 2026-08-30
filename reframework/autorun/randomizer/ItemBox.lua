@@ -47,6 +47,9 @@ local FALLBACK_SHARED_ITEMS = {
     [3] = true,   -- Red Herb
     [31] = true,  -- Handgun Ammo
     [61] = true,  -- Gunpowder
+    [62] = true,  -- High-Grade Gunpowder
+    [63] = true,  -- Explosive A
+    [64] = true,  -- Explosive B
     [261] = true, -- Hip Pouch
 }
 local FALLBACK_SHARED_WEAPONS = {
@@ -285,8 +288,9 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count, targetO
 
     targetOwner = targetOwner or ItemBox.GetItemOwner(itemId, weaponId) or "jill"
 
-    -- write persistent storage first — that's what the box UI actually shows for
-    -- Jill/Carlos. the world gimmick alone can "succeed" and still not show up
+    -- Persistent AddStrage is authoritative (what the box UI binds to).
+    -- Do NOT also insert into the live locker gimmick — that was creating a
+    -- second slot for every AP grant (herbs/gunpowder showing doubled).
     local function addPersistent(survivorType)
         if survivorType == nil then
             return false
@@ -298,10 +302,7 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count, targetO
         end
 
         -- AddStrage(survivor, itemId, ItemNum, weaponType, bulletId, BulletNum)
-        -- The last arg is BulletNum, not parts. For a weapon slot that's the
-        -- number the box shows, so count goes there -- passing parts (always 0)
-        -- is what made grenades read as 0. Parts only apply to setWeapon below.
-        -- Prefer WeaponType -1 for items. 0 is BareHand and was creating
+        -- Prefer WeaponType -1 for items. 0 is BareHand and created
         -- "Invalid Weapon ID" stubs in Carlos's StorageItems2nd.
         local ok = false
         if weaponId > 0 then
@@ -322,87 +323,35 @@ function ItemBox.AddItem(itemId, weaponId, weaponParts, bulletId, count, targetO
         return ok
     end
 
-    -- AddStrage wants a SurvivorDefine.SurvivorType, not a 0/1 index. JILL is
-    -- actually 2, so the old hardcoded 0/1 pointed at whoever sits at those
-    -- values and that's how Jill's launcher ended up in Carlos' list.
+    -- AddStrage wants SurvivorDefine.SurvivorType (JILL is 2, not 0).
     local jill = Scene.getSurvivorEnumValue("JILL")
     local carlos = Scene.getSurvivorEnumValue("CARLOS")
+    local common = ItemBox.IsCommonBox()
 
-    -- Jill and Carlos keep their own stores, even if the game has the common
-    -- box flag set. Shared goes to both so whoever isn't active still finds
-    -- their copy waiting.
+    -- Ownership:
+    --   jill   -> Jill store only
+    --   carlos -> Carlos store only
+    --   shared + separate boxes -> one copy in each store
+    --   shared + common box     -> one copy only (UI is a single shared view;
+    --                              dual-write looked like duplicates)
     local survivors = { jill }
     if targetOwner == "carlos" then
         survivors = { carlos }
     elseif targetOwner == "shared" then
-        survivors = { jill, carlos }
+        if common then
+            if Scene.isCharacterCarlos() then
+                survivors = { carlos }
+            else
+                survivors = { jill }
+            end
+        else
+            survivors = { jill, carlos }
+        end
     end
 
     local added = false
     for _, survivorType in ipairs(survivors) do
         added = addPersistent(survivorType) or added
-    end
-
-    -- also poke the loaded locker gimmick so an open box stays in sync
-    local itemLocker = ItemBox.GetAnyAvailable()
-    if itemLocker ~= nil then
-        local gimmickItemLockerControlComponent = itemLocker:call("getComponent(System.Type)", sdk.typeof(sdk.game_namespace("gimmick.action.GimmickItemLockerControl")))
-        local storageItems = gimmickItemLockerControlComponent:get_field("StorageItems")
-        local storageItems2nd = gimmickItemLockerControlComponent:get_field("StorageItems2nd")
-        local mItems = storageItems:get_field("mItems")
-        local mItems2nd = storageItems2nd:get_field("mItems")
-
-        local targetStorages = { mItems }
-        if targetOwner == "carlos" then
-            targetStorages = { mItems2nd }
-        elseif targetOwner == "shared" then
-            targetStorages = { mItems, mItems2nd }
-        end
-
-        local function slotIsWritable(item)
-            local blank = false
-            pcall(function()
-                blank = item:call("isBlank") == true
-            end)
-            if blank then
-                return true
-            end
-
-            local slotItemId = tonumber(item:get_ItemId()) or -1
-            local slotWeaponId = tonumber(item:get_WeaponId()) or -1
-            -- WeaponId 0 is BareHand, not empty. Only treat true empties as free.
-            return slotItemId <= 0 and slotWeaponId < 0
-        end
-
-        local function addItemToStorage(storage)
-            for _, item in pairs(storage:get_elements()) do
-                if item ~= nil and slotIsWritable(item) then
-                    pcall(function()
-                        item:call("setBlank")
-                    end)
-
-                    if weaponId > 0 then
-                        item:setWeapon(weaponId, weaponParts, count, bulletId, 0)
-                    else
-                        local okSet = pcall(function()
-                            item:call("setItem", itemId, count)
-                        end)
-                        if not okSet then
-                            item:set_ItemId(itemId)
-                            item:set_Count(count)
-                        end
-                    end
-                    return true
-                end
-            end
-            return false
-        end
-
-        for _, storage in ipairs(targetStorages) do
-            if storage then
-                added = addItemToStorage(storage) or added
-            end
-        end
     end
 
     return added

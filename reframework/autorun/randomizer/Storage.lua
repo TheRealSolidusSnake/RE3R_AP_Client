@@ -20,6 +20,8 @@ Storage.receivedFiles = {}
 Storage.collectedFiles = {}
 -- Map a file was carrying, held back at the world pickup until AP sends it.
 Storage.deferredMapItems = {}
+-- Parasite/Puke traps that landed on Carlos, waiting for Jill to be back.
+Storage.pendingTraps = {}
 Storage.checkedItemGuids = {}
 Storage.receivedHipPouches = 0
 
@@ -100,6 +102,7 @@ function Storage.Load()
         Storage.receivedFiles = existing_file['received_files'] or {}
         Storage.collectedFiles = existing_file['collected_files'] or {}
         Storage.deferredMapItems = existing_file['deferred_map_items'] or {}
+        Storage.pendingTraps = existing_file['pending_traps'] or {}
         if Files then
             Files.needsFileReplay = true
         end
@@ -144,6 +147,7 @@ function Storage.Update()
         received_files = Storage.receivedFiles,
         collected_files = Storage.collectedFiles,
         deferred_map_items = Storage.deferredMapItems,
+        pending_traps = Storage.pendingTraps,
         checked_item_guids = Storage.checkedItemGuids,
         received_hip_pouches = Storage.receivedHipPouches or 0
     }
@@ -184,6 +188,7 @@ function Storage.Reset()
     Storage.receivedFiles = {}
     Storage.collectedFiles = {}
     Storage.deferredMapItems = {}
+    Storage.pendingTraps = {}
     Storage.checkedItemGuids = {}
     Storage.receivedHipPouches = 0
 end
