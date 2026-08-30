@@ -103,7 +103,7 @@ function GUI.AddReceivedItemText(item_name, item_color, sendingPlayer, selfPlaye
     
     if sendingPlayer and sendingPlayer ~= selfPlayer then
         table.insert(textObjects, { message=" from " })
-        table.insert(textObjects, { message=sendingPlayer, color = AP_REF.HexToImguiColor("FAFAD2") })
+        table.insert(textObjects, { message=sendingPlayer, color = AP_REF.HexToImguiColor(AP_REF.APOtherPlayerColor) })
     end
 
     if sentToBox then
@@ -118,11 +118,11 @@ end
 -- sending item to another player
 function GUI.AddSentItemText(player_sender, item_name, item_color, player_receiver, location)
     GUI.AddTexts({
-        { message=player_sender, color=AP_REF.HexToImguiColor("EE00EE")},
+        { message=player_sender, color=AP_REF.HexToImguiColor(AP_REF.APCurrentPlayerColor) },
         { message=" sent " },
         { message=AP_REF.Sanitize(item_name), color=AP_REF.HexToImguiColor(item_color) },
         { message=" to " },
-        { message=player_receiver, color=AP_REF.HexToImguiColor("FAFAD2") },
+        { message=player_receiver, color=AP_REF.HexToImguiColor(AP_REF.APOtherPlayerColor) },
         { message="!"}
     })
 end

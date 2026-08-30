@@ -582,7 +582,7 @@ function Archipelago.ReceiveItem(item_name, sender, is_randomized)
         end
 
         if item_ref.progression == 1 then
-            item_color = "ce28f7"
+            item_color = AP_REF.APProgessionColor
         elseif item_ref.type ~= "Lore" and item_ref.type ~= "Trap" then
             item_color = AP_REF.APUsefulColor
         elseif item_ref.type == "Trap" then

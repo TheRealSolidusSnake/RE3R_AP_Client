@@ -281,7 +281,7 @@ function Archipelago.PrintJSONHandler(json_rows, command)
             item_id = tonumber(row["text"])
 
             if (row["flags"] & 1) > 0 then
-                item_color = "AF99EF"
+                item_color = AP_REF.APProgessionColor
             elseif (row["flags"] & 2) > 0 then
                 item_color = AP_REF.APUsefulColor
             elseif (row["flags"] & 4) > 0 then
